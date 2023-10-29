@@ -6,12 +6,5 @@ PIL
 time 
 datetime 
 sqlalchemy
-sqlalchemy.engine  URL
-sqlalchemy  create_engine, event
-sqlalchemy.engine.url  URL
-sqlalchemy  Table, MetaData, Column, Integer, String, FLOAT, VARCHAR, Date, Time
-sqlalchemy  select
-sqlalchemy  insert
-sqlalchemy  Sequence
 webbrowser
 requests
