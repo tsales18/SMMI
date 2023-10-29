@@ -1,3 +1,20 @@
 {
-    "sqltools.connections": []
+    "sqltools.connections": [
+        {
+            "mssqlOptions": {
+                "appName": "mssql+pyodbc",
+                "useUTC": true,
+                "encrypt": true
+            },
+            "previewLimit": 50,
+            "server": "DESKTOP-62QBI08\\WINCCPLUSMIG2014",
+            "port": 51304,
+            "askForPassword": true,
+            "driver": "ODBC Driver 18 for SQL Server",
+            "name": "SALES",
+            "database": "SSMM",
+            "username": "DESKTOP-62QBI08\\james",
+            "connectionTimeout": 50
+        }
+    ]
 }
