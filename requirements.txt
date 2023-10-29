@@ -4,3 +4,4 @@ altair
 Image 
 sqlalchemy
 requests
+pyodbc
