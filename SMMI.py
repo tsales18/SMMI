@@ -145,7 +145,7 @@ tab1_qtde_produto = df.loc[(
 if fLIDERES == 'FELIPE LEITE':
     if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
         if senha == '69':
-            image = Image.open('./Mídia/ssmm.jpg')
+            image = Image.open('./Midia/ssmm.jpg')
             ps1,ps2,ps3,ps4,ps5 = st.columns(5)
             with ps1:
                 st.image(image,width=1700)
@@ -288,7 +288,7 @@ DATA4 = pd.read_sql_table("DADOSF", con = "mssql+pyodbc://DESKTOP-62QBI08\james:
 
                                                                           
 if senha != '69':
-    video_file = open('./Mídia/SSMMOV.mp4', 'rb')
+    video_file = open('./Midia/SSMMOV.mp4', 'rb')
     video_bytes = video_file.read() 
     st.video(video_bytes)
     
