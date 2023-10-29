@@ -289,7 +289,7 @@ DATA4 = pd.read_sql_table("DADOSF", con = "mssql+pyodbc://DESKTOP-62QBI08\james:
 
                                                                           
 if senha != '69':
-    video_file = open('./Mídia/SSMMOV.mp4', 'rb')
+    video_file = open('./Midia/SSMMOV.mp4', 'rb')
     video_bytes = video_file.read() 
     st.video(video_bytes)
     
