@@ -1,16 +1,17 @@
 pandas 
 streamlit 
-altair 
-PIL from Image
+altair
+Image 
+PIL 
 time 
 datetime 
 sqlalchemy
-from sqlalchemy.engine  URL
-from sqlalchemy  create_engine, event
-from sqlalchemy.engine.url  URL
-from sqlalchemy  Table, MetaData, Column, Integer, String, FLOAT, VARCHAR, Date, Time
-from sqlalchemy  select
-from sqlalchemy  insert
-from sqlalchemy  Sequence
+sqlalchemy.engine  URL
+sqlalchemy  create_engine, event
+sqlalchemy.engine.url  URL
+sqlalchemy  Table, MetaData, Column, Integer, String, FLOAT, VARCHAR, Date, Time
+sqlalchemy  select
+sqlalchemy  insert
+sqlalchemy  Sequence
 webbrowser
 requests
