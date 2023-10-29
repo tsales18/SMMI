@@ -1,9 +1,9 @@
-import pandas as pd
-import streamlit as st
-import altair as alt
+import pandas 
+import streamlit 
+import altair 
 from PIL import Image
-import time as time
-import datetime as datetime
+import time 
+import datetime 
 from sqlalchemy.engine import URL
 from sqlalchemy import create_engine, event
 from sqlalchemy.engine.url import URL
