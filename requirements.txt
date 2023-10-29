@@ -2,9 +2,5 @@ pandas
 streamlit 
 altair
 Image 
-PIL==1.1.7
-time 
-datetime 
 sqlalchemy
-webbrowser
 requests
