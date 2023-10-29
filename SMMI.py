@@ -146,7 +146,7 @@ tab1_qtde_produto = df.loc[(
 if fLIDERES == 'FELIPE LEITE':
     if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
         if senha == '69':
-            image = Image.open('./Mídia/ssmm.jpg')
+            image = Image.open('./Mídia/sales.jpg')
             ps1,ps2,ps3,ps4,ps5 = st.columns(5)
             with ps1:
                 st.image(image,width=1700)
