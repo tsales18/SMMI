@@ -1,0 +1,12 @@
+[theme]
+primaryColor="#ffffff"
+backgroundColor="#FFFFFF"
+secondaryBackgroundColor="#9DD1F1" 
+textColor= "#000000"
+font="serif"
+
+# Para cores, podemos usar os formatos: "green", "#FFDE5A" ou RGB(61,183,228)
+# Para fontes estão disponíveis: "sans serif", "serif", "monospace"
+# Pode-se usar uma tema base, com base="light", e fazer alterações
+
+# secondaryBackgroundColor é a cor de fundo do sidebar e menu
