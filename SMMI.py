@@ -63,9 +63,9 @@ with st.sidebar:
     
     connection_url = URL.create(
     "mssql+pyodbc",
-    username="DESKTOP-62QBI08\james",
+    username="SALES",
     password="47297913",
-    host="DESKTOP-62QBI08\WINCCPLUSMIG2014",
+    host="DESKTOP-62QBI08",
     port=51304,
     database="SSMM",
     query={
