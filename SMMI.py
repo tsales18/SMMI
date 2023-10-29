@@ -42,7 +42,7 @@ df = pd.read_excel(
 
 # -- Criar o sidebar
 with st.sidebar:
-    logo_teste = Image.open('./Mídia/logo vizion.jpeg')
+    logo_teste = Image.open('./Mídia/sales.jpeg')
     st.image(logo_teste, width=300)
     st.subheader('MANUTENÇÃO SSM SOLAR DO BRASIL')
     fLIDERES = st.selectbox(
