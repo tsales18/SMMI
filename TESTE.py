@@ -4,7 +4,6 @@ import altair as alt
 from PIL import Image
 import time as time
 import datetime as datetime
-from sqlalchemy.engine import URL
 from sqlalchemy import create_engine, event
 from sqlalchemy.engine.url import URL
 from sqlalchemy import Table, MetaData, Column, Integer, String, FLOAT, VARCHAR, Date, Time
