@@ -6,4 +6,3 @@ sqlalchemy
 requests
 pyodbc
 openpyxl
-sqlite3
