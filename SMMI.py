@@ -165,13 +165,13 @@ if fLIDERES == 'FELIPE LEITE':
                 statuses,sats,statuses1=st.columns([55,8,20])
                 with statuses:
                     
-                    st.table('OPA')
+                    st.write('OPA')
                 with sats:
                     
-                    st.dataframe(('OPA'))               
+                    st.write('OPA')               
                 with statuses1:
                    
-                    st.dataframe('OPA')
+                    st.write('OPA')
                     
                     
 
