@@ -61,76 +61,54 @@ with st.sidebar:
     
     st.write('✅')
     
-    connection_url = URL.create(
-    "mssql+pyodbc",
-    username="SALES",
-    password="47297913",
-    host="DESKTOP-62QBI08",
-    port=51304,
-    database="SSMM",
-    query={
-        "driver": "ODBC Driver 18 for SQL Server",
-        "TrustServerCertificate": "yes",
-        "authentication": "ActiveDirectoryIntegrated",
-    },
-)
-engine = create_engine(connection_url).execution_options(
-    isolation_level="AUTOCOMMIT"
-)
+engine = create_engine("mssql+pyodbc://DESKTOP-62QBI08\james:47297913@DESKTOP-62QBI08\WINCCPLUSMIG2014:51304/SMMI?"
+    "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
+    "&authentication=ActiveDirectoryIntegrated")
 conn = engine.connect()
 
-if st.button('🔄'):
-    M = MetaData()
-    ABERTURA = Table('ABERTURA', M,
-                Column('OS', Integer, primary_key=True),
-                Column('SOLICITANTE', String(1000)),
-                Column("SETOR", String(1000)),
-                Column('TIPO_DE_OCORRENCIA', String(1000)),
-                Column('NIVEL_DA_OCÔRRENCIA', String(50)))
-                
-    M.create_all(engine)
-    M = MetaData()
-    ABERTURAF = Table('ABERTURAF', M,
-                Column('OS', Integer, primary_key=True),
-                Column('SOLICITANTE', String(1000)),
-                Column("SETOR", String(1000)),
-                Column('TIPO_DE_OCORRENCIA', String(1000)),
-                Column('NIVEL_DA_OCÔRRENCIA', String(50)),
-                Column('DATA', (Date)),
-                Column('MOMENTO', (Time)))
-    M.create_all(engine) 
 
-    M = MetaData()
-    DADOS = Table('DADOS', M,
-             Column('HORA_INICIADA', (Time(0)), nullable=False))
-    M.create_all(engine)  
+M0 = MetaData()
+ABERTURA = Table('ABERTURA', M0,
+            Column('OS', Integer, primary_key=True),
+            Column('SOLICITANTE', String(1000)),
+            Column("SETOR", String(1000)),
+            Column('TIPO_DE_OCORRENCIA', String(1000)),
+            Column('NIVEL_DA_OCÔRRENCIA', String(50)))
+                
+ABERTURAF = Table('ABERTURAF', M0,
+            Column('OS', Integer, primary_key=True),
+            Column('SOLICITANTE', String(1000)),
+            Column("SETOR", String(1000)),
+            Column('TIPO_DE_OCORRENCIA', String(1000)),
+            Column('NIVEL_DA_OCÔRRENCIA', String(50)),
+            Column('DATA', (Date)),
+            Column('MOMENTO', (Time)))
     
-    M = MetaData()
-    DADOS1 = Table('DADOS1', M,
-              Column('DATA', (Date), nullable=False),
-              Column('HORA_FINAL', (Time(0)), nullable=False))
-    M.create_all(engine)
+DADOS = Table('DADOS', M0,
+            Column('HORA_INICIADA', (Time(0)), nullable=False)) 
     
+DADOS1 = Table('DADOS1', M0,
+            Column('DATA', (Date), nullable=False),
+            Column('HORA_FINAL', (Time(0)), nullable=False))
     
-    M = MetaData()
-    DADOSF = Table('DADOSF', M,
-                Column('HORA_INICIADA', (Time(0)), nullable=False))
-    M.create_all(engine)
+DADOSF = Table('DADOSF', M0,
+            Column('HORA_INICIADA', (Time(0)), nullable=False))
+M0.create_all(engine)
 
 
           
 
-DATA = pd.read_sql_table("ABERTURA", con = "mssql+pyodbc://SALES:47297913@DESKTOP-62QBI08:51304/SSMM?"
-"driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
-"&authentication=ActiveDirectoryIntegrated")
+DATA = pd.read_sql_table("ABERTURA", con = "mssql+pyodbc://DESKTOP-62QBI08\james:47297913@DESKTOP-62QBI08\WINCCPLUSMIG2014:51304/SMMI?"
+    "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
+    "&authentication=ActiveDirectoryIntegrated")
 
-DATA1 = pd.read_sql_table("DADOS", con = "mssql+pyodbc://SALES:47297913@DESKTOP-62QBI08:51304/SSMM?"
-"driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
-"&authentication=ActiveDirectoryIntegrated")
+DATA1 = pd.read_sql_table("DADOS", con = "mssql+pyodbc://DESKTOP-62QBI08\james:47297913@DESKTOP-62QBI08\WINCCPLUSMIG2014:51304/SMMI?"
+    "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
+    "&authentication=ActiveDirectoryIntegrated")
 
-DATA2 = pd.read_sql_table("DADOS1", con = "mssql+pyodbc://SALES:47297913@DESKTOP-62QBI08:51304/SSMM?"
-"driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
-"&authentication=ActiveDirectoryIntegrated")
+DATA2 = pd.read_sql_table("DADOS1", con ="mssql+pyodbc://DESKTOP-62QBI08\james:47297913@DESKTOP-62QBI08\WINCCPLUSMIG2014:51304/SMMI?"
+    "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
+    "&authentication=ActiveDirectoryIntegrated")
 
 dt = pd.DataFrame(DATA)
 num =dt.shape[0]
@@ -153,15 +131,15 @@ if fLIDERES == 'FELIPE LEITE':
             b0,b1 = st.columns([1,26])
             with b0:
                 if st.button('↻'):
-                    DATA = pd.read_sql_table("ABERTURA", con = "mssql+pyodbc://SALES:47297913@DESKTOP-62QBI08:51304/SSMM?"
-                    "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
-                    "&authentication=ActiveDirectoryIntegrated")
-                    DATA1 = pd.read_sql_table("DADOS", con = "mssql+pyodbc://SALES:47297913@DESKTOP-62QBI08:51304/SSMM?"
-                    "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
-                    "&authentication=ActiveDirectoryIntegrated")
-                    DATA2 = pd.read_sql_table("DADOS1", con = "mssql+pyodbc://SALES:47297913@DESKTOP-62QBI08:51304/SSMM?"
-                    "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
-                    "&authentication=ActiveDirectoryIntegrated")
+                    DATA = pd.read_sql_table("ABERTURA", con = "mssql+pyodbc://DESKTOP-62QBI08\james:47297913@DESKTOP-62QBI08\WINCCPLUSMIG2014:51304/SMMI?"
+    "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
+    "&authentication=ActiveDirectoryIntegrated")
+                    DATA1 = pd.read_sql_table("DADOS", con = "mssql+pyodbc://DESKTOP-62QBI08\james:47297913@DESKTOP-62QBI08\WINCCPLUSMIG2014:51304/SMMI?"
+    "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
+    "&authentication=ActiveDirectoryIntegrated")
+                    DATA2 = pd.read_sql_table("DADOS1", con = "mssql+pyodbc://DESKTOP-62QBI08\james:47297913@DESKTOP-62QBI08\WINCCPLUSMIG2014:51304/SMMI?"
+    "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
+    "&authentication=ActiveDirectoryIntegrated")
             st.markdown("---")
             
             
@@ -191,11 +169,10 @@ if fLIDERES == 'FELIPE LEITE':
                         Column("SETOR", String(1000)),
                         Column('TIPO_DE_OCORRENCIA', String(1000)),
                         Column('NIVEL_DA_OCÔRRENCIA', String(50)),
-                        Column('Hora de inicio', (Time)))
-                M.create_all(engine) 
+                        Column('Hora_de_nicio', (Time)))
+               
                 
-                
-                M = MetaData()
+            
                 DADOS = Table('DADOS', M,
                           Column('HORA_INICIADA', (Time(0)), nullable=False))
                 M.create_all(engine)
@@ -217,10 +194,14 @@ if fLIDERES == 'FELIPE LEITE':
                                         else:
                                             att = st.button("INSERIR DADOS")
                                             if att:
-                                                ins = ABERTURA.insert()
-                                                conn.execute(ins,SOLICITANTE = solicitante, SETOR = setor, TIPO_DE_OCORRENCIA =                                                                                                                                             status,NIVEL_DA_OCÔRRENCIA=niveldaocorrencia)                                     
-                                                ins1 = DADOS.insert()
-                                                conn.execute(ins1, HORA_INICIADA=tempoi)
+                                                ABR =(  
+                                                   insert(ABERTURA).
+                                                   values(OS=st.session_state.OS, SOLICITANTE=solicitante, SETOR=setor,
+                                                           TIPO_DE_OCORRENCIA=status,NIVEL_DA_OCÔRRENCIA=niveldaocorrencia,
+                                                           HORA_DE_INICIO=tempoi) 
+                                                   ) 
+                                                with engine.connect() as conn:
+                                                      conn.execute(ABR)
                       
                                             if att:
                                                 st.balloons()
@@ -278,13 +259,13 @@ if fLIDERES == 'FELIPE LEITE':
                     st.dataframe(df6)
                     
                     
-DATA3 = pd.read_sql_table("ABERTURAF", con = "mssql+pyodbc://SALES:47297913@DESKTOP-62QBI08:51304/SSMM?"
-"driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
-"&authentication=ActiveDirectoryIntegrated")
+DATA3 = pd.read_sql_table("ABERTURAF", con = "mssql+pyodbc://DESKTOP-62QBI08\james:47297913@DESKTOP-62QBI08\WINCCPLUSMIG2014:51304/SMMI?"
+    "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
+    "&authentication=ActiveDirectoryIntegrated")
 
-DATA4 = pd.read_sql_table("DADOSF", con = "mssql+pyodbc://SALES:47297913@DESKTOP-62QBI08:51304/SSMM?"
-"driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
-"&authentication=ActiveDirectoryIntegrated")
+DATA4 = pd.read_sql_table("DADOSF", con = "mssql+pyodbc://DESKTOP-62QBI08\james:47297913@DESKTOP-62QBI08\WINCCPLUSMIG2014:51304/SMMI?"
+    "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
+    "&authentication=ActiveDirectoryIntegrated")
 
                                                                           
 if senha != '69':
@@ -302,14 +283,14 @@ if fLIDERES == 'IVSON PAULINO':
                 st.title('Status e informações de OS')
             b3,b4 = st.columns([1,26])
             with b3:
-                
+
                 if st.button('↻'):
-                    DATA3 = pd.read_sql_table("ABERTURAF", con = "mssql+pyodbc://SALES:47297913@DESKTOP-62QBI08:51304/SSMM?"
-                    "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
-                    "&authentication=ActiveDirectoryIntegrated")
-                    DATA4 = pd.read_sql_table("DADOSF", con = "mssql+pyodbc://SALES:47297913@DESKTOP-62QBI08:51304/SSMM?"
-                    "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
-                    "&authentication=ActiveDirectoryIntegrated")
+                    DATA3 = pd.read_sql_table("ABERTURAF", con = "mssql+pyodbc://DESKTOP-62QBI08\james:47297913@DESKTOP-62QBI08\WINCCPLUSMIG2014:51304/SMMI?"
+    "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
+    "&authentication=ActiveDirectoryIntegrated")
+                    DATA4 = pd.read_sql_table("DADOSF", con = "mssql+pyodbc://DESKTOP-62QBI08\james:47297913@DESKTOP-62QBI08\WINCCPLUSMIG2014:51304/SMMI?"
+    "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
+    "&authentication=ActiveDirectoryIntegrated")
             st.markdown("---")
             tab4,tab5= st.tabs(["Cadastro","OS Abertas"])
             with tab4:
@@ -331,22 +312,6 @@ if fLIDERES == 'IVSON PAULINO':
                         data = st.date_input("Data", value=None)
                         st.form_submit_button('↻')
                         
-                            
-                M = MetaData()
-                ABERTURAF = Table('ABERTURAF', M,
-                        Column('OS', Integer, primary_key=True),
-                        Column('SOLICITANTE', String(1000)),
-                        Column('SETOR', String(1000)),
-                        Column('TIPO_DE_OCORRENCIA', String(1000)),
-                        Column('NIVEL_DA_OCÔRRENCIA', String(50)),
-                        Column('DATA', (Date)),
-                        Column('MOMENTO', (Time)))
-                M.create_all(engine) 
-                
-                M = MetaData()
-                DADOSF = Table('DADOSF', M,
-                          Column('HORA_INICIADA', (Time(0)), nullable=False))
-                M.create_all(engine)
                 
                 if 'OS' not in st.session_state:
                     st.session_state.OS = 0
@@ -362,10 +327,14 @@ if fLIDERES == 'IVSON PAULINO':
                                     if setorF != "Selecione":
                                         attt = st.button("INSERIR DADOS")
                                         if attt:
-                                            ins2 = ABERTURAF.insert()
-                                            conn.execute(ins2,SOLICITANTE = solicitanteF, SETOR = setorF, TIPO_DE_OCORRENCIA =                                                                                                                                           statusF,NIVEL_DA_OCÔRRENCIA=niveldaocorrenciaF, DATA = data, MOMENTO = tempoiF)                             
-                                            ins3 = DADOSF.insert()
-                                            conn.execute(ins3, HORA_INICIADA=tempoiF)
+                                            ABR1 =(
+                                                   insert(ABERTURAF).
+                                                   values(SOLICITANTE=solicitanteF, SETOR=setorF,
+                                                           TIPO_DE_OCORRENCIA=statusF, NIVEL_DA_OCÔRRENCIA=niveldaocorrenciaF,
+                                                           DATA=data,MOMENTO=tempoiF) 
+                                                   ) 
+                                            with engine.connect() as conn:
+                                                  conn.execute(ABR1)
                                         if attt:
                                             st.session_state.OS += 1
                                           
