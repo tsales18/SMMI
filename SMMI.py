@@ -302,6 +302,7 @@ if fLIDERES == 'IVSON PAULINO':
                 st.title('Status e informações de OS')
             b3,b4 = st.columns([1,26])
             with b3:
+                
                 if st.button('↻'):
                     DATA3 = pd.read_sql_table("ABERTURAF", con = "mssql+pyodbc://SALES:47297913@DESKTOP-62QBI08:51304/SSMM?"
                     "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
