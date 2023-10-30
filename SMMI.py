@@ -125,15 +125,14 @@ if fLIDERES == 'FELIPE LEITE':
                                 if solicitante != "Selecione":
                                     if setor != "Selecione":   
                                             st.caption('É necessario finalizar esta OS antes de inciar outra.')
-                                    else:
-                                        att = st.button("INSERIR DADOS")
-                                        if att:
-                                           cursor.execute("INSERT INTO ABERTURA (OS,SOLCITANTE,SETOR,TIPO_DE_OCORRENCIA,NIVEL_DA_OCORRENCIA,DATA,HORA) VALUES (?, ?, ?, ?, ?, ?, ?)", (st.session_state.OS, solicitante, setor, status,niveldaocorrencia,data,tempoi))
-                                           conn.commit()
-                                        if att:
-                                           st.balloons()
-                                           st.session_state.OS += 1
-                                           st.experimental_rerun()
+                                            att = st.button("INSERIR DADOS")
+                                            if att:
+                                               cursor.execute("INSERT INTO ABERTURA (OS,SOLCITANTE,SETOR,TIPO_DE_OCORRENCIA,NIVEL_DA_OCORRENCIA,DATA,HORA) VALUES (?, ?, ?, ?, ?, ?, ?)", (st.session_state.OS, solicitante, setor, status,niveldaocorrencia,data,tempoi))
+                                               conn.commit()
+                                            if att:
+                                               st.balloons()
+                                               st.session_state.OS += 1
+                                               st.experimental_rerun()
                         
             with tab2:
                 st.header('Finalizar OS')
