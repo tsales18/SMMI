@@ -127,7 +127,7 @@ if fLIDERES == 'FELIPE LEITE':
                                             st.caption('É necessario finalizar esta OS antes de inciar outra.')
                                             att = st.button("INSERIR DADOS")
                                             if att:
-                                               cursor.execute("INSERT INTO ABERTURA (OS,SOLCITANTE,SETOR,TIPO_DE_OCORRENCIA,NIVEL_DA_OCORRENCIA,HORA) VALUES (?, ?, ?, ?, ?, ?)", (st.session_state.OS, solicitante, setor, status,niveldaocorrencia,tempoi))
+                                               cursor.execute("INSERT INTO ABERTURA (OS,SOLCITANTE,SETOR,TIPO_DE_OCORRENCIA,NIVEL_DA_OCORRENCIA) VALUES (?, ?, ?, ?, ?, ?)", (st.session_state.OS, str(solicitante), str(setor), str(status),str(niveldaocorrencia)))
                                                conn.commit()
                                             if att:
                                                st.balloons()
@@ -155,7 +155,8 @@ if fLIDERES == 'FELIPE LEITE':
                         else:
                             st.caption('É necessario finalizar esta OS antes de inciar outra.')                                                                                                                         
                             FIn=st.button("FINALIZAR")
-                          
+                            
+                  
             with tab3:
                 statuses,sats,statuses1=st.columns([55,8,20])
                 with statuses:   
@@ -175,7 +176,7 @@ if fLIDERES == 'FELIPE LEITE':
 if senha != '69':
     video_file = open('./Midia/SSMMOV.mp4', 'rb')
     video_bytes = video_file.read() 
-    st.video(video_bytes)
+    st.video(video_bytes) 
     
 if fLIDERES == 'IVSON PAULINO':
     if fSETOR == 'FERRAMENTARIA':
