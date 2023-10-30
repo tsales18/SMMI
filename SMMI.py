@@ -106,7 +106,7 @@ if fLIDERES == 'FELIPE LEITE':
                         niveldaocorrencia = st.selectbox('Nivel da ocorrência', ('Selecione','EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE', 'URGÊNTE'), index=0)
                         st.markdown("---")
                         relatorio = st.text_input('Relatorio')
-                        tempoi = st.time_input('HORA DE INICIO', value=None)
+                        tempoi = st.time_input('Horario', value=None)
                         st.write(tempoi)
                         data = st.date_input("Data", value=None)
                         st.write(data)
@@ -164,7 +164,10 @@ if fLIDERES == 'FELIPE LEITE':
             with tab3:
                 statuses,sats,statuses1=st.columns([55,8,20])
                 with statuses:        
-                    st.write('OPA')
+                    cursor.execute("SELECT * FROM ABERTURA")
+                    resultado = cursor.fetchall()
+                    for linha in resultado:
+                       st.dataframe(linha)
                 with sats:
                     st.write('OPA')               
                 with statuses1:                
