@@ -109,6 +109,7 @@ if fLIDERES == 'FELIPE LEITE':
                         tempoi = st.time_input('HORA DE INICIO', value=None)
                         st.write(tempoi)
                         st.form_submit_button('↻')
+                        data = st.date_input("Data", value=None)
                             
                 
                 if 'OS' not in st.session_state:
@@ -122,18 +123,17 @@ if fLIDERES == 'FELIPE LEITE':
                         if senha == '69':
                             if niveldaocorrencia != "Selecione":
                                 if solicitante != "Selecione":
-                                    if setor != "Selecione":
-                                            
+                                    if setor != "Selecione":   
                                             st.caption('É necessario finalizar esta OS antes de inciar outra.')
                                     else:
                                         att = st.button("INSERIR DADOS")
                                         if att:
-                                            cursor.execute("INSERT INTO ABERTURA (OS,SOLCITANTE,SETOR,TIPO_DE_OCORRENCIA,NIVEL_DA_OCORRENCIA,DATA,HORA) VALUES (?, ?, ?, ?, ?, ?, ?)", (OSF, SOLICITANTEF, SETORF, TIPO_DE_OCORRENCIAF,NIVEL_DE_OCORRENCIAF,DATAF,HORAF))
-                                            conn.commit()
+                                           cursor.execute("INSERT INTO ABERTURA (OS,SOLCITANTE,SETOR,TIPO_DE_OCORRENCIA,NIVEL_DA_OCORRENCIA,DATA,HORA) VALUES (?, ?, ?, ?, ?, ?, ?)", (st.session_state.OS, solicitante, setor, status,niveldaocorrencia,data,tempoi))
+                                           conn.commit()
                                         if att:
-                                                st.balloons()
-                                                st.session_state.OS += 1
-                                                st.experimental_rerun()
+                                           st.balloons()
+                                           st.session_state.OS += 1
+                                           st.experimental_rerun()
                         
             with tab2:
                 st.header('Finalizar OS')
@@ -151,19 +151,18 @@ if fLIDERES == 'FELIPE LEITE':
                 if fLIDERES == 'FELIPE LEITE':
                     if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
                         if senha == '69':
-                            if num <= num1:
                                 st.caption('É necessario ABRIR outra OS para finalizar.') 
                                 st.write(num)
                                 st.write(num1)
-                            else:
-                                st.caption('É necessario finalizar esta OS antes de inciar outra.')                                                                                                                         
-                                FIn=st.button("FINALIZAR")
-                                if FIn:
-                                    ins2 = DADOS1.insert()
-                                    conn.execute(ins2,DATA =df3, HORA_FINAL=t)
-                                if FIn:
-                                    st.session_state.FIN += 1
-                                    st.balloons()
+                        else:
+                            st.caption('É necessario finalizar esta OS antes de inciar outra.')                                                                                                                         
+                            FIn=st.button("FINALIZAR")
+                            if FIn:
+                                ins2 = DADOS1.insert()
+                                conn.execute(ins2,DATA =df3, HORA_FINAL=t)
+                            if FIn:
+                                st.session_state.FIN += 1
+                                st.balloons()
                                    
                                    
                                        
@@ -216,7 +215,7 @@ if fLIDERES == 'IVSON PAULINO':
                         tempoiF = st.time_input('HORA DE INICIO', value=None)
                         st.write(tempoiF)
                         st.markdown("---")
-                        data = st.date_input("Data", value=None)
+                        dataF = st.date_input("Data", value=None)
                         st.form_submit_button('↻')
                         
                 
