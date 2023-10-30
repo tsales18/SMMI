@@ -61,10 +61,8 @@ with st.sidebar:
     
     st.write('✅')
     
-engine = create_engine("mssql+pyodbc://DESKTOP-62QBI08\james:47297913@DESKTOP-62QBI08\WINCCPLUSMIG2014:51304/SMMI?"
-    "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
-    "&authentication=ActiveDirectoryIntegrated")
-conn = engine.connect()
+conn = st.experimental_connection("mssql+pyodbc://DESKTOP-62QBI08\james:47297913@DESKTOP-62QBI08\WINCCPLUSMIG2014:51304/SMMI?""driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes""&authentication=ActiveDirectoryIntegrated",type='sql')
+
 
 
 M0 = MetaData()
