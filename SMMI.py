@@ -108,10 +108,10 @@ if fLIDERES == 'FELIPE LEITE':
                         relatorio = st.text_input('Relatorio')
                         tempoi = st.time_input('HORA DE INICIO', value=None)
                         st.write(tempoi)
-                        st.form_submit_button('↻')
                         data = st.date_input("Data", value=None)
-                            
-                
+                        st.write(data)
+                        st.form_submit_button('↻')
+                        
                 if 'OS' not in st.session_state:
                     st.session_state.OS = 0
                     
@@ -163,14 +163,11 @@ if fLIDERES == 'FELIPE LEITE':
                                 
             with tab3:
                 statuses,sats,statuses1=st.columns([55,8,20])
-                with statuses:
-                    
+                with statuses:        
                     st.write('OPA')
                 with sats:
-                    
                     st.write('OPA')               
-                with statuses1:
-                   
+                with statuses1:                
                     st.write('OPA')
                     
                     
