@@ -65,7 +65,7 @@ with st.sidebar:
     "mssql+pyodbc",
     username="SALES",
     password="47297913",
-    host="DESKTOP-62QBI08\WINCCPLUSMIG2014",
+    host="DESKTOP-62QBI08",
     port=51304,
     database="SSMM",
     query={
@@ -120,15 +120,15 @@ if st.button('🔄'):
 
           
 
-DATA = pd.read_sql_table("ABERTURA", con = "mssql+pyodbc://SALES:47297913@DESKTOP-62QBI08\WINCCPLUSMIG2014:51304/SSMM?"
+DATA = pd.read_sql_table("ABERTURA", con = "mssql+pyodbc://SALES:47297913@DESKTOP-62QBI08:51304/SSMM?"
 "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
 "&authentication=ActiveDirectoryIntegrated")
 
-DATA1 = pd.read_sql_table("DADOS", con = "mssql+pyodbc://SALES:47297913@DESKTOP-62QBI08\WINCCPLUSMIG2014:51304/SSMM?"
+DATA1 = pd.read_sql_table("DADOS", con = "mssql+pyodbc://SALES:47297913@DESKTOP-62QBI08:51304/SSMM?"
 "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
 "&authentication=ActiveDirectoryIntegrated")
 
-DATA2 = pd.read_sql_table("DADOS1", con = "mssql+pyodbc://SALES:47297913@DESKTOP-62QBI08\WINCCPLUSMIG2014:51304/SSMM?"
+DATA2 = pd.read_sql_table("DADOS1", con = "mssql+pyodbc://SALES:47297913@DESKTOP-62QBI08:51304/SSMM?"
 "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
 "&authentication=ActiveDirectoryIntegrated")
 
@@ -153,13 +153,13 @@ if fLIDERES == 'FELIPE LEITE':
             b0,b1 = st.columns([1,26])
             with b0:
                 if st.button('↻'):
-                    DATA = pd.read_sql_table("ABERTURA", con = "mssql+pyodbc://SALES:47297913@DESKTOP-62QBI08\WINCCPLUSMIG2014:51304/SSMM?"
+                    DATA = pd.read_sql_table("ABERTURA", con = "mssql+pyodbc://SALES:47297913@DESKTOP-62QBI08:51304/SSMM?"
                     "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
                     "&authentication=ActiveDirectoryIntegrated")
-                    DATA1 = pd.read_sql_table("DADOS", con = "mssql+pyodbc://SALES:47297913@DESKTOP-62QBI08\WINCCPLUSMIG2014:51304/SSMM?"
+                    DATA1 = pd.read_sql_table("DADOS", con = "mssql+pyodbc://SALES:47297913@DESKTOP-62QBI08:51304/SSMM?"
                     "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
                     "&authentication=ActiveDirectoryIntegrated")
-                    DATA2 = pd.read_sql_table("DADOS1", con = "mssql+pyodbc://SALES:47297913@DESKTOP-62QBI08\WINCCPLUSMIG2014:51304/SSMM?"
+                    DATA2 = pd.read_sql_table("DADOS1", con = "mssql+pyodbc://SALES:47297913@DESKTOP-62QBI08:51304/SSMM?"
                     "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
                     "&authentication=ActiveDirectoryIntegrated")
             st.markdown("---")
@@ -278,11 +278,11 @@ if fLIDERES == 'FELIPE LEITE':
                     st.dataframe(df6)
                     
                     
-DATA3 = pd.read_sql_table("ABERTURAF", con = "mssql+pyodbc://SALES:47297913@DESKTOP-62QBI08\WINCCPLUSMIG2014:51304/SSMM?"
+DATA3 = pd.read_sql_table("ABERTURAF", con = "mssql+pyodbc://SALES:47297913@DESKTOP-62QBI08:51304/SSMM?"
 "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
 "&authentication=ActiveDirectoryIntegrated")
 
-DATA4 = pd.read_sql_table("DADOSF", con = "mssql+pyodbc://SALES:47297913@DESKTOP-62QBI08\WINCCPLUSMIG2014:51304/SSMM?"
+DATA4 = pd.read_sql_table("DADOSF", con = "mssql+pyodbc://SALES:47297913@DESKTOP-62QBI08:51304/SSMM?"
 "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
 "&authentication=ActiveDirectoryIntegrated")
 
@@ -295,7 +295,7 @@ if senha != '69':
 if fLIDERES == 'IVSON PAULINO':
     if fSETOR == 'FERRAMENTARIA':
         if senha == '70':
-            image = Image.open('./Mídia/ssmm.jpg')
+            image = Image.open('./Midia/ssmm.jpg')
             ps6,ps7= st.columns(2)
             with ps6:
                 st.image(image,width=1700)
@@ -303,10 +303,10 @@ if fLIDERES == 'IVSON PAULINO':
             b3,b4 = st.columns([1,26])
             with b3:
                 if st.button('↻'):
-                    DATA3 = pd.read_sql_table("ABERTURAF", con = "mssql+pyodbc://SALES:47297913@DESKTOP-62QBI08\WINCCPLUSMIG2014:51304/SSMM?"
+                    DATA3 = pd.read_sql_table("ABERTURAF", con = "mssql+pyodbc://SALES:47297913@DESKTOP-62QBI08:51304/SSMM?"
                     "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
                     "&authentication=ActiveDirectoryIntegrated")
-                    DATA4 = pd.read_sql_table("DADOSF", con = "mssql+pyodbc://SALES:47297913@DESKTOP-62QBI08\WINCCPLUSMIG2014:51304/SSMM?"
+                    DATA4 = pd.read_sql_table("DADOSF", con = "mssql+pyodbc://SALES:47297913@DESKTOP-62QBI08:51304/SSMM?"
                     "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
                     "&authentication=ActiveDirectoryIntegrated")
             st.markdown("---")
