@@ -1,0 +1,8 @@
+SELECT TOP (1000) [OS]
+      ,[SOLICITANTE]
+      ,[SETOR]
+      ,[TIPO_DE_OCORRENCIA]
+      ,[NIVEL_DA_OCÔRRENCIA]
+      ,[DATA]
+      ,[MOMENTO]
+  FROM [SMMI].[dbo].[ABERTURAF]
