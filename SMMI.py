@@ -245,16 +245,10 @@ if fLIDERES == 'IVSON PAULINO':
             with tab5:
                 statuses,sats,statuses1=st.columns([80,8,20])
                 with statuses:
-                    def load_data():
-                        return pd.DataFrame(DATA3)
-
-                    st.checkbox("Estender", value=True, key= "use_container_width")
-                    df8 = load_data()
-                    st.dataframe(df8, use_container_width=st.session_state.use_container_width)
+                    st.dataframe(tempoi)
     
                 with statuses1:
-                    df7= pd.DataFrame(DATA2)
-                    st.dataframe(df7)
+                    st.dataframe(tempoiF)
                                
                                     
                                  
