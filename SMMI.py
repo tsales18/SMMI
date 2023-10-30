@@ -127,7 +127,7 @@ if fLIDERES == 'FELIPE LEITE':
                                             st.caption('É necessario finalizar esta OS antes de inciar outra.')
                                             att = st.button("INSERIR DADOS")
                                             if att:
-                                               cursor.execute("INSERT INTO ABERTURA (OS,SOLCITANTE,SETOR,TIPO_DE_OCORRENCIA,NIVEL_DA_OCORRENCIA,DATA,HORA) VALUES (?, ?, ?, ?, ?, ?, ?)", (st.session_state.OS, solicitante, setor, status,niveldaocorrencia,data,tempoi))
+                                               cursor.execute("INSERT INTO ABERTURA (OS,SOLCITANTE,SETOR,TIPO_DE_OCORRENCIA,NIVEL_DA_OCORRENCIA,HORA) VALUES (?, ?, ?, ?, ?, ?, ?)", (st.session_state.OS, solicitante, setor, status,niveldaocorrencia,tempoi))
                                                conn.commit()
                                             if att:
                                                st.balloons()
@@ -155,14 +155,10 @@ if fLIDERES == 'FELIPE LEITE':
                         else:
                             st.caption('É necessario finalizar esta OS antes de inciar outra.')                                                                                                                         
                             FIn=st.button("FINALIZAR")
-                            
-                                   
-                                   
-                                       
-                                
+                          
             with tab3:
                 statuses,sats,statuses1=st.columns([55,8,20])
-                with statuses:        
+                with statuses:   
                     cursor.execute("SELECT * FROM ABERTURA")
                     resultado = cursor.fetchall()
                     for linha in resultado:
