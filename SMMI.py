@@ -69,7 +69,6 @@ tab1_qtde_produto = df.loc[(
 ]
 
 conn = st.connection('SMMI', type='sql')
-
 cursor = conn.cursor()
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS ABERTURA (
