@@ -39,6 +39,7 @@ df = pd.read_excel(
     
 )
 
+conn.commit()
 # -- Criar o sidebar
 with st.sidebar:
     logo_teste = Image.open('./Midia/sales.jpeg')
@@ -64,7 +65,24 @@ with st.sidebar:
 tab1_qtde_produto = df.loc[(
     df['SETOR'] == fSETOR) &
     (df['LIDERES'] == fLIDERES)
+    
 ]
+
+conn = st.connection('SMMI', type='sql')
+
+cursor = conn.cursor()
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS ABERTURA (
+        OS INTEGER PRIMARY KEY,
+        SOLCITANTE TEXT,
+        SETOR TEXT,
+        TIPO_DE_OCORRENCIA TEXT,
+        NIVEL_DA_OCORRENCIA TEXT,
+        DATA DATE,
+        HORA TIME
+        
+    )
+''')
       
 if fLIDERES == 'FELIPE LEITE':
     if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
@@ -112,15 +130,8 @@ if fLIDERES == 'FELIPE LEITE':
                                         else:
                                             att = st.button("INSERIR DADOS")
                                             if att:
-                                                ABR =(  
-                                                   insert(ABERTURA).
-                                                   values(OS=st.session_state.OS, SOLICITANTE=solicitante, SETOR=setor,
-                                                           TIPO_DE_OCORRENCIA=status,NIVEL_DA_OCÔRRENCIA=niveldaocorrencia,
-                                                           HORA_DE_INICIO=tempoi) 
-                                                   ) 
-                                                with engine.connect() as conn:
-                                                      conn.execute(ABR)
-                      
+                                                cursor.execute("INSERT INTO ABERTURA (OS,SOLCITANTE,SETOR,TIPO_DE_OCORRENCIA,NIVEL_DA_OCORRENCIA,DATA,HORA) VALUES (?, ?, ?, ?, ?, ?, ?)", (OSF, SOLICITANTEF, SETORF, TIPO_DE_OCORRENCIAF,NIVEL_DE_OCORRENCIAF,DATAF,HORAF))
+                                                conn.commit()
                                             if att:
                                                 st.balloons()
                                                 st.session_state.OS += 1
