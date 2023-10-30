@@ -160,6 +160,7 @@ if fLIDERES == 'FELIPE LEITE':
             with tab3:
                 statuses,sats,statuses1=st.columns([55,8,20])
                 with statuses:   
+                    atl = st.button('↻')
                     cursor.execute("SELECT * FROM ABERTURA")
                     resultado = cursor.fetchall()
                     for linha in resultado:
