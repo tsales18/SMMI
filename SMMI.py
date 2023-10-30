@@ -13,6 +13,7 @@ from sqlalchemy import insert
 from sqlalchemy import Sequence
 import webbrowser
 import requests
+import sqlite3
 
 # CONFIGURAÇÃO DA PÁGINA
 st.set_page_config(
@@ -39,7 +40,6 @@ df = pd.read_excel(
     
 )
 
-conn.commit()
 # -- Criar o sidebar
 with st.sidebar:
     logo_teste = Image.open('./Midia/sales.jpeg')
@@ -68,7 +68,7 @@ tab1_qtde_produto = df.loc[(
     
 ]
 
-conn = st.connection('SMMI', type='sql')
+conn = sqlite3.connect('SMMI')
 cursor = conn.cursor()
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS ABERTURA (
