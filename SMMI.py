@@ -61,11 +61,45 @@ with st.sidebar:
     
     st.write('✅')
     
-                
+
+dt = pd.DataFrame(DATA)
+num =dt.shape[0]
+dt1 = pd.DataFrame(DATA2)
+num1 = dt1.shape[0]
+
+tab1_qtde_produto = df.loc[(
+    df['SETOR'] == fSETOR) &
+    (df['LIDERES'] == fLIDERES)
+]
+      
+if fLIDERES == 'FELIPE LEITE':
+    if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
+        if senha == '69':
+            image = Image.open('./Midia/ssmm.jpg')
+            ps1,ps2,ps3,ps4,ps5 = st.columns(5)
+            with ps1:
+                st.image(image,width=1700)
+                st.title('Status e informações de OS')
+           
             
-                DADOS = Table('DADOS', M,
-                          Column('HORA_INICIADA', (Time(0)), nullable=False))
-                M.create_all(engine)
+            tab1, tab2, tab3= st.tabs(["Cadastro", "Finalizar","OS Abertas"])
+            with tab1:
+                st.header("Cadastro de ocorrência")
+                colibrim,neymar,lula,sales,poura= st.columns([0.5,0.1,0.1,0.1,0.1])  
+                with colibrim:
+                    with st.form('my form2'):
+                        st.markdown("---")
+                        solicitante = st.selectbox('Solicitante', ('Selecione','FILIPE',),index=0)
+                        status = st.selectbox('Tipo de Ocorrência', ('Selecione','ELETRICA PREDIAL MANUTENÇÃO EM PAINES TROCA DE COMPONENTES'),index=0,)   
+                        st.markdown("---")
+                        setor = st.selectbox('Setor', ('Selecione','TECNOLOGIA DA INFORMAÇÃO',), index=0)
+                        niveldaocorrencia = st.selectbox('Nivel da ocorrência', ('Selecione','EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE', 'URGÊNTE'), index=0)
+                        st.markdown("---")
+                        relatorio = st.text_input('Relatorio')
+                        tempoi = st.time_input('HORA DE INICIO', value=None)
+                        st.write(tempoi)
+                        st.form_submit_button('↻')
+                            
                 
                 if 'OS' not in st.session_state:
                     st.session_state.OS = 0
@@ -109,12 +143,7 @@ with st.sidebar:
                         t = st.time_input('HORA', value=None)
                         st.write(t)
                         st.form_submit_button('↻')
-                        
-                M = MetaData()
-                DADOS1 = Table('DADOS1', M,
-                          Column('DATA', (Date), nullable=False),
-                          Column('HORA_FINAL', (Time(0)), nullable=False))
-                M.create_all(engine)                
+                                  
                   
                 if fLIDERES == 'FELIPE LEITE':
                     if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
@@ -149,13 +178,7 @@ with st.sidebar:
                     st.dataframe(df6)
                     
                     
-DATA3 = pd.read_sql_table("ABERTURAF", con = "mssql+pyodbc://DESKTOP-62QBI08\james:47297913@DESKTOP-62QBI08\WINCCPLUSMIG2014:51304/SMMI?"
-    "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
-    "&authentication=ActiveDirectoryIntegrated")
 
-DATA4 = pd.read_sql_table("DADOSF", con = "mssql+pyodbc://DESKTOP-62QBI08\james:47297913@DESKTOP-62QBI08\WINCCPLUSMIG2014:51304/SMMI?"
-    "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
-    "&authentication=ActiveDirectoryIntegrated")
 
                                                                           
 if senha != '69':
@@ -171,16 +194,7 @@ if fLIDERES == 'IVSON PAULINO':
             with ps6:
                 st.image(image,width=1700)
                 st.title('Status e informações de OS')
-            b3,b4 = st.columns([1,26])
-            with b3:
 
-                if st.button('↻'):
-                    DATA3 = pd.read_sql_table("ABERTURAF", con = "mssql+pyodbc://DESKTOP-62QBI08\james:47297913@DESKTOP-62QBI08\WINCCPLUSMIG2014:51304/SMMI?"
-    "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
-    "&authentication=ActiveDirectoryIntegrated")
-                    DATA4 = pd.read_sql_table("DADOSF", con = "mssql+pyodbc://DESKTOP-62QBI08\james:47297913@DESKTOP-62QBI08\WINCCPLUSMIG2014:51304/SMMI?"
-    "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
-    "&authentication=ActiveDirectoryIntegrated")
             st.markdown("---")
             tab4,tab5= st.tabs(["Cadastro","OS Abertas"])
             with tab4:
@@ -233,10 +247,11 @@ if fLIDERES == 'IVSON PAULINO':
                 with statuses:
                     def load_data():
                         return pd.DataFrame(DATA3)
+
                     st.checkbox("Estender", value=True, key= "use_container_width")
                     df8 = load_data()
                     st.dataframe(df8, use_container_width=st.session_state.use_container_width)
-        
+    
                 with statuses1:
                     df7= pd.DataFrame(DATA2)
                     st.dataframe(df7)
