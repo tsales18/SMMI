@@ -92,7 +92,6 @@ if fLIDERES == 'FELIPE LEITE':
                 st.image(image,width=1700)
                 st.title('Status e informações de OS')
            
-            
             tab1, tab2, tab3= st.tabs(["Cadastro", "Finalizar","OS Abertas"])
             with tab1:
                 st.header("Cadastro de ocorrência")
@@ -124,14 +123,14 @@ if fLIDERES == 'FELIPE LEITE':
                             if niveldaocorrencia != "Selecione":
                                 if solicitante != "Selecione":
                                     if setor != "Selecione":
-                                        if num > num1:
+                                            
                                             st.caption('É necessario finalizar esta OS antes de inciar outra.')
-                                        else:
-                                            att = st.button("INSERIR DADOS")
-                                            if att:
-                                                cursor.execute("INSERT INTO ABERTURA (OS,SOLCITANTE,SETOR,TIPO_DE_OCORRENCIA,NIVEL_DA_OCORRENCIA,DATA,HORA) VALUES (?, ?, ?, ?, ?, ?, ?)", (OSF, SOLICITANTEF, SETORF, TIPO_DE_OCORRENCIAF,NIVEL_DE_OCORRENCIAF,DATAF,HORAF))
-                                                conn.commit()
-                                            if att:
+                                    else:
+                                        att = st.button("INSERIR DADOS")
+                                        if att:
+                                            cursor.execute("INSERT INTO ABERTURA (OS,SOLCITANTE,SETOR,TIPO_DE_OCORRENCIA,NIVEL_DA_OCORRENCIA,DATA,HORA) VALUES (?, ?, ?, ?, ?, ?, ?)", (OSF, SOLICITANTEF, SETORF, TIPO_DE_OCORRENCIAF,NIVEL_DE_OCORRENCIAF,DATAF,HORAF))
+                                            conn.commit()
+                                        if att:
                                                 st.balloons()
                                                 st.session_state.OS += 1
                                                 st.experimental_rerun()
