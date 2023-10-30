@@ -61,12 +61,6 @@ with st.sidebar:
     
     st.write('✅')
     
-
-dt = pd.DataFrame(DATA)
-num =dt.shape[0]
-dt1 = pd.DataFrame(DATA2)
-num1 = dt1.shape[0]
-
 tab1_qtde_produto = df.loc[(
     df['SETOR'] == fSETOR) &
     (df['LIDERES'] == fLIDERES)
