@@ -152,17 +152,11 @@ if fLIDERES == 'FELIPE LEITE':
                     if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
                         if senha == '69':
                                 st.caption('É necessario ABRIR outra OS para finalizar.') 
-                                st.write(num)
-                                st.write(num1)
+                                
                         else:
                             st.caption('É necessario finalizar esta OS antes de inciar outra.')                                                                                                                         
                             FIn=st.button("FINALIZAR")
-                            if FIn:
-                                ins2 = DADOS1.insert()
-                                conn.execute(ins2,DATA =df3, HORA_FINAL=t)
-                            if FIn:
-                                st.session_state.FIN += 1
-                                st.balloons()
+                            
                                    
                                    
                                        
@@ -170,14 +164,14 @@ if fLIDERES == 'FELIPE LEITE':
             with tab3:
                 statuses,sats,statuses1=st.columns([55,8,20])
                 with statuses:
-                    df1 = pd.DataFrame(DATA)
-                    st.table(df1)
+                    
+                    st.table('OPA')
                 with sats:
-                    df2 = pd.DataFrame(DATA1)
-                    st.dataframe((df2))               
+                    
+                    st.dataframe(('OPA'))               
                 with statuses1:
-                    df6= pd.DataFrame(DATA2)
-                    st.dataframe(df6)
+                   
+                    st.dataframe('OPA')
                     
                     
 
@@ -232,17 +226,9 @@ if fLIDERES == 'IVSON PAULINO':
                                 if solicitanteF != "Selecione":
                                     if setorF != "Selecione":
                                         attt = st.button("INSERIR DADOS")
-                                        if attt:
-                                            ABR1 =(
-                                                   insert(ABERTURAF).
-                                                   values(SOLICITANTE=solicitanteF, SETOR=setorF,
-                                                           TIPO_DE_OCORRENCIA=statusF, NIVEL_DA_OCÔRRENCIA=niveldaocorrenciaF,
-                                                           DATA=data,MOMENTO=tempoiF) 
-                                                   ) 
-                                            with engine.connect() as conn:
-                                                  conn.execute(ABR1)
-                                        if attt:
-                                            st.session_state.OS += 1
+                                        
+                                            
+                                        
                                           
             with tab5:
                 statuses,sats,statuses1=st.columns([80,8,20])
