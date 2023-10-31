@@ -132,7 +132,7 @@ if fLIDERES == 'FELIPE LEITE':
                                             if att:
                                                st.balloons()
                                                st.session_state.OS += 1
-                                               st.rerun()
+                                               
                         
             with tab2:
                 st.header('Finalizar OS')
