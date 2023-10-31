@@ -250,13 +250,13 @@ import pyodbc
 def init_connection():
     return pyodbc.connect(
         "DRIVER={ODBC Driver 1 for SQL Server};SERVER="
-        + st.secrets["DESKTOP-62QBI08\WINCCPLUSMIG2014"]
+        + st.secrets['DESKTOP-62QBI08']
         + ";DATABASE="
-        + st.secrets["SMMI"]
+        + st.secrets['SMMI']
         + ";UID="
-        + st.secrets["SALES"]
+        + st.secrets['SALES']
         + ";PWD="
-        + st.secrets["47297913"]
+        + st.secrets['47297913']
     )
 
 conn = init_connection()
