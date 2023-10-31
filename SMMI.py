@@ -241,17 +241,25 @@ if fLIDERES == 'IVSON PAULINO':
                 with statuses1:
                     st.dataframe(tempoiF)
                     
-connection = st.connection( 
-url="mssql+pyodbc://DESKTOP-62QBI08\james:47297913@DESKTOP-62QBI08\WINCCPLUSMIG2014:51304/SMMI?", 
-username="SALES",
-password="47297913",
-host="DESKTOP-62QBI08\WINCCPLUSMIG2014",
-port=51304,
-database="SSMM",
+import streamlit as st
+import pyodbc
 
-)
+# Initialize connection.
+# Uses st.cache_resource to only run once.
+@st.cache_resource
+def init_connection():
+    return pyodbc.connect(
+        "DRIVER={ODBC Driver 1 for SQL Server};SERVER="
+        + st.secrets["DESKTOP-62QBI08\WINCCPLUSMIG2014"]
+        + ";DATABASE="
+        + st.secrets["SMMI"]
+        + ";UID="
+        + st.secrets["SALES"]
+        + ";PWD="
+        + st.secrets["47297913"]
+    )
 
-st.connection(  )
+conn = init_connection()
 
 
                                    
