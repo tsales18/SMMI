@@ -248,7 +248,7 @@ if fLIDERES == 'IVSON PAULINO':
 def init_connection():
     return pyodbc.connect(
         "DRIVER={ODBC Driver 17 for SQL Server};SERVER="
-        + st.secrets["DESKTOP-62QBI08\WINCCPLUSMIG2014"]
+        + st.secrets["DESKTOP-62QBI08"]
         + ";DATABASE="
         + st.secrets["SMMI"]
         + ";UID="
