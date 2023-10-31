@@ -165,8 +165,7 @@ if fLIDERES == 'FELIPE LEITE':
                     cursor.execute("SELECT * FROM ABERTURA")
                     resultado = cursor.fetchall() 
                     ln = pd.DataFrame(resultado)
-                    df_filtrado = ln[ln['OS'] == 1]
-
+                    st.table(ln)
                 with sats:
                     st.write('OPA')               
                 with statuses1:                
