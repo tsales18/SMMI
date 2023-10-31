@@ -238,8 +238,7 @@ if fLIDERES == 'IVSON PAULINO':
     
                 with statuses1:
                     st.dataframe(tempoiF)
-
-conn.close()                      
+                    
 
 
 
