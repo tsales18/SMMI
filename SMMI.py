@@ -82,8 +82,12 @@ cursor.execute('''
         
     )
 ''')
-st.button('delete')                                                           
-cursor.execute("DROP TABLE IF EXISTS SMMI")  
+
+cursor.execute("SELECT * FROM ABERTURA")
+resultado = cursor.fetchall()
+df = pd.DataFrame(resultado)
+df1 = df.shape
+
 if fLIDERES == 'FELIPE LEITE':
     if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
         if senha == '69':
