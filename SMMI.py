@@ -67,7 +67,7 @@ tab1_qtde_produto = df.loc[(
     (df['LIDERES'] == fLIDERES)
     
 ]
-
+st.button('create')
 conn = sqlite3.connect('SMMI')
 cursor = conn.cursor()
 cursor.execute('''
