@@ -164,7 +164,7 @@ if fLIDERES == 'FELIPE LEITE':
                     cursor.execute("SELECT * FROM ABERTURA")
                     resultado = cursor.fetchall()
                     for linha in resultado:
-                       ln = pd.DataFrame(linha)
+                       ln = pd.DataFrame(resultado)
                        st.dataframe(ln)
                 with sats:
                     st.write('OPA')               
