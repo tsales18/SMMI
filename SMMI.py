@@ -235,10 +235,9 @@ if fLIDERES == 'IVSON PAULINO':
     
                 with statuses1:
                     st.dataframe(tempoiF)
-                               
-                                    
-                                 
-                                    
+
+st.button('delete')                                                           
+cursor.execute("DROP TABLE IF EXISTS SMMI")
                        
 
 
