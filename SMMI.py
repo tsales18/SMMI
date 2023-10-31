@@ -242,7 +242,7 @@ if fLIDERES == 'IVSON PAULINO':
                     st.dataframe(tempoiF)
                     
 
-conn = st.experimental_connection('mssql+pyodbc', 'sql')
+conn = st.experimental_connection('mssql+pyodbc')
 
 
 
