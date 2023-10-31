@@ -1,6 +1,7 @@
 import pandas as pd
 import streamlit as st
 import altair as alt
+import pyodbc
 from PIL import Image
 import time as time
 import datetime as datetime
