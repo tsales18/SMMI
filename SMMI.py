@@ -165,7 +165,7 @@ if fLIDERES == 'FELIPE LEITE':
                     resultado = cursor.fetchall()
                     for linha in resultado:
                        st.dataframe(linha)
-                       ln = pd.DataFrame(linha)
+                       ln = pd.DataFrame(linha[0])
                        ln=ln.shape[0]
                        st.write(ln)
                 with sats:
