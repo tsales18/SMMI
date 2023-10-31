@@ -159,13 +159,14 @@ if fLIDERES == 'FELIPE LEITE':
                             
                   
             with tab3:
-                statuses,sats,statuses1=st.columns([55,8,20])
+                statuses,sats,statuses1=st.columns([90,8,20])
                 with statuses:   
                     atl = st.button('↻')
                     cursor.execute("SELECT * FROM ABERTURA")
                     resultado = cursor.fetchall() 
                     ln = pd.DataFrame(resultado)
-                    st.dataframe(ln)
+                    df_filtrado = ln[ln['OS'] == 1]
+
                 with sats:
                     st.write('OPA')               
                 with statuses1:                
