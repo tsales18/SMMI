@@ -67,7 +67,7 @@ tab1_qtde_produto = df.loc[(
     (df['LIDERES'] == fLIDERES)
     
 ]
-st.button('create')
+
 conn = sqlite3.connect('SMMI')
 cursor = conn.cursor()
 cursor.execute('''
@@ -87,6 +87,7 @@ cursor.execute("SELECT * FROM ABERTURA")
 resultado = cursor.fetchall()
 df = pd.DataFrame(resultado)
 df1 = df.shape
+
 
 if fLIDERES == 'FELIPE LEITE':
     if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
@@ -136,6 +137,7 @@ if fLIDERES == 'FELIPE LEITE':
                                                st.session_state.OS += 1
                                                cursor.execute("INSERT INTO ABERTURA (OS,SOLCITANTE,SETOR,TIPO_DE_OCORRENCIA,NIVEL_DA_OCORRENCIA) VALUES (?, ?, ?, ?, ?)", (st.session_state.OS, str(solicitante), str(setor), str(status),str(niveldaocorrencia)))
                                                conn.commit()
+                                               conn.close()
                                             
                                                
                         
@@ -237,8 +239,7 @@ if fLIDERES == 'IVSON PAULINO':
                 with statuses1:
                     st.dataframe(tempoiF)
 
-
-                       
+conn.close()                      
 
 
 
