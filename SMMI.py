@@ -163,9 +163,9 @@ if fLIDERES == 'FELIPE LEITE':
                 with statuses:   
                     atl = st.button('↻')
                     cursor.execute("SELECT * FROM ABERTURA")
-                    resultado = cursor.fetchall()
-                    
-                    ln = st.dataframe(resultado)
+                    resultado = cursor.fetchall() 
+                    ln = pd.DataFrame(resultado)
+                    st.dataframe(ln)
                 with sats:
                     st.write('OPA')               
                 with statuses1:                
