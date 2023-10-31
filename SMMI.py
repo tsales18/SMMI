@@ -167,7 +167,7 @@ if fLIDERES == 'FELIPE LEITE':
                        st.dataframe(linha)
                        ln = pd.DataFrame(linha)
                        ln=ln.shape[0]
-                       st.dataframe(ln)
+                       st.write(ln)
                 with sats:
                     st.write('OPA')               
                 with statuses1:                
