@@ -166,7 +166,6 @@ if fLIDERES == 'FELIPE LEITE':
                     resultado = cursor.fetchall()
                     for linha in resultado:
                        ln = st.dataframe(resultado)
-                       ln.head
                        st.table(ln)
                 with sats:
                     st.write('OPA')               
