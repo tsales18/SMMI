@@ -240,9 +240,6 @@ if fLIDERES == 'IVSON PAULINO':
     
                 with statuses1:
                     st.dataframe(tempoiF)
-                    
-import streamlit as st
-import pyodbc
 
 # Initialize connection.
 # Uses st.cache_resource to only run once.
