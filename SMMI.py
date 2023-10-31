@@ -241,11 +241,8 @@ if fLIDERES == 'IVSON PAULINO':
                 with statuses1:
                     st.dataframe(tempoiF)
                     
-
 connection = st.connection(
-url="mssql+pyodbc://DESKTOP-62QBI08\james:47297913@DESKTOP-62QBI08\WINCCPLUSMIG2014:51304/SMMI?"
-    "driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
-    "&authentication=ActiveDirectoryIntegrated",
+url="mssql+pyodbc://DESKTOP-62QBI08\james:47297913@DESKTOP-62QBI08\WINCCPLUSMIG2014:51304/SMMI?",
 username="SALES",
 password="47297913",
 host="DESKTOP-62QBI08\WINCCPLUSMIG2014",
