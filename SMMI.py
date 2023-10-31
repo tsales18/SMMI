@@ -165,17 +165,15 @@ if fLIDERES == 'FELIPE LEITE':
                     cursor.execute("SELECT * FROM ABERTURA")
                     resultado = cursor.fetchall()
                     for linha in resultado:
-                       ln = pd.DataFrame(resultado)
-                       st.dataframe(ln)
+                       ln = st.dataframe(resultado)
+                       ln1 = ln.head()
+                       st.dataframe(ln1)
                 with sats:
                     st.write('OPA')               
                 with statuses1:                
                     st.write('OPA')
-                    
-                    
-
-
-                                                                          
+                                      
+                                                                    
 if senha != '69':
     video_file = open('./Midia/SSMMOV.mp4', 'rb')
     video_bytes = video_file.read() 
