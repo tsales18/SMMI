@@ -82,7 +82,8 @@ cursor.execute('''
         
     )
 ''')
-      
+st.button('delete')                                                           
+cursor.execute("DROP TABLE IF EXISTS SMMI")  
 if fLIDERES == 'FELIPE LEITE':
     if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
         if senha == '69':
