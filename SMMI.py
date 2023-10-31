@@ -248,6 +248,9 @@ url="mssql+pyodbc://DESKTOP-62QBI08\james:47297913@DESKTOP-62QBI08\WINCCPLUSMIG2
     "&authentication=ActiveDirectoryIntegrated",
 username="SALES",
 password="47297913",
+host="DESKTOP-62QBI08\WINCCPLUSMIG2014",
+port=51304,
+database="SSMM",
 
 )
 
