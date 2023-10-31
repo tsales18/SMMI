@@ -165,6 +165,9 @@ if fLIDERES == 'FELIPE LEITE':
                     resultado = cursor.fetchall()
                     for linha in resultado:
                        st.dataframe(linha)
+                       ln = pd.DataFrame(linha)
+                       ln=ln.shape[0]
+                       st.dataframe(ln)
                 with sats:
                     st.write('OPA')               
                 with statuses1:                
