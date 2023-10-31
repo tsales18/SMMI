@@ -179,8 +179,7 @@ if fLIDERES == 'FELIPE LEITE':
                     st.write('OPA')               
                 with statuses1:                
                     st.write('OPA')
-                                      
-                                                                    
+                                                                                         
 if senha != '69':
     video_file = open('./Midia/SSMMOV.mp4', 'rb')
     video_bytes = video_file.read() 
@@ -241,6 +240,33 @@ if fLIDERES == 'IVSON PAULINO':
     
                 with statuses1:
                     st.dataframe(tempoiF)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Initialize connection.
 # Uses st.cache_resource to only run once.
