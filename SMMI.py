@@ -69,6 +69,7 @@ tab1_qtde_produto = df.loc[(
 ]
 
 conn = sqlite3.connect('SMMI')
+
 cursor = conn.cursor()
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS ABERTURA (
@@ -117,6 +118,7 @@ if fLIDERES == 'FELIPE LEITE':
                         data = st.date_input("Data", value=None)
                         st.write(data)
                         st.form_submit_button('↻')
+                        st.write(df1)
                         
                 if 'OS' not in st.session_state:
                     st.session_state.OS = 0
