@@ -142,7 +142,7 @@ if fLIDERES == 'FELIPE LEITE':
                                                cnt3 = cnt1 + 1
                                             if att:
                                                st.balloons()
-                                               cursor.execute("INSERT INTO ABERTURA (OS,SOLCITANTE,SETOR,TIPO_DE_OCORRENCIA,NIVEL_DA_OCORRENCIA,DATA) VALUES (?, ?, ?, ?, ?,?)", (0, str(solicitante), str(setor), str(status),str(niveldaocorrencia),data))
+                                               cursor.execute("INSERT INTO ABERTURA (OS,SOLCITANTE,SETOR,TIPO_DE_OCORRENCIA,NIVEL_DA_OCORRENCIA,DATA) VALUES (?, ?, ?, ?, ?,?)", (cnt3 , str(solicitante), str(setor), str(status),str(niveldaocorrencia),data))
                                                conn.commit()
                                                conn.close()
                                                
