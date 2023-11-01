@@ -92,7 +92,7 @@ cnt1 = cnt.shape[0]
 st.write(cnt1)
 cnt2 = cnt.loc[3]
 st.metric(label="OS Existentes", value=cnt1)
-                   ln = pd.read_sql_query("SELECT * FROM ABERTURA", conn)
+ln = pd.read_sql_query("SELECT * FROM ABERTURA", conn)
 
 if fLIDERES == 'FELIPE LEITE':
     if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
