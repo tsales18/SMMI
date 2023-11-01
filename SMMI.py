@@ -72,7 +72,6 @@ tab1_qtde_produto = df.loc[(
 ]
 
 conn = sqlite3.connect('SMMI')
-
 cursor = conn.cursor()
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS ABERTURA (
@@ -91,6 +90,12 @@ cnt = pd.read_sql_query("SELECT * FROM ABERTURA", conn)
 cnt1 = cnt.shape[0]
 cnt2 = cnt.loc[3]
 ln = pd.read_sql_query("SELECT * FROM ABERTURA", conn)
+
+if 'OS' not in st.session_state:
+    st.session_state.OS = 0
+        
+if 'FIN' not in st.session_state:
+    st.session_state.FIN = 0
 
 if fLIDERES == 'FELIPE LEITE':
     if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
@@ -120,13 +125,7 @@ if fLIDERES == 'FELIPE LEITE':
                         data = st.date_input("Data", value=None)
                         st.write(data)
                         st.form_submit_button('↻')
-                        
-                        
-                if 'OS' not in st.session_state:
-                    st.session_state.OS = 0
                     
-                if 'FIN' not in st.session_state:
-                    st.session_state.FIN = 0
                         
                 if fLIDERES == 'FELIPE LEITE':
                     if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
@@ -138,7 +137,6 @@ if fLIDERES == 'FELIPE LEITE':
                                             att = st.button("INSERIR DADOS")
                                             if att:
                                                st.session_state.OS += 1
-
                                             if att:
                                                st.balloons()
                                                cursor.execute("INSERT INTO ABERTURA (OS,SOLCITANTE,SETOR,TIPO_DE_OCORRENCIA,NIVEL_DA_OCORRENCIA,DATA) VALUES (?, ?, ?, ?, ?,?)", (st.session_state.OS, str(solicitante), str(setor), str(status),str(niveldaocorrencia),data))
