@@ -88,7 +88,7 @@ cursor.execute('''
 ''')
 
 cnt = pd.read_sql_query("SELECT * FROM ABERTURA", conn)
-cnt1 = cnt.shape
+cnt1 = cnt.shape[0]
 st.write(cnt1)
 
 
