@@ -173,9 +173,9 @@ if fLIDERES == 'FELIPE LEITE':
                 statuses,sats,statuses1=st.columns([90,8,20])
                 with statuses:   
                    Nnm = st.number_input("Selecione o numero da OS",value=0, placeholder="Selecione")
-                   st.caption(cnt1)
+                   st.caption(cnt1-1)
                    ln = pd.read_sql_query("SELECT * FROM ABERTURA", conn)
-                   ln1 = ln.loc[Nnm-1]
+                   ln1 = ln.loc[Nnm]
                    st.dataframe(ln1)
                    conn.close()
         
