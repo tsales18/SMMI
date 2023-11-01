@@ -86,11 +86,13 @@ cursor.execute('''
         
     )
 ''')
-
+#leitura do banco smmi
 cnt = pd.read_sql_query("SELECT * FROM ABERTURA", conn)
 cnt1 = cnt.shape[0]
 st.write(cnt1)
 cnt2 = cnt.loc[3]
+st.metric(label="OS Existentes", value=cnt1)
+                   ln = pd.read_sql_query("SELECT * FROM ABERTURA", conn)
 
 if fLIDERES == 'FELIPE LEITE':
     if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
@@ -174,8 +176,6 @@ if fLIDERES == 'FELIPE LEITE':
                 with statuses:   
                    Nnm = st.number_input("Selecione o numero da OS",value=0, placeholder="Selecione")
                    import streamlit as st
-                   st.metric(label="OS Existentes", value=cnt1)
-                   ln = pd.read_sql_query("SELECT * FROM ABERTURA", conn)
                    ln1 = ln.loc[Nnm]
                    st.dataframe(ln1)
                    conn.close()
