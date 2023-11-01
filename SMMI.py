@@ -126,13 +126,13 @@ if fLIDERES == 'FELIPE LEITE':
                             Ustatus = st.selectbox('Atualize o Tipo de Ocorrência', ('ELETRICA PREDIAL MANUTENÇÃO EM PAINES TROCA DE COMPONENTES',),index=None,placeholder='Selecione')
                         st.markdown("---")
 
-                        setor = st.selectbox('Setor', ('TECNOLOGIA DA INFORMAÇÃO'),index=None,placeholder='Selecione')
+                        setor = st.selectbox('Setor', ('TECNOLOGIA DA INFORMAÇÃO','ELETRICA'),index=None,placeholder='Selecione')
                         if atd:
                             Usetor = st.selectbox('Aualize o Setor', ('TECNOLOGIA DA INFORMAÇÃO','ELETRICA'),index=None,placeholder='Selecione')
 
                         niveldaocorrencia = st.selectbox('Nivel da ocorrência', ('EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE','URGÊNTE'),index=None,placeholder='Selecione')
                         if atd:
-                            Univeldaocorrencia = st.selectbox('Atualize o Nivel da ocorrência', ('EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE', 'URGÊNTE',''),index=None,placeholder='Selecione')
+                            Univeldaocorrencia = st.selectbox('Atualize o Nivel da ocorrência',('EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE','URGÊNTE'),index=None, placeholder='Selecione')
                         st.markdown("---")
                         relatorio = st.text_input('Relatorio')
                         if atd:
