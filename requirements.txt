@@ -1,4 +1,4 @@
-mysqlclient==2.0.3
+--upgrade pip
 pandas 
 streamlit>=1.28
 altair
