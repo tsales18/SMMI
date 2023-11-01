@@ -90,6 +90,7 @@ cursor.execute('''
 cnt = pd.read_sql_query("SELECT * FROM ABERTURA", conn)
 cnt1 = cnt.shape[0]
 st.write(cnt1)
+cnt2 = cnt.ilco[1]
 
 if fLIDERES == 'FELIPE LEITE':
     if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
@@ -171,7 +172,7 @@ if fLIDERES == 'FELIPE LEITE':
                 statuses,sats,statuses1=st.columns([90,8,20])
                 with statuses:   
                    ln = pd.read_sql_query("SELECT * FROM ABERTURA", conn)
-                   st.dataframe(ln(0))
+                   st.dataframe(ln)
 
                    conn.close()
 
