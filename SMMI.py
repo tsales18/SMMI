@@ -246,4 +246,6 @@ if fLIDERES == 'IVSON PAULINO':
 
 cl = st.button("close")
 if cl:
-  conn.close()
+cursor.execute("DROP TABLE ABERTURA")
+conn.commit()
+conn.close()
