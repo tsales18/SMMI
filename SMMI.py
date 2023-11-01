@@ -171,7 +171,7 @@ if fLIDERES == 'FELIPE LEITE':
                 statuses,sats,statuses1=st.columns([90,8,20])
                 with statuses:   
                    ln = pd.read_sql_query("SELECT * FROM ABERTURA", conn)
-                   st.dataframe(ln[0])
+                   st.dataframe(ln(0))
 
                    conn.close()
 
