@@ -83,6 +83,7 @@ cursor.execute('''
                    
     )
 ''')  
+
 #leitura do banco smmi
 cnt = pd.read_sql_query("SELECT * FROM ABERTURA", conn)
 cnt1 = cnt.shape[0]
