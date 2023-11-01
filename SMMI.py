@@ -144,6 +144,7 @@ if fLIDERES == 'FELIPE LEITE':
                                                st.session_state.OS += 1
                                                cursor.execute("INSERT INTO ABERTURA (OS,SOLCITANTE,SETOR,TIPO_DE_OCORRENCIA,NIVEL_DA_OCORRENCIA) VALUES (?, ?, ?, ?, ?)", (st.session_state.OS, str(solicitante), str(setor), str(status),str(niveldaocorrencia)))
                                                conn.commit()
+                                               conn.close()
                                                st.rerun
                                             
             with tab2:
