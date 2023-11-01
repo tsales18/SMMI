@@ -6,3 +6,4 @@ sqlalchemy
 requests
 pyodbc
 openpyxl
+MySQLdb

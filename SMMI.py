@@ -14,6 +14,8 @@ from sqlalchemy import Sequence
 import webbrowser
 import requests
 import sqlite3
+import MySQLdb
+
 
 
 # CONFIGURAÇÃO DA PÁGINA
