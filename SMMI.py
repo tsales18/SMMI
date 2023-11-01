@@ -180,7 +180,7 @@ if fLIDERES == 'FELIPE LEITE':
                    conn.close()
                    st.dataframe(ln1) 
                 with sats:
-                    st.write('OPA') 
+                    st.write('OPA')
                                   
                 with statuses1:                
                     st.write('OPA')
