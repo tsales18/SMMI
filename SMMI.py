@@ -173,7 +173,7 @@ if fLIDERES == 'FELIPE LEITE':
                             st.write(tempoi)
                         if atd:
                             Udata = st.date_input("Atualize a Data", value=None)
-                        st.form_submit_button('↻')
+                    st.form_submit_button('↻')
             
                 if fLIDERES == 'FELIPE LEITE':
                     if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
