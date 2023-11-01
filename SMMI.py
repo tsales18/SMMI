@@ -88,8 +88,8 @@ cursor.execute('''
 ''')
 
 cnt = pd.read_sql_query("SELECT * FROM ABERTURA", conn)
-cnt = cnt.shape
-st.write(cnt)
+cnt1 = cnt.shape
+st.write(cnt1)
 
 
 if fLIDERES == 'FELIPE LEITE':
