@@ -248,4 +248,4 @@ cl = st.button("close")
 if cl:
    cursor.execute("DROP TABLE ABERTURA")
    conn.commit()
-   conn.close()
+   
