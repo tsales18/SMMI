@@ -120,7 +120,7 @@ if fLIDERES == 'FELIPE LEITE':
                         data = st.date_input("Data", value=None)
                         st.write(data)
                         st.form_submit_button('↻')
-                        st.write(df1)
+                        
                         
                 if 'OS' not in st.session_state:
                     st.session_state.OS = 0
