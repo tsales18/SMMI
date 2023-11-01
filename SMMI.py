@@ -137,6 +137,9 @@ if fLIDERES == 'FELIPE LEITE':
                                             st.caption('É necessario finalizar esta OS antes de inciar outra.')
                                             att = st.button("INSERIR DADOS")
                                             if att:
+                                                 st.session_state.OS += 1
+
+                                            if att:
                                                st.balloons()
                                                st.session_state.OS += 1
                                                cursor.execute("INSERT INTO ABERTURA (OS,SOLCITANTE,SETOR,TIPO_DE_OCORRENCIA,NIVEL_DA_OCORRENCIA) VALUES (?, ?, ?, ?, ?)", (st.session_state.OS, str(solicitante), str(setor), str(status),str(niveldaocorrencia)))
