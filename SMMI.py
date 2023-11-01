@@ -246,7 +246,7 @@ if fLIDERES == 'IVSON PAULINO':
 conn = st.connection('mysql', type='sql')
 
 
-df = conn.query('SELECT * from mytable;', ttl=600)
+df = conn.query('SELECT * from SMMI;', ttl=600)
 
 # Print results.
 for row in df.itertuples():
