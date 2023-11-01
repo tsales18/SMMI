@@ -123,7 +123,7 @@ if fLIDERES == 'FELIPE LEITE':
 
                         status = st.selectbox('Tipo de Ocorrência', ('ELETRICA PREDIAL MANUTENÇÃO EM PAINES TROCA DE COMPONENTES'),index=None,placeholder='Selecione')
                         if atd:
-                            Ustatus = st.selectbox('Atualize o Tipo de Ocorrência', ('ELETRICA PREDIAL MANUTENÇÃO EM PAINES TROCA DE COMPONENTES'),index=None,placeholder='Selecione')
+                            Ustatus = st.selectbox('Atualize o Tipo de Ocorrência', ('ELETRICA PREDIAL MANUTENÇÃO EM PAINES TROCA DE COMPONENTES',),index=None,placeholder='Selecione')
                         st.markdown("---")
 
                         setor = st.selectbox('Setor', ('TECNOLOGIA DA INFORMAÇÃO'),index=None,placeholder='Selecione')
