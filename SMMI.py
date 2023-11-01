@@ -128,11 +128,11 @@ if fLIDERES == 'FELIPE LEITE':
 
                         setor = st.selectbox('Setor', ('Selecione','TECNOLOGIA DA INFORMAÇÃO',), index=0)
                         if atd:
-                            Usetor = st.selectbox('Setor', ('Selecione','TECNOLOGIA DA INFORMAÇÃO',), index=0)
+                            Usetor = st.selectbox('Setor', ('Selecione','TECNOLOGIA DA INFORMAÇÃO','ELETRICA'), index=0)
 
                         niveldaocorrencia = st.selectbox('Nivel da ocorrência', ('Selecione','EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE', 'URGÊNTE'), index=0)
                         if atd:
-                            Univeldaocorrencia = st.selectbox('Nivel da ocorrência', ('Selecione','EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE', 'URGÊNTE'), index=0)
+                            Univeldaocorrencia = st.selectbox('Nivel da ocorrência', ('Selecione','EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE', 'URGÊNTE',''), index=0)
                         st.markdown("---")
                         relatorio = st.text_input('Relatorio')
                         if atd:
