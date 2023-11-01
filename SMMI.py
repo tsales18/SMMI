@@ -67,8 +67,8 @@ with st.sidebar:
     
 tab1_qtde_produto = df.loc[(
     df['SETOR'] == fSETOR) &
-    (df['LIDERES'] == fLIDERES)
-    
+    (df['LIDERES'] == fLIDERES)]
+
 crt = st.button('cerate')
 if crt:
     conn = sqlite3.connect('SMMI')
