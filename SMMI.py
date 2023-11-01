@@ -175,7 +175,6 @@ if fLIDERES == 'FELIPE LEITE':
                 with statuses:   
                    Nnm = st.number_input("Selecione o numero da OS",value=0, placeholder="Selecione")
                    st.metric(label="OS Existentes", value=cnt1)
-                   import streamlit as st
                    ln1 = ln.loc[Nnm]
                    st.dataframe(ln1)
                    conn.close()
