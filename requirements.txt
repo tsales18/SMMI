@@ -5,5 +5,4 @@ Image
 sqlalchemy
 requests
 pyodbc
-openpyxl
-MySQLdb
+mysqlclient>=2.2.0
