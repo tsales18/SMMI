@@ -5,3 +5,4 @@ Image
 sqlalchemy
 requests
 pyodbc
+mysqlclient==2.0.3
