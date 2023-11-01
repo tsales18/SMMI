@@ -175,7 +175,7 @@ if fLIDERES == 'FELIPE LEITE':
                 with statuses:   
                    Nmr = st.number_input("Selecione o numero da OS",value=0, placeholder="Selecione")
                    st.metric(label="OS Existentes", value= cnt1)
-                      Nmr1 = Nmr - 1
+                      Nmr1 = Nmr-1
                       ln1 = ln.loc[Nmr1]
                       st.dataframe(ln1)
                       conn.close()
