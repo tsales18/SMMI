@@ -118,7 +118,7 @@ if fLIDERES == 'FELIPE LEITE':
                         st.markdown("---")
                         atd = st.toggle('Atualizar os dados')
                         solicitante = st.selectbox('Solicitante', ('Selecione','FILIPE',),index=0)
-                        solicitante1 = st.selectbox('Solicitante', ('Selecione','FILIPE',))
+                        solicitante1 = st.selectbox('Solicitante', ('Selecione','FILIPE','jameson'))
                         status = st.selectbox('Tipo de Ocorrência', ('Selecione','ELETRICA PREDIAL MANUTENÇÃO EM PAINES TROCA DE COMPONENTES'),index=0,)  
                         st.markdown("---")
                         setor = st.selectbox('Setor', ('Selecione','TECNOLOGIA DA INFORMAÇÃO',), index=0)
