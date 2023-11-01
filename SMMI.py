@@ -88,7 +88,7 @@ if crt:
 #leitura do banco smmi
 cnt = pd.read_sql_query("SELECT * FROM ABERTURA", conn)
 cnt1 = cnt.shape[0]
-cnt2 = cnt.loc[3]
+cnt2 = cnt.loc[0]
 ln = pd.read_sql_query("SELECT * FROM ABERTURA", conn)
 
 cl = st.button("close")
