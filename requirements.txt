@@ -1,5 +1,5 @@
 pandas 
-streamlit 
+streamlit>=1.28
 altair
 Image 
 sqlalchemy

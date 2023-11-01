@@ -15,7 +15,7 @@ from sqlalchemy import Sequence
 import webbrowser
 import requests
 import sqlite3
-from streamlit_gsheets import GSheetsConnection
+import GSheetsConnection
 
 
 # CONFIGURAÇÃO DA PÁGINA
