@@ -156,6 +156,7 @@ if fLIDERES == 'FELIPE LEITE':
                             st.markdown("---")
                         if atd:
                             Udata = st.date_input("Atualize a Data", value=None)
+                            st.markdown("---")
                         st.form_submit_button('bah')
                 if fLIDERES == 'FELIPE LEITE':
                     if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
