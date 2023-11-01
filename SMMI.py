@@ -246,10 +246,8 @@ if fLIDERES == 'IVSON PAULINO':
 
 conn = st.connection('mysql', type='sql')
 
-
 df = conn.query('SELECT * from SMMI;', ttl=600)
 
-# Print results.
 for row in df.itertuples():
     st.write(f"{row.name} has a :{row.pet}:")
 
@@ -266,31 +264,3 @@ for row in df.itertuples():
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-# Initialize connection.
-# Uses st.cache_resource to only run once.
-@st.cache_resource
-def init_connection():
-    return pyodbc.connect(
-        "DRIVER={ODBC Driver 17 for SQL Server};SERVER="
-        + st.secrets["DESKTOP-62QBI08"]
-        + ";DATABASE="
-        + st.secrets["SMMI"]
-        + ";UID="
-        + st.secrets["SALES"]
-        + ";PWD="
-        + st.secrets["47297913"]
-    )
-
-conn = init_connection()
