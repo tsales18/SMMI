@@ -118,25 +118,19 @@ if fLIDERES == 'FELIPE LEITE':
                         st.markdown("---")
                         atd = st.toggle('Atualizar os dados')
                         solicitante = st.selectbox('Solicitante', ('FILIPE','JAMESON','MAURILIO SALES','BRUNO KAPPAUN','EDUARDO BICUDO','ADRIELY LEMOS','GILSON FREITAS','ALEX SANTOS','CESAR AUGUSTO'),index=None,placeholder='Selecione')
-                        
-
+                        st.markdown("---")
                         status = st.selectbox('Tipo de Ocorrência', ('ELETRICA PREDIAL MANUTENÇÃO EM PAINES TROCA DE COMPONENTES',),index=None, placeholder='Selecione')
-                        
-
+                        st.markdown("---")
                         setor = st.selectbox('Setor', ('TECNOLOGIA DA INFORMAÇÃO','ELETRICA'),index=None,placeholder='Selecione')
-                       
-
+                        st.markdown("---")
                         niveldaocorrencia = st.selectbox('Nivel da ocorrência', ('EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE','URGÊNTE'),index=None,placeholder='Selecione')
-                        
-
+                        st.markdown("---")
                         relatorio = st.text_input('Relatorio')
-                       
-
+                        st.markdown("---")
                         tempoi = st.time_input('Horario', value=None)
-                     
-
+                        st.markdown("---")                    
                         data = st.date_input("Data", value=None)
-                       
+                        st.markdown("---")
                         st.form_submit_button('↻')
                 with neymar:
                     with st.form('my form3'):
