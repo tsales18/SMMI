@@ -177,7 +177,7 @@ if fLIDERES == 'FELIPE LEITE':
 
                    conn.close()
 
-                   st.write(cnt2) 
+                   st.dataframe(cnt2) 
                 with sats:
                     st.write('OPA') 
                                   
