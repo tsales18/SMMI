@@ -87,10 +87,9 @@ cursor.execute('''
     )
 ''')
 
-cursor.execute("SELECT * FROM ABERTURA")
-resultado = cursor.fetchall()
-df = pd.DataFrame(resultado)
-df1 = df.shape
+cnt = pd.read_sql_query("SELECT * FROM ABERTURA", conn)
+cnt = cnt.shape
+st.write(cnt)
 
 
 if fLIDERES == 'FELIPE LEITE':
