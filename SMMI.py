@@ -173,7 +173,7 @@ if fLIDERES == 'FELIPE LEITE':
                 statuses,sats,statuses1=st.columns([90,8,20])
                 with statuses:   
                    ln = pd.read_sql_query('SELECT * FROM sua_tabela', conn)
-                   st.dataframe(license)
+                   st.dataframe(ln)
 
                    conn.close()
 
