@@ -172,7 +172,7 @@ if fLIDERES == 'FELIPE LEITE':
             with tab3:
                 statuses,sats,statuses1=st.columns([90,8,20])
                 with statuses:   
-                   ln = pd.read_sql_query('SELECT * FROM sua_tabela', conn)
+                   ln = pd.read_sql_query('SELECT * FROM ABERTURA', conn)
                    st.dataframe(ln)
 
                    conn.close()
