@@ -90,7 +90,7 @@ cursor.execute('''
 cnt = pd.read_sql_query("SELECT * FROM ABERTURA", conn)
 cnt1 = cnt.shape[0]
 st.write(cnt1)
-cnt2 = cnt.ilco[1]
+cnt2 = cnt.iloc[1]
 
 if fLIDERES == 'FELIPE LEITE':
     if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
