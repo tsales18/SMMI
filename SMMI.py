@@ -112,52 +112,47 @@ if fLIDERES == 'FELIPE LEITE':
             tab1, tab2, tab3= st.tabs(["Cadastro", "Finalizar","OS Abertas"])
             with tab1:
                 st.header("Cadastro de ocorrência")
-                colibrim,neymar,lula,sales,poura= st.columns([1,1,0.1,0.1,0.1])  
+                colibrim,neymar,lula,sales,poura= st.columns([0.5,0.1,0.1,0.1,0.1])  
                 with colibrim:
                     with st.form('my form2'):
                         st.markdown("---")
                         atd = st.toggle('Atualizar os dados')
                         solicitante = st.selectbox('Solicitante', ('FILIPE','JAMESON','MAURILIO SALES','BRUNO KAPPAUN','EDUARDO BICUDO','ADRIELY LEMOS','GILSON FREITAS','ALEX SANTOS','CESAR AUGUSTO'),index=None,placeholder='Selecione')
-                        st.markdown("---")
-                        status = st.selectbox('Tipo de Ocorrência', ('ELETRICA PREDIAL MANUTENÇÃO EM PAINES TROCA DE COMPONENTES',),index=None, placeholder='Selecione')
-                        st.markdown("---")
-                        setor = st.selectbox('Setor', ('TECNOLOGIA DA INFORMAÇÃO','ELETRICA'),index=None,placeholder='Selecione')
-                        st.markdown("---")
-                        niveldaocorrencia = st.selectbox('Nivel da ocorrência', ('EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE','URGÊNTE'),index=None,placeholder='Selecione')
-                        st.markdown("---")
-                        relatorio = st.text_input('Relatorio')
-                        st.markdown("---")
-                        tempoi = st.time_input('Horario', value=None)
-                        st.markdown("---")                    
-                        data = st.date_input("Data", value=None)
-                        st.markdown("---")
-                        st.form_submit_button('↻')
-                with neymar:
-                    with st.form('my form3'):
-                        st.markdown("---")
-                        atd = st.toggle('Inserir os dados')
                         if atd:
                             Usolicitante = st.selectbox('Atualize o Solicitante', ('FILIPE','JAMESON','MAURILIO SALES','BRUNO KAPPAUN','EDUARDO BICUDO','ADRIELY LEMOS','GILSON FREITAS','ALEX SANTOS','CESAR AUGUSTO'),index=None,placeholder='Selecione')
                             st.markdown("---")
+
+                        status = st.selectbox('Tipo de Ocorrência', ('ELETRICA PREDIAL MANUTENÇÃO EM PAINES TROCA DE COMPONENTES',),index=None, placeholder='Selecione')
                         if atd:
                             Ustatus = st.selectbox('Atualize o Tipo de Ocorrência', ('ELETRICA PREDIAL MANUTENÇÃO EM PAINES TROCA DE COMPONENTES'),index=None, placeholder='Selecione')
                             st.markdown("---")
+
+                        setor = st.selectbox('Setor', ('TECNOLOGIA DA INFORMAÇÃO','ELETRICA'),index=None,placeholder='Selecione')
                         if atd:
                             Usetor = st.selectbox('Aualize o Setor', ('TECNOLOGIA DA INFORMAÇÃO','ELETRICA'),index=None,placeholder='Selecione')
                             st.markdown("---")
+
+                        niveldaocorrencia = st.selectbox('Nivel da ocorrência', ('EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE','URGÊNTE'),index=None,placeholder='Selecione')
                         if atd:
                             Univeldaocorrencia = st.selectbox('Atualize o Nivel da ocorrência',('EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE','URGÊNTE'),index=None, placeholder='Selecione')
                             st.markdown("---")
+
+                        relatorio = st.text_input('Relatorio')
                         if atd:
                             Urelatorio = st.text_input('Atualize o Relatorio')
                             st.markdown("---")
+
+                        tempoi = st.time_input('Horario', value=None)
                         if atd:
                             Utempoi = st.time_input('Atualize o Horario', value=None)
-                            st.markdown("---")
+                            st.write(tempoi)
+
+                        data = st.date_input("Data", value=None)
                         if atd:
-                            Udata = st.date_input("Atualize a Data", value=None)
-                            st.markdown("---")
-                        st.form_submit_button('bah')
+                           Udata = st.date_input("Atualize a Data", value=None)
+                        st.form_submit_button('↻')
+                    
+                        
                 if fLIDERES == 'FELIPE LEITE':
                     if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
                         if senha == '69':
