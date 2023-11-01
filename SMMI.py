@@ -172,12 +172,13 @@ if fLIDERES == 'FELIPE LEITE':
             with tab3:
                 statuses,sats,statuses1=st.columns([90,8,20])
                 with statuses:   
+                   Nnm = st.number_input("Selecione o numero da OS",placeholder="Selecione")
                    ln = pd.read_sql_query("SELECT * FROM ABERTURA", conn)
+                   ln1 = ln.loc[Nnm]
                    st.dataframe(ln)
 
                    conn.close()
-
-                   st.dataframe(cnt2) 
+                   st.dataframe(ln1) 
                 with sats:
                     st.write('OPA') 
                                   
