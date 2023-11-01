@@ -91,7 +91,6 @@ cnt = pd.read_sql_query("SELECT * FROM ABERTURA", conn)
 cnt1 = cnt.shape[0]
 st.write(cnt1)
 
-
 if fLIDERES == 'FELIPE LEITE':
     if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
         if senha == '69':
@@ -172,7 +171,7 @@ if fLIDERES == 'FELIPE LEITE':
                 statuses,sats,statuses1=st.columns([90,8,20])
                 with statuses:   
                    ln = pd.read_sql_query("SELECT * FROM ABERTURA", conn)
-                   st.dataframe(ln)
+                   st.dataframe(ln[0])
 
                    conn.close()
 
