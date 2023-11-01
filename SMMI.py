@@ -17,7 +17,6 @@ import sqlite3
 import MySQLdb
 
 
-
 # CONFIGURAÇÃO DA PÁGINA
 st.set_page_config(
     page_title=('MANUTENÇÃO SSM SOLAR DO BRASIL'),
