@@ -175,7 +175,7 @@ if fLIDERES == 'FELIPE LEITE':
                    Nnm = st.number_input("Selecione o numero da OS",value=0, placeholder="Selecione")
                    st.caption(cnt1)
                    ln = pd.read_sql_query("SELECT * FROM ABERTURA", conn)
-                   ln1 = ln.loc[Nnm]
+                   ln1 = ln.loc[Nnm-1]
                    st.dataframe(ln1)
                    conn.close()
         
