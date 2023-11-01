@@ -117,7 +117,7 @@ if fLIDERES == 'FELIPE LEITE':
                     with st.form('my form2'):
                         st.markdown("---")
                         atd = st.toggle('Atualizar os dados')
-                        solicitante = st.selectbox('Solicitante', ('FILIPE',),index=None,placeholder='Selecione')
+                        solicitante = st.selectbox('Solicitante', ('FILIPE'),index=None,placeholder='Selecione')
                         if atd:
                             Usolicitante = st.selectbox('Atualize o Solicitante', ('Selecione','FILIPE','JAMESON'))
 
