@@ -172,7 +172,7 @@ if fLIDERES == 'FELIPE LEITE':
                             Utempoi = st.time_input('Atualize o Horario', value=None)
                             st.write(tempoi)
                         if atd:
-                           Udata = st.date_input("Atualize a Data", value=None)
+                            Udata = st.date_input("Atualize a Data", value=None)
                         st.form_submit_button('↻')
             
                 if fLIDERES == 'FELIPE LEITE':
