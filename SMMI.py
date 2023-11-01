@@ -242,8 +242,12 @@ if fLIDERES == 'IVSON PAULINO':
                 with statuses1:
                     st.dataframe(tempoiF)
 
-conn = st.connection("gsheets", type= GSheetsConnection)
-df = conn.read()
+
+conn = st.connection('mysql', type='sql')
+
+
+df = conn.query('SELECT * from mytable;', ttl=600)
+
 # Print results.
 for row in df.itertuples():
     st.write(f"{row.name} has a :{row.pet}:")
