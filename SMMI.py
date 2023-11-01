@@ -143,8 +143,6 @@ if fLIDERES == 'FELIPE LEITE':
                                                conn.commit()
                                                st.rerun
                                             
-                                               
-                        
             with tab2:
                 st.header('Finalizar OS')
                 jefferson,lourdes=st.columns(2)
@@ -176,8 +174,10 @@ if fLIDERES == 'FELIPE LEITE':
 
                    conn.close()
 
+                   st.write(cnt2) 
                 with sats:
-                    st.write('OPA')               
+                    st.write('OPA') 
+                                  
                 with statuses1:                
                     st.write('OPA')
                                                                                          
