@@ -173,9 +173,10 @@ if fLIDERES == 'FELIPE LEITE':
             with tab3:
                 statuses,sats,statuses1=st.columns([90,8,20])
                 with statuses:   
-                   Nnm = st.number_input("Selecione o numero da OS",value=0, placeholder="Selecione")
+                   Nmr = st.number_input("Selecione o numero da OS",value=0, placeholder="Selecione")
                    st.metric(label="OS Existentes", value= cnt1)
-                   ln1 = ln.loc[Nnm]
+                   Nmr1 = Nmr - 1
+                   ln1 = ln.loc[Nmr1]
                    st.dataframe(ln1)
                    conn.close()
         
