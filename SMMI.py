@@ -69,22 +69,20 @@ tab1_qtde_produto = df.loc[(
     df['SETOR'] == fSETOR) &
     (df['LIDERES'] == fLIDERES)]
 
-crt = st.button('cerate')
-if crt:
-    conn = sqlite3.connect('SMMI')
-    cursor = conn.cursor()
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS ABERTURA (
-           OS INTEGER PRIMARY KEY,
-           SOLCITANTE TEXT,
-           SETOR TEXT,
-           TIPO_DE_OCORRENCIA TEXT,
-           NIVEL_DA_OCORRENCIA TEXT,
-           DATA DATE,
-           HORA TIME
+conn = sqlite3.connect('SMMI')
+cursor = conn.cursor()
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS ABERTURA (
+        OS INTEGER PRIMARY KEY,
+        SOLCITANTE TEXT,
+        SETOR TEXT,
+        TIPO_DE_OCORRENCIA TEXT,
+        NIVEL_DA_OCORRENCIA TEXT,
+        DATA DATE,
+        HORA TIME
                    
-        )
-    ''')  
+    )
+''')  
 #leitura do banco smmi
 cnt = pd.read_sql_query("SELECT * FROM ABERTURA", conn)
 cnt1 = cnt.shape[0]
