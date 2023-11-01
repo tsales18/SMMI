@@ -135,6 +135,7 @@ if fLIDERES == 'FELIPE LEITE':
                 with neymar:
                     with st.form('my form3'):
                         st.markdown("---")
+                        atd = st.toggle('Inserir os dados')
                         if atd:
                             Usolicitante = st.selectbox('Atualize o Solicitante', ('FILIPE','JAMESON','MAURILIO SALES','BRUNO KAPPAUN','EDUARDO BICUDO','ADRIELY LEMOS','GILSON FREITAS','ALEX SANTOS','CESAR AUGUSTO'),index=None,placeholder='Selecione')
                             st.markdown("---")
