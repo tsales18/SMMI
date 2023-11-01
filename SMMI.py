@@ -152,7 +152,6 @@ if fLIDERES == 'FELIPE LEITE':
                             st.markdown("---")
                         if atd:
                             Utempoi = st.time_input('Atualize o Horario', value=None)
-                            st.write(tempoi)
                             st.markdown("---")
                         if atd:
                             Udata = st.date_input("Atualize a Data", value=None)
