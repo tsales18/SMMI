@@ -172,11 +172,11 @@ if fLIDERES == 'FELIPE LEITE':
             with tab3:
                 statuses,sats,statuses1=st.columns([90,8,20])
                 with statuses:   
-                    atl = st.button('↻')
-                    cursor.execute("SELECT * FROM ABERTURA")
-                    resultado = cursor.fetchall() 
-                    ln = pd.DataFrame(resultado)
-                    st.dataframe(ln)
+                   ln = pd.read_sql_query('SELECT * FROM sua_tabela', conn)
+                   st.dataframe(license)
+
+                   conn.close()
+
                 with sats:
                     st.write('OPA')               
                 with statuses1:                
