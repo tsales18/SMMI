@@ -91,6 +91,11 @@ cnt1 = cnt.shape[0]
 cnt2 = cnt.loc[3]
 ln = pd.read_sql_query("SELECT * FROM ABERTURA", conn)
 
+cl = st.button("close")
+if cl:
+   cursor.execute("DROP TABLE ABERTURA")
+   conn.commit()
+
 if 'OS' not in st.session_state:
     st.session_state.OS = 0
         
@@ -244,8 +249,5 @@ if fLIDERES == 'IVSON PAULINO':
                     st.dataframe(tempoiF)
 
 
-cl = st.button("close")
-if cl:
-   cursor.execute("DROP TABLE ABERTURA")
-   conn.commit()
+
    
