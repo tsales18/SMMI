@@ -119,7 +119,7 @@ if fLIDERES == 'FELIPE LEITE':
                         atd = st.toggle('Atualizar os dados')
                         solicitante = st.selectbox('Solicitante', ('FILIPE','JAMESON','MAURILIO SALES','BRUNO KAPPAUN','EDUARDO BICUDO','ADRIELY LEMOS','GILSON FREITAS','ALEX SANTOS','CESAR AUGUSTO'),index=None,placeholder='Selecione')
                         if atd:
-                            Usolicitante = st.selectbox('Atualize o Solicitante', ('Selecione','FILIPE','JAMESON'))
+                            Usolicitante = st.selectbox('Atualize o Solicitante', ('FILIPE','JAMESON','MAURILIO SALES','BRUNO KAPPAUN','EDUARDO BICUDO','ADRIELY LEMOS','GILSON FREITAS','ALEX SANTOS','CESAR AUGUSTO'),index=None,placeholder='Selecione')
 
                         status = st.selectbox('Tipo de Ocorrência', ('Selecione','ELETRICA PREDIAL MANUTENÇÃO EM PAINES TROCA DE COMPONENTES'),index=0,)
                         if atd:
