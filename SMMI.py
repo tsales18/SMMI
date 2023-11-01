@@ -151,8 +151,30 @@ if fLIDERES == 'FELIPE LEITE':
                         if atd:
                            Udata = st.date_input("Atualize a Data", value=None)
                         st.form_submit_button('↻')
-                    
-                        
+                with neymar:
+                    with st.form('my form3'):
+                        if atd:
+                            Usolicitante = st.selectbox('Atualize o Solicitante', ('FILIPE','JAMESON','MAURILIO SALES','BRUNO KAPPAUN','EDUARDO BICUDO','ADRIELY LEMOS','GILSON FREITAS','ALEX SANTOS','CESAR AUGUSTO'),index=None,placeholder='Selecione')
+                            st.markdown("---")
+                        if atd:
+                            Ustatus = st.selectbox('Atualize o Tipo de Ocorrência', ('ELETRICA PREDIAL MANUTENÇÃO EM PAINES TROCA DE COMPONENTES'),index=None, placeholder='Selecione')
+                            st.markdown("---")
+                        if atd:
+                            Usetor = st.selectbox('Aualize o Setor', ('TECNOLOGIA DA INFORMAÇÃO','ELETRICA'),index=None,placeholder='Selecione')
+                            st.markdown("---")
+                        if atd:
+                            Univeldaocorrencia = st.selectbox('Atualize o Nivel da ocorrência',('EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE','URGÊNTE'),index=None, placeholder='Selecione')
+                            st.markdown("---")
+                        if atd:
+                            Urelatorio = st.text_input('Atualize o Relatorio')
+                            st.markdown("---")
+                        if atd:
+                            Utempoi = st.time_input('Atualize o Horario', value=None)
+                            st.write(tempoi)
+                        if atd:
+                           Udata = st.date_input("Atualize a Data", value=None)
+                        st.form_submit_button('↻')
+            
                 if fLIDERES == 'FELIPE LEITE':
                     if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
                         if senha == '69':
