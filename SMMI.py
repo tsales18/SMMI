@@ -244,4 +244,6 @@ if fLIDERES == 'IVSON PAULINO':
                     st.dataframe(tempoiF)
 
 
-
+cl = st.button("close")
+if cl:
+  conn.close()
