@@ -119,17 +119,33 @@ if fLIDERES == 'FELIPE LEITE':
                         atd = st.toggle('Atualizar os dados')
                         solicitante = st.selectbox('Solicitante', ('Selecione','FILIPE',),index=0)
                         if atd:
-                            solicitante1 = st.selectbox('Solicitante', ('Selecione','FILIPE','JAMESON'))
-                        status = st.selectbox('Tipo de Ocorrência', ('Selecione','ELETRICA PREDIAL MANUTENÇÃO EM PAINES TROCA DE COMPONENTES'),index=0,)  
+                            Usolicitante = st.selectbox('Solicitante', ('Selecione','FILIPE','JAMESON'))
+
+                        status = st.selectbox('Tipo de Ocorrência', ('Selecione','ELETRICA PREDIAL MANUTENÇÃO EM PAINES TROCA DE COMPONENTES'),index=0,)
+                        if atd:
+                            Ustatus = st.selectbox('Tipo de Ocorrência', ('Selecione','ELETRICA PREDIAL MANUTENÇÃO EM PAINES TROCA DE COMPONENTES'),index=0,)
                         st.markdown("---")
+
                         setor = st.selectbox('Setor', ('Selecione','TECNOLOGIA DA INFORMAÇÃO',), index=0)
+                        if atd:
+                            Usetor = st.selectbox('Setor', ('Selecione','TECNOLOGIA DA INFORMAÇÃO',), index=0)
+
                         niveldaocorrencia = st.selectbox('Nivel da ocorrência', ('Selecione','EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE', 'URGÊNTE'), index=0)
+                        if atd:
+                            Univeldaocorrencia = st.selectbox('Nivel da ocorrência', ('Selecione','EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE', 'URGÊNTE'), index=0)
                         st.markdown("---")
                         relatorio = st.text_input('Relatorio')
+                        if atd:
+                            Urelatorio = st.text_input('Relatorio')
+
                         tempoi = st.time_input('Horario', value=None)
+                        if atd:
+                            Utempoi = st.time_input('Horario', value=None)
                         st.write(tempoi)
+
                         data = st.date_input("Data", value=None)
-                        st.write(data)
+                        if atd:
+                           Udata = st.date_input("Data", value=None)
                         st.form_submit_button('↻')
                     
                         
