@@ -165,6 +165,7 @@ if fLIDERES == 'FELIPE LEITE':
                                                 st.caption('É necessario finalizar esta OS antes de inciar outra.')
                                                 
                                             else:
+                                                
                                                 att = st.button("INSERIR DADOS")
 
                                                 if att:
