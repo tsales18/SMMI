@@ -160,16 +160,20 @@ if fLIDERES == 'FELIPE LEITE':
                         if senha == '69':
                             if niveldaocorrencia != "Selecione":
                                 if solicitante != "Selecione":
-                                    if setor != "Selecione":   
-                                            st.caption('É necessario finalizar esta OS antes de inciar outra.')
-                                            att = st.button("INSERIR DADOS")
-                                            if att:
-                                               cnt3 = cnt1 + 1
-                                            if att:
-                                               st.balloons()
-                                               cursor.execute("INSERT INTO ABERTURA (OS,SOLCITANTE,SETOR,TIPO_DE_OCORRENCIA,NIVEL_DA_OCORRENCIA,DATA,HORA) VALUES (?, ?, ?, ?, ?, ?,?)", (cnt3 , str(solicitante), str(setor), str(status),str(niveldaocorrencia),data,str(tempoi)))
-                                               conn.commit()
-                                               conn.close()
+                                    if setor != "Selecione":
+                                            if atd:  
+                                                st.caption('É necessario finalizar esta OS antes de inciar outra.')
+                                                
+                                            else:
+                                                att = st.button("INSERIR DADOS")
+
+                                                if att:
+                                                   cnt3 = cnt1 + 1
+                                                if att:
+                                                   st.balloons()
+                                                   cursor.execute("INSERT INTO ABERTURA (OS,SOLCITANTE,SETOR,TIPO_DE_OCORRENCIA,NIVEL_DA_OCORRENCIA,DATA,HORA) VALUES (?, ?, ?, ?, ?, ?,?)", (cnt3 , str(solicitante), str(setor), str(status),str(niveldaocorrencia),data,str(tempoi)))
+                                                   conn.commit()
+                                                   conn.close()
                                                
                                             
             with tab2:
