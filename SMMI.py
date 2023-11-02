@@ -151,8 +151,8 @@ if fLIDERES == 'FELIPE LEITE':
                         if atd:
                             Udata = st.date_input("Atualize a Data", value=None)
                         st.form_submit_button('↻')
-                if atd:
-                    st.button('atualize')
+            
+                    
                     
                         
                 if fLIDERES == 'FELIPE LEITE':
@@ -161,11 +161,16 @@ if fLIDERES == 'FELIPE LEITE':
                             if niveldaocorrencia != "Selecione":
                                 if solicitante != "Selecione":
                                     if setor != "Selecione":
-                                            if atd:  
+                                            if atd: 
                                                 st.caption('É necessario finalizar esta OS antes de inciar outra.')
+                                                atl = st.button('atualize')
+                                                if atl:
+                                                   st.balloons()
+                                                   cursor.execute("UPDATE INTO ABERTURA (SOLCITANTE,SETOR,TIPO_DE_OCORRENCIA,NIVEL_DA_OCORRENCIA,DATA,HORA) VALUES (?, ?, ?, ?, ?, ?)", (str(Usolicitante), str(Usetor), str(Ustatus),str(Univeldaocorrencia),Udata,str(Utempoi)))
+                                                   conn.commit()
+                                                   conn.close()
                                                 
                                             else:
-                                                
                                                 att = st.button("INSERIR DADOS")
 
                                                 if att:
