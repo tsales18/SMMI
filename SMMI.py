@@ -116,8 +116,6 @@ if fLIDERES == 'FELIPE LEITE':
                     with st.form('my form2'):
                         st.markdown("---")
                         atd = st.toggle('Atualizar os dados')
-                        sos = st.number_input("Selicione a OS que deseja atualizar",min_value=1,max_value=cnt1,value=1,placeholder="Selecione")
-                    
                         solicitante = st.selectbox('Solicitante', ('FILIPE','JAMESON','MAURILIO SALES','BRUNO KAPPAUN','EDUARDO BICUDO','ADRIELY LEMOS','GILSON FREITAS','ALEX SANTOS','CESAR AUGUSTO'),index=None,placeholder='Selecione')
                         if atd:
                             Usolicitante = st.selectbox('Atualize o Solicitante', ('FILIPE','JAMESON','MAURILIO SALES','BRUNO KAPPAUN','EDUARDO BICUDO','ADRIELY LEMOS','GILSON FREITAS','ALEX SANTOS','CESAR AUGUSTO'),index=None,placeholder='Atualize')
@@ -154,8 +152,9 @@ if fLIDERES == 'FELIPE LEITE':
                         st.form_submit_button('↻')
                 with neymar:
                     if atd:
-                        st.number_input("Selecione o numero da OS",min_value=1,max_value=cnt1,value=1,placeholder="Selecione")
-                        ln1 = ln.loc[3]
+                        sos = st.number_input("Selecione o numero da OS que deseja atualizar",min_value=1,max_value=cnt1,value=1,placeholder="Selecione")
+                        sos1 = sos-1
+                        ln1 = ln.loc[sos1]
                         st.dataframe(ln1)
 
                     
@@ -171,7 +170,7 @@ if fLIDERES == 'FELIPE LEITE':
                                                 atl = st.button('atualize')
                                                 if atl:
                                                    st.balloons()
-                                                   cursor.execute("UPDATE ABERTURA SET SOLCITANTE = ?, SETOR = ?,TIPO_DE_OCORRENCIA = ?,NIVEL_DA_OCORRENCIA = ?, DATA = ?, HORA = ? WHERE OS = ?",(Usolicitante, Usetor, Ustatus,Univeldaocorrencia,Udata,str(Utempoi),3))
+                                                   cursor.execute("UPDATE ABERTURA SET SOLCITANTE = ?, SETOR = ?,TIPO_DE_OCORRENCIA = ?,NIVEL_DA_OCORRENCIA = ?, DATA = ?, HORA = ? WHERE OS = ?",(Usolicitante, Usetor, Ustatus,Univeldaocorrencia,Udata,str(Utempoi),sos))
                                                    conn.commit()
                                                    conn.close()
                                                 
