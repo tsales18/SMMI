@@ -113,9 +113,9 @@ if fLIDERES == 'FELIPE LEITE':
                 st.header("Cadastro de ocorrência")
                 colibrim,neymar= st.columns([2,3])  
                 with colibrim:
+                    atd = st.toggle('Atualizar os dados')
                     with st.form('my form2'):
                         st.markdown("---")
-                        atd = st.toggle('Atualizar os dados')
                         solicitante = st.selectbox('Solicitante', ('FILIPE','JAMESON','MAURILIO SALES','BRUNO KAPPAUN','EDUARDO BICUDO','ADRIELY LEMOS','GILSON FREITAS','ALEX SANTOS','CESAR AUGUSTO'),index=None,placeholder='Selecione')
                         if atd:
                             Usolicitante = st.selectbox('Atualize o Solicitante', ('FILIPE','JAMESON','MAURILIO SALES','BRUNO KAPPAUN','EDUARDO BICUDO','ADRIELY LEMOS','GILSON FREITAS','ALEX SANTOS','CESAR AUGUSTO'),index=None,placeholder='Atualize')
@@ -149,7 +149,7 @@ if fLIDERES == 'FELIPE LEITE':
                         data = st.date_input("Data", value=None)
                         if atd:
                             Udata = st.date_input("Atualize a Data", value=None)
-                        st.form_submit_button('↻')
+                            st.form_submit_button('↻')
                 with neymar:
                     if atd:
                         sos = st.number_input("Selecione o numero da OS que deseja atualizar",min_value=1,max_value=cnt1,value=1,placeholder="Selecione")
