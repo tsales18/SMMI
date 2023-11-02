@@ -5,4 +5,5 @@ Image
 sqlalchemy
 requests
 pyodbc
+openpyxl
 
