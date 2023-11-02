@@ -116,7 +116,7 @@ if fLIDERES == 'FELIPE LEITE':
                     with st.form('my form2'):
                         st.markdown("---")
                         atd = st.toggle('Atualizar os dados')
-                        sos= st.number_input("Selicione a OS que deseja atualizar",min_value=1,max_value=cnt1,value=1,placeholder="Selecione")
+                        sos = st.number_input("Selicione a OS que deseja atualizar",min_value=1,max_value=cnt1,value=1,placeholder="Selecione")
                     
                         solicitante = st.selectbox('Solicitante', ('FILIPE','JAMESON','MAURILIO SALES','BRUNO KAPPAUN','EDUARDO BICUDO','ADRIELY LEMOS','GILSON FREITAS','ALEX SANTOS','CESAR AUGUSTO'),index=None,placeholder='Selecione')
                         if atd:
@@ -154,6 +154,7 @@ if fLIDERES == 'FELIPE LEITE':
                         st.form_submit_button('↻')
                 with neymar:
                     if atd:
+                        st.number_input("Selecione o numero da OS",min_value=1,max_value=cnt1,value=1,placeholder="Selecione")
                         ln1 = ln.loc[3]
                         st.dataframe(ln1)
 
