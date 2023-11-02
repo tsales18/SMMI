@@ -166,7 +166,7 @@ if fLIDERES == 'FELIPE LEITE':
                                                 atl = st.button('atualize')
                                                 if atl:
                                                    st.balloons()
-                                                   cursor.execute("UPDATE ABERTURA SET SOLICITANTE = ?, SETOR = ?,TIPO_DE_OCORENCIA = ?, NIVEL_DE_OCORRENCIA = ?, DATA = ?, HORA = ?",WHERE = 1),(str(Usolicitante), str(Usetor), str(Ustatus),str(Univeldaocorrencia),Udata,str(Utempoi))
+                                                   cursor.execute("UPDATE ABERTURA SET SOLCITANTE = ?, SETOR = ?,TIPO_DE_OCORRENCIA = ?,NIVEL_DA_OCORRENCIA = ?, DATA = ?, HORA = ? WHERE OS = ?",(Usolicitante, Usetor, Ustatus,Univeldaocorrencia,Udata,str(Utempoi),1))
                                                    conn.commit()
                                                    conn.close()
                                                 
