@@ -111,7 +111,7 @@ if fLIDERES == 'FELIPE LEITE':
             tab1, tab2, tab3= st.tabs(["Cadastro", "Finalizar","OS Abertas"])
             with tab1:
                 st.header("Cadastro de ocorrência")
-                colibrim,neymar= st.columns([1,3])  
+                colibrim,neymar= st.columns([2,3])  
                 with colibrim:
                     with st.form('my form2'):
                         st.markdown("---")
