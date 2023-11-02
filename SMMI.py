@@ -151,8 +151,10 @@ if fLIDERES == 'FELIPE LEITE':
                         if atd:
                             Udata = st.date_input("Atualize a Data", value=None)
                         st.form_submit_button('↻')
-            
-                    
+                with neymar:
+                    ln1 = ln.loc[3]
+                    st.dataframe(ln1)
+
                     
                         
                 if fLIDERES == 'FELIPE LEITE':
@@ -166,7 +168,7 @@ if fLIDERES == 'FELIPE LEITE':
                                                 atl = st.button('atualize')
                                                 if atl:
                                                    st.balloons()
-                                                   cursor.execute("UPDATE ABERTURA SET SOLCITANTE = ?, SETOR = ?,TIPO_DE_OCORRENCIA = ?,NIVEL_DA_OCORRENCIA = ?, DATA = ?, HORA = ? WHERE OS = ?",(Usolicitante, Usetor, Ustatus,Univeldaocorrencia,Udata,str(Utempoi),1))
+                                                   cursor.execute("UPDATE ABERTURA SET SOLCITANTE = ?, SETOR = ?,TIPO_DE_OCORRENCIA = ?,NIVEL_DA_OCORRENCIA = ?, DATA = ?, HORA = ? WHERE OS = ?",(Usolicitante, Usetor, Ustatus,Univeldaocorrencia,Udata,str(Utempoi),3))
                                                    conn.commit()
                                                    conn.close()
                                                 
