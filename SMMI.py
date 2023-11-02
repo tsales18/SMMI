@@ -86,7 +86,7 @@ cnt = pd.read_sql_query("SELECT * FROM ABERTURA", conn)
 cnt1 = cnt.shape[0]
 ln = pd.read_sql_query("SELECT * FROM ABERTURA", conn)
 
-cl = st.button("close")
+cl = st.button("DELETAR TABELAS")
 if cl:
    cursor.execute("DROP TABLE ABERTURA")
    conn.commit()
@@ -103,7 +103,6 @@ if fLIDERES == 'FELIPE LEITE':
             image = Image.open('./Midia/ssmm.jpg')
             ps1,ps2 = st.columns([1,1])
             with ps1:
-                st.image(image,width=1700)
                 st.title('Status e informações de OS')
            
             tab1, tab2, tab3= st.tabs(["Cadastro", "Finalizar","OS Abertas"])
@@ -151,6 +150,7 @@ if fLIDERES == 'FELIPE LEITE':
                 with neymar:
                     if atd:
                         sos = st.number_input("Selecione o numero da OS que deseja atualizar",min_value=1,max_value=cnt1,value=1,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value= cnt1)
                         sos1 = sos-1
                         ln1 = ln.loc[sos1]
                         st.dataframe(ln1)
@@ -215,11 +215,7 @@ if fLIDERES == 'FELIPE LEITE':
                    st.dataframe(ln1)
                    conn.close()
         
-                with sats:
-                    st.write('OPA')
-                                  
-                with statuses1:                
-                    st.write('OPA')
+               
                                                                                          
 if senha != '69':
     video_file = open('./Midia/SSMMOV.mp4', 'rb')
