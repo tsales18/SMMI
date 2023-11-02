@@ -13,6 +13,7 @@ from sqlalchemy import Sequence
 import webbrowser
 import requests
 import sqlite3
+import openpyxl
 
 
 # CONFIGURAÇÃO DA PÁGINA
