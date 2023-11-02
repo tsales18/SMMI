@@ -111,11 +111,12 @@ if fLIDERES == 'FELIPE LEITE':
             tab1, tab2, tab3= st.tabs(["Cadastro", "Finalizar","OS Abertas"])
             with tab1:
                 st.header("Cadastro de ocorrência")
-                colibrim,neymar,lula,sales,poura= st.columns([0.5,0.1,0.1,0.1,0.1])  
+                colibrim,neymar= st.columns([1,3])  
                 with colibrim:
                     with st.form('my form2'):
                         st.markdown("---")
                         atd = st.toggle('Atualizar os dados')
+                        sos= st.number_input("Selicione a OS que deseja atualizar",min_value=1,max_value=cnt1,value=1,placeholder="Selecione")
                     
                         solicitante = st.selectbox('Solicitante', ('FILIPE','JAMESON','MAURILIO SALES','BRUNO KAPPAUN','EDUARDO BICUDO','ADRIELY LEMOS','GILSON FREITAS','ALEX SANTOS','CESAR AUGUSTO'),index=None,placeholder='Selecione')
                         if atd:
@@ -152,11 +153,12 @@ if fLIDERES == 'FELIPE LEITE':
                             Udata = st.date_input("Atualize a Data", value=None)
                         st.form_submit_button('↻')
                 with neymar:
-                    ln1 = ln.loc[3]
-                    st.dataframe(ln1)
+                    if atd:
+                        ln1 = ln.loc[3]
+                        st.dataframe(ln1)
 
                     
-                        
+            
                 if fLIDERES == 'FELIPE LEITE':
                     if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
                         if senha == '69':
