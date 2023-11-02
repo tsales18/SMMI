@@ -1,6 +1,5 @@
 import pandas as pd
 import streamlit as st
-import pyodbc
 from PIL import Image
 import time as time
 import datetime as datetime
