@@ -63,7 +63,6 @@ with st.sidebar:
     st.write("Bem Vindo")
     
     st.write('✅')
-    
 tab1_qtde_produto = df.loc[(
     df['SETOR'] == fSETOR) &
     (df['LIDERES'] == fLIDERES)]
@@ -149,7 +148,7 @@ if fLIDERES == 'FELIPE LEITE':
                         data = st.date_input("Data", value=None)
                         if atd:
                             Udata = st.date_input("Atualize a Data", value=None)
-                            st.form_submit_button('↻')
+                        st.form_submit_button('↻')
                 with neymar:
                     if atd:
                         sos = st.number_input("Selecione o numero da OS que deseja atualizar",min_value=1,max_value=cnt1,value=1,placeholder="Selecione")
@@ -157,8 +156,6 @@ if fLIDERES == 'FELIPE LEITE':
                         ln1 = ln.loc[sos1]
                         st.dataframe(ln1)
 
-                    
-            
                 if fLIDERES == 'FELIPE LEITE':
                     if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
                         if senha == '69':
