@@ -116,8 +116,7 @@ if fLIDERES == 'FELIPE LEITE':
                     with st.form('my form2'):
                         st.markdown("---")
                         atd = st.toggle('Atualizar os dados')
-                        if atd:
-                            st.button('Atualize os dados')
+                    
                         solicitante = st.selectbox('Solicitante', ('FILIPE','JAMESON','MAURILIO SALES','BRUNO KAPPAUN','EDUARDO BICUDO','ADRIELY LEMOS','GILSON FREITAS','ALEX SANTOS','CESAR AUGUSTO'),index=None,placeholder='Selecione')
                         if atd:
                             Usolicitante = st.selectbox('Atualize o Solicitante', ('FILIPE','JAMESON','MAURILIO SALES','BRUNO KAPPAUN','EDUARDO BICUDO','ADRIELY LEMOS','GILSON FREITAS','ALEX SANTOS','CESAR AUGUSTO'),index=None,placeholder='Selecione')
@@ -151,6 +150,8 @@ if fLIDERES == 'FELIPE LEITE':
                         data = st.date_input("Data", value=None)
                         if atd:
                            Udata = st.date_input("Atualize a Data", value=None)
+                        if atd:
+                            st.button('atualize seus dados')
                         st.form_submit_button('↻')
                     
                         
