@@ -1,9 +1,9 @@
 [theme]
-primaryColor="#DD2636"
+primaryColor="#768DF3"
 backgroundColor="#FFFFFF"
 secondaryBackgroundColor="#768DF3" 
 textColor= "#000000"
-font="serif"
+font="monospace"
 
 # Para cores, podemos usar os formatos: "green", "#FFDE5A" ou RGB(61,183,228)
 # Para fontes estão disponíveis: "sans serif", "serif", "monospace"

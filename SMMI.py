@@ -42,7 +42,7 @@ df = pd.read_excel(
     
 )
 
-# -- Criar o sidebar
+
 with st.sidebar:
     logo_teste = Image.open('./Midia/sales.jpeg')
     st.image(logo_teste, width=300)
@@ -102,7 +102,7 @@ if fLIDERES == 'FELIPE LEITE':
     if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
         if senha == '69':
             image = Image.open('./Midia/ssmm.jpg')
-            ps1,ps2,ps3,ps4,ps5 = st.columns(5)
+            ps1,ps2 = st.columns([1,1])
             with ps1:
                 st.image(image,width=1700)
                 st.title('Status e informações de OS')
