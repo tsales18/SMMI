@@ -289,22 +289,22 @@ cursor1.execute('''
     )
 ''')  
 
-cnt = pd.read_sql_query("SELECT * FROM ROSIVALDO", conn1)
-cnt1 = cnt.shape[0]
-consulta = "SELECT * FROM ABERTURA"
-ln = pd.read_sql_query(consulta, conn)
+cnt10 = pd.read_sql_query("SELECT * FROM ROSIVALDO", conn1)
+cnt11 = cnt10.shape[0]
+consulta1 = "SELECT * FROM ABERTURA"
+ln10 = pd.read_sql_query(consulta1, conn1)
 
 #OS ABERTAS  NÃO FINALIZADAS 
 cursor1.execute("SELECT * FROM ROSIVALDO WHERE FINALIZADA = ?;", ('Não',))
-filas = cursor1.fetchall()
-fl = pd.DataFrame(filas)
-fl1 = fl.shape[0]  
+filas10 = cursor1.fetchall()
+fl10 = pd.DataFrame(filas10)
+fl11 = fl10.shape[0]  
 
 #OS FINALIZADAS
 cursor1.execute("SELECT * FROM ROSIVALDO WHERE FINALIZADA = ?;", ('Sim',))
-filas1 = cursor1.fetchall()
-fl2 = pd.DataFrame(filas1)
-fl3 = fl2.shape[0]
+filas11 = cursor1.fetchall()
+fl10 = pd.DataFrame(filas11)
+fl12 = fl10.shape[0]
 
 
 if 'OS' not in st.session_state:
@@ -373,8 +373,8 @@ if fLIDERES == 'ROSIVALDO':
 
                 with neymar:
                     if atd:
-                        sos = st.number_input("Selecione o numero da OS que deseja atualizar",min_value=1,max_value=cnt1,value=1,placeholder="Selecione")
-                        st.metric(label="OS Existentes", value= cnt1)
+                        sos = st.number_input("Selecione o numero da OS que deseja atualizar",min_value=1,max_value=cnt10,value=1,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value= cnt10)
                         sos1 = sos-1
                         ln1 = ln.loc[sos1]
                         def load_dataa1():
@@ -416,7 +416,7 @@ if fLIDERES == 'ROSIVALDO':
                 st.header('Finalizar OS')
                 jefferson,lourdes=st.columns(2)
                 with jefferson:
-                    fnlz = st.number_input("Selecione o numero da OS que deseja Finalizar",min_value=1,max_value=cnt1,value=1,placeholder="Selecione")
+                    fnlz = st.number_input("Selecione o numero da OS que deseja Finalizar",min_value=1,max_value=cnt10,value=1,placeholder="Selecione")
                     with st.form('my form'):
                         finalizar = st.selectbox('OS finalizada?', ('Sim','Não'),index=None,placeholder='Selecione')
                         fnlz1 = fnlz-1
