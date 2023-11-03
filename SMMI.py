@@ -37,7 +37,7 @@ df = pd.read_excel(
     engine='openpyxl',
     sheet_name='salesreport',
     usecols='A:D',
-    nrows=8
+    nrows=10
     
 )
 
