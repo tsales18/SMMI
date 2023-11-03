@@ -389,8 +389,8 @@ if fLIDERES == 'ROSIVALDO':
                         conn1.close()
 
 
-                if fLIDERES == 'FELIPE LEITE':
-                    if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
+                if fLIDERES == 'ROSIVALDO':
+                    if fSETOR == 'ELÉTRICA':
                         if senha == '1409':
                             if Rniveldaocorrencia != "Selecione":
                                 if Rsolicitante != "Selecione":
@@ -405,11 +405,11 @@ if fLIDERES == 'ROSIVALDO':
                                                    conn1.close()
                                                 
                                             else:
-                                                att = st.button("INSERIR DADOS")
+                                                insdds = st.button("INSERIR DADOS")
 
-                                                if att:
-                                                   allln3 = allln1 + 1
-                                                if att:
+                                                if insdds:
+                                                   insdds = allln1 + 1
+                                                if insdds:
                                                    st.balloons()
                                                    cursor1.execute("INSERT INTO ROSIVALDO (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA) VALUES (?, ?, ?, ?, ?, ?,?,?,?)", (allln3 , str(Rsolicitante), str(Rsetor), str(Rstatus),str(Rniveldaocorrencia),Rdata,str(Rtempoi),Racao,'Não'))
                                                    conn1.commit()
@@ -461,7 +461,7 @@ if fLIDERES == 'ROSIVALDO':
                 with statuses:   
                     Nmr = st.number_input("Selecione o numero da OS",min_value=0,max_value=allln1,value=0,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= allln1)
-                    Nmr1 = Nmroko
+                    Nmr1 = Nmr
                     osespec = allinhas.loc[Nmr1]
                     def load_data():
                         return pd.DataFrame(osespec)
