@@ -141,7 +141,7 @@ if fLIDERES == 'FELIPE LEITE':
                             Ustatus = st.selectbox('Atualize o Tipo de Ocorrência', ('ELETRICA PREDIAL MANUTENÇÃO EM PAINES TROCA DE COMPONENTES',),index=None, placeholder='Atualize')
                             st.markdown("---")
 
-                        setor = st.selectbox('Setor', ('TECNOLOGIA DA INFORMAÇÃO','ELETRICA'),index=None,placeholder='Selecione')
+                        setor = st.selectbox('Setor', ('TECNOLOGIA DA INFORMAÇÃO','COMERCIAL','ADMINISTRATIVO','EXPEDIÇÃO','PRODUÇÃO','FERRAMENTARIA','SERRALHARIA'),index=None,placeholder='Selecione')
                         if atd:
                             Usetor = st.selectbox('Aualize o Setor', ('TECNOLOGIA DA INFORMAÇÃO','ELETRICA'),index=None,placeholder='Atualize')
                             st.markdown("---")
@@ -222,6 +222,7 @@ if fLIDERES == 'FELIPE LEITE':
                         t = st.time_input('HORA', value=None)
                         st.write(t)
                         st.form_submit_button('↻')
+
                                   
                 if fLIDERES == 'FELIPE LEITE':
                     if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
@@ -250,12 +251,14 @@ if fLIDERES == 'FELIPE LEITE':
             with tab5:
                 statuses,sats,statuses1=st.columns([90,8,20])
                 with statuses:   
-                   Nmr = st.number_input("Selecione o numero da OS",min_value=1,max_value=cnt1,value=1,placeholder="Selecione")
-                   st.metric(label="OS Existentes", value= cnt1)
-                   Nmr1 = Nmr-1
-                   ln1 = ln.loc[Nmr1]
-                   st.dataframe(ln1)
-                   conn.close()
+                    Nmr = st.number_input("Selecione o numero da OS",min_value=1,max_value=cnt1,value=1,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value= cnt1)
+                    Nmr1 = Nmr-1
+                    ln1 = ln.loc[Nmr1]
+                    st.dataframe(ln1)
+                    conn.close()
+                
+
                 
         
                
