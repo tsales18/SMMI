@@ -416,7 +416,7 @@ if fLIDERES == 'ROSIVALDO':
                 st.header('Finalizar OS')
                 jefferson,lourdes=st.columns(2)
                 with jefferson:
-                    fnlz = st.number_input("Selecione o numero da OS que deseja Finalizar",min_value=1,max_value=cnt10,value=1,placeholder="Selecione")
+                    fnlz = st.number_input("Selecione o numero da OS que deseja Finalizar",min_value=1,max_value=cnt11,value=1,placeholder="Selecione")
                     with st.form('my form'):
                         finalizar = st.selectbox('OS finalizada?', ('Sim','Não'),index=None,placeholder='Selecione')
                         fnlz1 = fnlz-1
@@ -456,7 +456,7 @@ if fLIDERES == 'ROSIVALDO':
                 statuses,sats,statuses1=st.columns([90,8,20])
                 with statuses:   
                     Nmr = st.number_input("Selecione o numero da OS",min_value=1,max_value=cnt1,value=1,placeholder="Selecione")
-                    st.metric(label="OS Existentes", value= cnt1)
+                    st.metric(label="OS Existentes", value= cnt11)
                     Nmr1 = Nmr-1
                     ln1 = ln.loc[Nmr1]
                     def load_data1():
