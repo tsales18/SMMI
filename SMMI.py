@@ -255,9 +255,13 @@ if fLIDERES == 'FELIPE LEITE':
                     st.metric(label="OS Existentes", value= cnt1)
                     Nmr1 = Nmr-1
                     ln1 = ln.loc[Nmr1]
-                    st.table(ln1)
+                    def load_data():
+                        return pd.DataFrame(ln1)
+                    st.checkbox("Estender", value=True, key="use_container_width")
+                    df = load_data()
+                    st.dataframe(df, use_container_width=st.session_state.use_container_width)
                     conn.close()
-                
+            
 
                 
         
