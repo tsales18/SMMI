@@ -307,11 +307,6 @@ fl2 = pd.DataFrame(filas1)
 fl3 = fl2.shape[0]
 
 
-cl = st.button("DELETAR TABELAS")
-if cl:
-   cursor1.execute("DROP TABLE ROSIVALDO")
-   conn1.commit()
-
 if 'OS' not in st.session_state:
     st.session_state.OS = 0
         
