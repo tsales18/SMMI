@@ -304,6 +304,9 @@ cursor1.execute('''
 
 
 
+
+
+
     
 if fLIDERES == 'IVSON PAULINO':
     if fSETOR == 'FERRAMENTARIA':
