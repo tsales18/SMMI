@@ -212,7 +212,7 @@ if fLIDERES == 'FELIPE LEITE':
                 with jefferson:
                     fnlz = st.number_input("Selecione o numero da OS que deseja Finalizar",min_value=1,max_value=cnt1,value=1,placeholder="Selecione")
                     with st.form('my form'):
-                        finalizar = st.selectbox('Selecione', ('Sim','Não'),index=None,placeholder='Selecione')
+                        finalizar = st.selectbox('OS finalizada?', ('Sim','Não'),index=None,placeholder='Selecione')
                         fnlz1 = fnlz-1
                         df3 = st.date_input("Data", value=None)
                         st.write(df3)
