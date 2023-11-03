@@ -62,7 +62,7 @@ with st.sidebar:
     st.write("Bem Vindo")
     
     st.write('✅')
-tab1_qtde_produto = df.loc[(
+    tab1_qtde_produto = df.loc[(
     df['SETOR'] == fSETOR) &
     (df['LIDERES'] == fLIDERES)]
 
@@ -71,12 +71,14 @@ cursor = conn.cursor()
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS ABERTURA (
         OS INTEGER PRIMARY KEY,
-        SOLCITANTE TEXT,
+        SOLICITANTE TEXT,
         SETOR TEXT,
-        TIPO_DE_OCORRENCIA TEXT,
-        NIVEL_DA_OCORRENCIA TEXT,
+        OCORRENCIA TEXT,
+        GRAU TEXT,
         DATA DATE,
-        HORA TIME
+        HORA TIME,
+        AÇÃO TEXT,
+        FINALIZADA TEXT   
                    
     )
 ''')  
@@ -84,7 +86,21 @@ cursor.execute('''
 #leitura do banco smmi
 cnt = pd.read_sql_query("SELECT * FROM ABERTURA", conn)
 cnt1 = cnt.shape[0]
-ln = pd.read_sql_query("SELECT * FROM ABERTURA", conn)
+consulta = "SELECT * FROM ABERTURA"
+ln = pd.read_sql_query(consulta, conn)
+
+#OS ABERTAS  NÃO FINALIZADAS 
+cursor.execute("SELECT * FROM ABERTURA WHERE FINALIZADA = ?;", ('Não',))
+filas = cursor.fetchall()
+fl = pd.DataFrame(filas)
+fl1 = fl.shape[0]  
+
+#OS FINALIZADAS
+cursor.execute("SELECT * FROM ABERTURA WHERE FINALIZADA = ?;", ('Sim',))
+filas1 = cursor.fetchall()
+fl2 = pd.DataFrame(filas1)
+fl3 = fl2.shape[0]
+
 
 cl = st.button("DELETAR TABELAS")
 if cl:
@@ -105,7 +121,7 @@ if fLIDERES == 'FELIPE LEITE':
             with ps1:
                 st.title('Status e informações de OS')
            
-            tab1, tab2, tab3= st.tabs(["Cadastro", "Finalizar","OS Abertas"])
+            tab1, tab2, tab3,tab4,tab5= st.tabs(["Cadastro", "Finalizar","OS Em aberto","OS Finalizadas","Geral"])
             with tab1:
                 st.header("Cadastro de ocorrência")
                 colibrim,neymar= st.columns([2,3])  
@@ -132,6 +148,10 @@ if fLIDERES == 'FELIPE LEITE':
                         if atd:
                             Univeldaocorrencia = st.selectbox('Atualize o Nivel da ocorrência',('EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE','URGÊNTE'),index=None, placeholder='Atualize')
                             st.markdown("---")
+                        acao = st.selectbox('Tipo da ação', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
+                        if atd:
+                            Uacao = st.selectbox('Atualize o Tipo da ação', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
+                            st.markdown("---")
 
                         relatorio = st.text_input('Relatorio')
                         if atd:
@@ -146,7 +166,11 @@ if fLIDERES == 'FELIPE LEITE':
                         data = st.date_input("Data", value=None)
                         if atd:
                             Udata = st.date_input("Atualize a Data", value=None)
+                        uploaded_files = st.file_uploader("Choose a CSV file", accept_multiple_files=True)
+                        for uploaded_file in uploaded_files:
+                            bytes_data = uploaded_file.read()
                         st.form_submit_button('↻')
+
                 with neymar:
                     if atd:
                         sos = st.number_input("Selecione o numero da OS que deseja atualizar",min_value=1,max_value=cnt1,value=1,placeholder="Selecione")
@@ -166,7 +190,7 @@ if fLIDERES == 'FELIPE LEITE':
                                                 atl = st.button('atualize')
                                                 if atl:
                                                    st.balloons()
-                                                   cursor.execute("UPDATE ABERTURA SET SOLCITANTE = ?, SETOR = ?,TIPO_DE_OCORRENCIA = ?,NIVEL_DA_OCORRENCIA = ?, DATA = ?, HORA = ? WHERE OS = ?",(Usolicitante, Usetor, Ustatus,Univeldaocorrencia,Udata,str(Utempoi),sos))
+                                                   cursor.execute("UPDATE ABERTURA SET SOLICITANTE = ?, SETOR = ?,OCORRENCIA = ?,GRAU = ?, DATA = ?, HORA = ?, AÇÃO = ? WHERE OS = ?",(Usolicitante, Usetor, Ustatus,Univeldaocorrencia,Udata,str(Utempoi),Uacao,sos))
                                                    conn.commit()
                                                    conn.close()
                                                 
@@ -177,16 +201,19 @@ if fLIDERES == 'FELIPE LEITE':
                                                    cnt3 = cnt1 + 1
                                                 if att:
                                                    st.balloons()
-                                                   cursor.execute("INSERT INTO ABERTURA (OS,SOLCITANTE,SETOR,TIPO_DE_OCORRENCIA,NIVEL_DA_OCORRENCIA,DATA,HORA) VALUES (?, ?, ?, ?, ?, ?,?)", (cnt3 , str(solicitante), str(setor), str(status),str(niveldaocorrencia),data,str(tempoi)))
+                                                   cursor.execute("INSERT INTO ABERTURA (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA) VALUES (?, ?, ?, ?, ?, ?,?,?,?)", (cnt3 , str(solicitante), str(setor), str(status),str(niveldaocorrencia),data,str(tempoi),acao,'Não'))
                                                    conn.commit()
                                                    conn.close()
                                                
-                                            
+                     
             with tab2:
                 st.header('Finalizar OS')
                 jefferson,lourdes=st.columns(2)
                 with jefferson:
+                    fnlz = st.number_input("Selecione o numero da OS que deseja Finalizar",min_value=1,max_value=cnt1,value=1,placeholder="Selecione")
                     with st.form('my form'):
+                        finalizar = st.selectbox('Aualize o Setor', ('Sim','Não'),index=None,placeholder='Selecione')
+                        fnlz1 = fnlz-1
                         df3 = st.date_input("Data", value=None)
                         st.write(df3)
                         st.markdown("---")
@@ -194,18 +221,31 @@ if fLIDERES == 'FELIPE LEITE':
                         st.write(t)
                         st.form_submit_button('↻')
                                   
-                  
                 if fLIDERES == 'FELIPE LEITE':
                     if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
-                        if senha == '69':
-                                st.caption('É necessario ABRIR outra OS para finalizar.') 
-                                
-                        else:
-                            st.caption('É necessario finalizar esta OS antes de inciar outra.')                                                                                                                         
+                        if senha == '69':                                                                                                                     
                             FIn=st.button("FINALIZAR")
+                            if FIn:
+                                cursor.execute("UPDATE ABERTURA SET FINALIZADA = ? WHERE OS = ?",(finalizar,fnlz))
+                                conn.commit()
+                                conn.close()
+                                st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente com uma flor.')
+                                st.rerun() 
                             
-                  
             with tab3:
+                st.metric(label="OS em aberto", value= fl1)
+                fl = pd.DataFrame(filas)
+                st.dataframe(fl)
+                st.write(fl1)
+                
+
+            with tab4:
+                st.metric(label="OS Finalizadas", value= fl3)
+                fl2 = pd.DataFrame(filas1)
+                st.dataframe(fl2)
+                st.write(fl3)
+
+            with tab5:
                 statuses,sats,statuses1=st.columns([90,8,20])
                 with statuses:   
                    Nmr = st.number_input("Selecione o numero da OS",min_value=1,max_value=cnt1,value=1,placeholder="Selecione")
@@ -214,6 +254,7 @@ if fLIDERES == 'FELIPE LEITE':
                    ln1 = ln.loc[Nmr1]
                    st.dataframe(ln1)
                    conn.close()
+                
         
                
                                                                                          
@@ -277,7 +318,3 @@ if fLIDERES == 'IVSON PAULINO':
     
                 with statuses1:
                     st.dataframe(tempoiF)
-
-
-
-   
