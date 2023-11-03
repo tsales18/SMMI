@@ -428,12 +428,12 @@ if fLIDERES == 'ROSIVALDO':
                         st.form_submit_button('↻')
 
                                   
-                if fLIDERES == 'FELIPE LEITE':
-                    if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
-                        if senha == '69':                                                                                                                     
+                if fLIDERES == 'ROSIVALDO':
+                    if fSETOR == 'ELÉTRICA':
+                        if senha == '1409':                                                                                                                     
                             FIn=st.button("FINALIZAR")
                             if FIn:
-                                cursor1.execute("UPDATE ABERTURA SET FINALIZADA = ? WHERE OS = ?",(finalizar,fnlz))
+                                cursor1.execute("UPDATE ROSIVALDO SET FINALIZADA = ? WHERE OS = ?",(finalizar,fnlz))
                                 conn1.commit()
                                 conn1.close()
                                 st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente com uma flor.')
