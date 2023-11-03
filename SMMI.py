@@ -451,7 +451,7 @@ if fLIDERES == 'ROSIVALDO':
                 
 
             with tab9:
-                st.metric(label="OS Finalizadas", value= whrlinhas5)
+                st.metric(label="OS Finalizadas",value=whrlinhas5)
                 whrlinhas4 = pd.DataFrame(whrlinhas3)
                 st.dataframe(whrlinhas4)
                 st.write(whrlinhas5)
