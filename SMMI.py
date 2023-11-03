@@ -445,7 +445,6 @@ if fLIDERES == 'ROSIVALDO':
                 st.dataframe(fl10)
                 st.write(fl11)
                 
-
             with tab4:
                 st.metric(label="OS Finalizadas", value= fl14)
                 fl2 = pd.DataFrame(filas1)
