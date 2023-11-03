@@ -77,7 +77,9 @@ cursor.execute('''
         DATA DATE,
         HORA TIME,
         AÇÃO TEXT,
-        FINALIZADA TEXT   
+        FINALIZADA TEXT,
+        DATAF DATE,
+        HORAF TIME
                    
     )
 ''')
@@ -183,7 +185,7 @@ if fLIDERES == 'FELIPE LEITE':
                         st.checkbox("Estender", value=True, key="use_container_widthh")
                         df = load_dataa()
                         st.dataframe(df, use_container_width=st.session_state.use_container_width)
-                        conn.close()
+                        
 
 
                 if fLIDERES == 'FELIPE LEITE':
@@ -208,7 +210,7 @@ if fLIDERES == 'FELIPE LEITE':
                                                    cnt3 = cnt1 + 1
                                                 if att:
                                                    st.balloons()
-                                                   cursor.execute("INSERT INTO ABERTURA (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA) VALUES (?, ?, ?, ?, ?, ?,?,?,?)", (cnt3 , str(solicitante), str(setor), str(status),str(niveldaocorrencia),data,str(tempoi),acao,'Não'))
+                                                   cursor.execute("INSERT INTO ABERTURA (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?)", (cnt3 , str(solicitante), str(setor), str(status),str(niveldaocorrencia),data,str(tempoi),acao,'Não',None,None))
                                                    conn.commit()
                                                    conn.close()
                                                
@@ -221,11 +223,11 @@ if fLIDERES == 'FELIPE LEITE':
                     with st.form('my form'):
                         finalizar = st.selectbox('OS finalizada?', ('Sim','Não'),index=None,placeholder='Selecione')
                         fnlz1 = fnlz-1
-                        df3 = st.date_input("Data", value=None)
-                        st.write(df3)
+                        dateinput1 = st.date_input("Data", value=None)
+                        st.write(dateinput1)
                         st.markdown("---")
-                        t = st.time_input('HORA', value=None)
-                        st.write(t)
+                        timeinput1 = st.time_input('HORA', value=None)
+                        st.write(timeinput1)
                         st.form_submit_button('↻')
 
                                   
@@ -234,7 +236,7 @@ if fLIDERES == 'FELIPE LEITE':
                         if senha == '69':                                                                                                                     
                             FIn=st.button("FINALIZAR")
                             if FIn:
-                                cursor.execute("UPDATE ABERTURA SET FINALIZADA = ? WHERE OS = ?",(finalizar,fnlz))
+                                cursor.execute("UPDATE ABERTURA SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,dateinput1,str(timeinput1),fnlz))
                                 conn.commit()
                                 conn.close()
                                 st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente com uma flor.')
@@ -256,10 +258,10 @@ if fLIDERES == 'FELIPE LEITE':
             with tab5:
                 statuses,sats,statuses1=st.columns([90,8,20])
                 with statuses:   
-                    Nmr = st.number_input("Selecione o numero da OS",min_value=1,max_value=cnt1,value=1,placeholder="Selecione")
+                    numros2 = st.number_input("Selecione o numero da OS",min_value=1,max_value=cnt1,value=1,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= cnt1)
-                    Nmr1 = Nmr-1
-                    ln1 = ln.loc[Nmr1]
+                    numros3 = numros2-1
+                    ln1 = ln.loc[numros3]
                     def load_data():
                         return pd.DataFrame(ln1)
                     st.checkbox("Estender", value=True, key="use_container_width")
@@ -285,7 +287,10 @@ cursor1.execute('''
         DATA DATE,
         HORA TIME,
         AÇÃO TEXT,
-        FINALIZADA TEXT   
+        FINALIZADA TEXT,
+        DATAF,
+        HORAF
+       
                    
     )
 ''')
@@ -408,7 +413,7 @@ if fLIDERES == 'ROSIVALDO':
                                                 insdds = st.button("INSERIR DADOS")
 
                                                 if insdds:
-                                                   insdds = allln1 + 1
+                                                   allln3 = allln1 + 1
                                                 if insdds:
                                                    st.balloons()
                                                    cursor1.execute("INSERT INTO ROSIVALDO (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA) VALUES (?, ?, ?, ?, ?, ?,?,?,?)", (allln3 , str(Rsolicitante), str(Rsetor), str(Rstatus),str(Rniveldaocorrencia),Rdata,str(Rtempoi),Racao,'Não'))
@@ -459,10 +464,10 @@ if fLIDERES == 'ROSIVALDO':
             with tab10:
                 statuses,sats,statuses1=st.columns([90,8,20])
                 with statuses:   
-                    Nmr = st.number_input("Selecione o numero da OS",min_value=0,max_value=allln1,value=0,placeholder="Selecione")
+                    numros2 = st.number_input("Selecione o numero da OS",min_value=1,max_value=allln1,value=1,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= allln1)
-                    Nmr1 = Nmr
-                    osespec = allinhas.loc[Nmr1]
+                    numros3 = numros2-1
+                    osespec = allinhas.loc[numros3]
                     def load_data():
                         return pd.DataFrame(osespec)
                     st.checkbox("Estender", value=True, key="use_container_width")
