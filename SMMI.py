@@ -457,7 +457,7 @@ if fLIDERES == 'ROSIVALDO':
                     Nmr = st.number_input("Selecione o numero da OS",min_value=1,max_value=cnt1,value=1,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= cnt11)
                     Nmr1 = Nmr-1
-                    ln1 = ln.loc[Nmr1]
+                    ln1 = ln10.loc[Nmr1]
                     def load_data1():
                         return pd.DataFrame(ln1)
                     st.checkbox("Estender", value=True, key="use_container_width")
