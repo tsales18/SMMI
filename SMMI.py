@@ -420,7 +420,7 @@ if fLIDERES == 'ROSIVALDO':
                 st.header('Finalizar OS')
                 jefferson,lourdes=st.columns(2)
                 with jefferson:
-                    fnlz2 = st.number_input("Selecione o numero da OS que deseja Finalizar",min_value=1,max_value=allln1,value=1,placeholder="Selecione")
+                    fnlz2 = st.number_input("Selecione o numero da OS que deseja Finalizar",min_value=0,max_value=allln1,value=0,placeholder="Selecione")
                     with st.form('my form'):
                         finalizar = st.selectbox('OS finalizada?', ('Sim','Não'),index=None,placeholder='Selecione')
                         fnlz3 = fnlz2-1
