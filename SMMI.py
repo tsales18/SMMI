@@ -289,19 +289,19 @@ cursor1.execute('''
     )
 ''')  
 
-cnt = pd.read_sql_query("SELECT * FROM ABERTURA", conn1)
+cnt = pd.read_sql_query("SELECT * FROM ROSIVALDO", conn1)
 cnt1 = cnt.shape[0]
 consulta = "SELECT * FROM ABERTURA"
 ln = pd.read_sql_query(consulta, conn)
 
 #OS ABERTAS  NÃO FINALIZADAS 
-cursor1.execute("SELECT * FROM ABERTURA WHERE FINALIZADA = ?;", ('Não',))
+cursor1.execute("SELECT * FROM ROSIVALDO WHERE FINALIZADA = ?;", ('Não',))
 filas = cursor1.fetchall()
 fl = pd.DataFrame(filas)
 fl1 = fl.shape[0]  
 
 #OS FINALIZADAS
-cursor1.execute("SELECT * FROM ABERTURA WHERE FINALIZADA = ?;", ('Sim',))
+cursor1.execute("SELECT * FROM ROSIVALDO WHERE FINALIZADA = ?;", ('Sim',))
 filas1 = cursor1.fetchall()
 fl2 = pd.DataFrame(filas1)
 fl3 = fl2.shape[0]
@@ -309,7 +309,7 @@ fl3 = fl2.shape[0]
 
 cl = st.button("DELETAR TABELAS")
 if cl:
-   cursor1.execute("DROP TABLE ABERTURA")
+   cursor1.execute("DROP TABLE ROSIVALDO")
    conn1.commit()
 
 if 'OS' not in st.session_state:
