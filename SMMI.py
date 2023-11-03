@@ -303,8 +303,8 @@ fl11 = fl10.shape[0]
 #OS FINALIZADAS
 cursor1.execute("SELECT * FROM ROSIVALDO WHERE FINALIZADA = ?;", ('Sim',))
 filas11 = cursor1.fetchall()
-fl10 = pd.DataFrame(filas11)
-fl12 = fl10.shape[0]
+fl13 = pd.DataFrame(filas11)
+fl14 = fl13.shape[0]
 
 
 if 'OS' not in st.session_state:
@@ -440,17 +440,17 @@ if fLIDERES == 'ROSIVALDO':
                                 
                             
             with tab3:
-                st.metric(label="OS em aberto", value= fl1)
+                st.metric(label="OS em aberto", value= fl11)
                 fl = pd.DataFrame(filas)
-                st.dataframe(fl)
-                st.write(fl1)
+                st.dataframe(fl10)
+                st.write(fl11)
                 
 
             with tab4:
-                st.metric(label="OS Finalizadas", value= fl3)
+                st.metric(label="OS Finalizadas", value= fl14)
                 fl2 = pd.DataFrame(filas1)
-                st.dataframe(fl2)
-                st.write(fl3)
+                st.dataframe(fl13)
+                st.write(fl14)
 
             with tab5:
                 statuses,sats,statuses1=st.columns([90,8,20])
