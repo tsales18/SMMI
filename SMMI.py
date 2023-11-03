@@ -461,7 +461,7 @@ if fLIDERES == 'ROSIVALDO':
                 with statuses:   
                     Nmr = st.number_input("Selecione o numero da OS",min_value=0,max_value=allln1,value=0,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= allln1)
-                    Nmr1 = Nmr-1
+                    Nmr1 = Nmr
                     osespec = allinhas.loc[Nmr1]
                     def load_data():
                         return pd.DataFrame(osespec)
