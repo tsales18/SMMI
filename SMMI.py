@@ -454,7 +454,7 @@ if fLIDERES == 'ROSIVALDO':
             with tab5:
                 statuses,sats,statuses1=st.columns([90,8,20])
                 with statuses:   
-                    Nmr = st.number_input("Selecione o numero da OS",min_value=1,max_value=cnt1,value=1,placeholder="Selecione")
+                    Nmr = st.number_input("Selecione o numero da OS",min_value=1,max_value=cnt11,value=1,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= cnt11)
                     Nmr1 = Nmr-1
                     ln1 = ln10.loc[Nmr1]
