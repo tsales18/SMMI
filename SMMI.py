@@ -291,7 +291,7 @@ cursor1.execute('''
 
 cnt10 = pd.read_sql_query("SELECT * FROM ROSIVALDO", conn1)
 cnt11 = cnt10.shape[0]
-consulta1 = "SELECT * FROM ABERTURA"
+consulta1 = "SELECT * FROM ROSIVALDO"
 ln10 = pd.read_sql_query(consulta1, conn1)
 
 #OS ABERTAS  NÃO FINALIZADAS 
