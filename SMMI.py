@@ -436,8 +436,8 @@ if fLIDERES == 'ROSIVALDO':
                         st.form_submit_button('↻')
 
                                   
-                if fLIDERES == 'FELIPE LEITE':
-                    if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
+                if fLIDERES == 'ROSIVALDO':
+                    if fSETOR == 'ELÉTRICA':
                         if senha == '1409':                                                                                                                     
                             fnl=st.button("FINALIZAR")
                             if fnl:
