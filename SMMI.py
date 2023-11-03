@@ -416,11 +416,10 @@ if fLIDERES == 'ROSIVALDO':
                                                    allln3 = allln1 + 1
                                                 if insdds:
                                                    st.balloons()
-                                                   cursor1.execute("INSERT INTO ROSIVALDO (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA) VALUES (?, ?, ?, ?, ?, ?,?,?,?)", (allln3 , str(Rsolicitante), str(Rsetor), str(Rstatus),str(Rniveldaocorrencia),Rdata,str(Rtempoi),Racao,'Não'))
+                                                   cursor1.execute("INSERT INTO ROSIVALDO (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?)", (allln3 , str(Rsolicitante), str(Rsetor), str(Rstatus),str(Rniveldaocorrencia),Rdata,str(Rtempoi),Racao,'Não',None,None))
                                                    conn1.commit()
                                                    conn1.close()
-                                               
-                     
+                                                    
             with tab7:
                 st.header('Finalizar OS')
                 jefferson,lourdes=st.columns(2)
@@ -442,7 +441,7 @@ if fLIDERES == 'ROSIVALDO':
                         if senha == '1409':                                                                                                                     
                             fnl=st.button("FINALIZAR")
                             if fnl:
-                                cursor1.execute("UPDATE ROSIVALDO SET FINALIZADA = ? WHERE OS = ?",(finalizar,fnlz2))
+                                cursor1.execute("UPDATE ROSIVALDO SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,fnlz2))
                                 conn1.commit()
                                 conn1.close()
                                 st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente com uma flor.')
