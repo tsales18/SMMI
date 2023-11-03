@@ -179,7 +179,13 @@ if fLIDERES == 'FELIPE LEITE':
                         st.metric(label="OS Existentes", value= cnt1)
                         sos1 = sos-1
                         ln1 = ln.loc[sos1]
-                        st.dataframe(ln1)
+                        def load_dataa():
+                            return pd.DataFrame(ln1)
+                        st.checkbox("Estender", value=True, key="use_container_widthh")
+                        df = load_dataa()
+                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                        conn.close()
+
 
                 if fLIDERES == 'FELIPE LEITE':
                     if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
@@ -261,12 +267,7 @@ if fLIDERES == 'FELIPE LEITE':
                     df = load_data()
                     st.dataframe(df, use_container_width=st.session_state.use_container_width)
                     conn.close()
-            
-
-                
-        
-               
-                                                                                         
+                                                            
 if senha != '69':
     video_file = open('./Midia/SSMMOV.mp4', 'rb')
     video_bytes = video_file.read() 
