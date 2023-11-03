@@ -296,7 +296,7 @@ cursor1.execute('''
 ''')
 
 
-#leitura do banco smmi
+#leitura do banco rosivaldo
 allln = pd.read_sql_query("SELECT * FROM ROSIVALDO", conn1)
 allln1 = allln.shape[0]
 consulta1 = "SELECT * FROM ROSIVALDO"
@@ -325,6 +325,10 @@ if 'FIN' not in st.session_state:
 if fLIDERES == 'ROSIVALDO':
     if fSETOR == 'ELÉTRICA':
         if senha == '1409':
+            cl1 = st.button("DELETAR TABELA")
+            if cl1:
+                cursor1.execute("DROP TABLE ROSIVALDO")
+                conn1.commit()
             image = Image.open('./Midia/ssmm.jpg')
             col1,col2 = st.columns([1,1])
             with col1:
@@ -441,7 +445,7 @@ if fLIDERES == 'ROSIVALDO':
                         if senha == '1409':                                                                                                                     
                             fnl=st.button("FINALIZAR")
                             if fnl:
-                                cursor1.execute("UPDATE ROSIVALDO SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,fnlz2))
+                                cursor1.execute("UPDATE ROSIVALDO SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput,str(timeinput),fnlz2))
                                 conn1.commit()
                                 conn1.close()
                                 st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente com uma flor.')
