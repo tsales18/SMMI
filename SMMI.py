@@ -289,6 +289,187 @@ cursor1.execute('''
     )
 ''')  
 
+cnt = pd.read_sql_query("SELECT * FROM ABERTURA", conn1)
+cnt1 = cnt.shape[0]
+consulta = "SELECT * FROM ABERTURA"
+ln = pd.read_sql_query(consulta, conn)
+
+#OS ABERTAS  NÃO FINALIZADAS 
+cursor1.execute("SELECT * FROM ABERTURA WHERE FINALIZADA = ?;", ('Não',))
+filas = cursor1.fetchall()
+fl = pd.DataFrame(filas)
+fl1 = fl.shape[0]  
+
+#OS FINALIZADAS
+cursor1.execute("SELECT * FROM ABERTURA WHERE FINALIZADA = ?;", ('Sim',))
+filas1 = cursor1.fetchall()
+fl2 = pd.DataFrame(filas1)
+fl3 = fl2.shape[0]
+
+
+cl = st.button("DELETAR TABELAS")
+if cl:
+   cursor1.execute("DROP TABLE ABERTURA")
+   conn1.commit()
+
+if 'OS' not in st.session_state:
+    st.session_state.OS = 0
+        
+if 'FIN' not in st.session_state:
+    st.session_state.FIN = 0
+
+if fLIDERES == 'ROSIVALDO':
+    if fSETOR == 'ELETRICA':
+        if senha == '1409':
+            image = Image.open('./Midia/ssmm.jpg')
+            ps1,ps2 = st.columns([1,1])
+            with ps1:
+                st.title('Status e informações de OS')
+           
+            tab1, tab2, tab3,tab4,tab5= st.tabs(["Cadastro", "Finalizar","OS Em aberto","OS Finalizadas","Geral"])
+            with tab1:
+                st.header("Cadastro de ocorrência")
+                colibrim,neymar= st.columns([2,3])  
+                with colibrim:
+                    atd = st.toggle('Atualizar os dados')
+                    with st.form('my form2'):
+                        st.markdown("---")
+                        solicitante = st.selectbox('Solicitante', ('FILIPE','JAMESON','MAURILIO SALES','BRUNO KAPPAUN','EDUARDO BICUDO','ADRIELY LEMOS','GILSON FREITAS','ALEX SANTOS','CESAR AUGUSTO'),index=None,placeholder='Selecione')
+                        if atd:
+                            Usolicitante = st.selectbox('Atualize o Solicitante', ('FILIPE','JAMESON','MAURILIO SALES','BRUNO KAPPAUN','EDUARDO BICUDO','ADRIELY LEMOS','GILSON FREITAS','ALEX SANTOS','CESAR AUGUSTO'),index=None,placeholder='Atualize')
+                            st.markdown("---")
+
+                        status = st.selectbox('Tipo de Ocorrência', ('ELETRICA PREDIAL MANUTENÇÃO EM PAINES TROCA DE COMPONENTES',),index=None, placeholder='Selecione')
+                        if atd:
+                            Ustatus = st.selectbox('Atualize o Tipo de Ocorrência', ('ELETRICA PREDIAL MANUTENÇÃO EM PAINES TROCA DE COMPONENTES',),index=None, placeholder='Atualize')
+                            st.markdown("---")
+
+                        setor = st.selectbox('Setor', ('TECNOLOGIA DA INFORMAÇÃO','COMERCIAL','ADMINISTRATIVO','EXPEDIÇÃO','PRODUÇÃO','FERRAMENTARIA','SERRALHARIA'),index=None,placeholder='Selecione')
+                        if atd:
+                            Usetor = st.selectbox('Aualize o Setor', ('TECNOLOGIA DA INFORMAÇÃO','ELETRICA'),index=None,placeholder='Atualize')
+                            st.markdown("---")
+
+                        niveldaocorrencia = st.selectbox('Nivel da ocorrência', ('EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE','URGÊNTE'),index=None,placeholder='Selecione')
+                        if atd:
+                            Univeldaocorrencia = st.selectbox('Atualize o Nivel da ocorrência',('EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE','URGÊNTE'),index=None, placeholder='Atualize')
+                            st.markdown("---")
+                        acao = st.selectbox('Tipo da ação', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
+                        if atd:
+                            Uacao = st.selectbox('Atualize o Tipo da ação', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
+                            st.markdown("---")
+
+                        relatorio = st.text_input('Relatorio')
+                        if atd:
+                            Urelatorio = st.text_input('Atualize o Relatorio')
+                            st.markdown("---")
+
+                        tempoi = st.time_input('Horario', value=None)
+                        if atd:
+                            Utempoi = st.time_input('Atualize o Horario', value=None)
+                            st.write(tempoi)
+
+                        data = st.date_input("Data", value=None)
+                        if atd:
+                            Udata = st.date_input("Atualize a Data", value=None)
+                        uploaded_files = st.file_uploader("Choose a CSV file", accept_multiple_files=True)
+                        for uploaded_file in uploaded_files:
+                            bytes_data = uploaded_file.read()
+                        st.form_submit_button('↻')
+
+                with neymar:
+                    if atd:
+                        sos = st.number_input("Selecione o numero da OS que deseja atualizar",min_value=1,max_value=cnt1,value=1,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value= cnt1)
+                        sos1 = sos-1
+                        ln1 = ln.loc[sos1]
+                        def load_dataa1():
+                            return pd.DataFrame(ln1)
+                        st.checkbox("Estender", value=True, key="use_container_widthh")
+                        df = load_dataa1()
+                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                        conn.close()
+
+
+                if fLIDERES == 'FELIPE LEITE':
+                    if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
+                        if senha == '69':
+                            if niveldaocorrencia != "Selecione":
+                                if solicitante != "Selecione":
+                                    if setor != "Selecione":
+                                            if atd: 
+                                                st.caption('É necessario finalizar esta OS antes de inciar outra.')
+                                                atl = st.button('atualize')
+                                                if atl:
+                                                   st.balloons()
+                                                   cursor1.execute("UPDATE ABERTURA SET SOLICITANTE = ?, SETOR = ?,OCORRENCIA = ?,GRAU = ?, DATA = ?, HORA = ?, AÇÃO = ? WHERE OS = ?",(Usolicitante, Usetor, Ustatus,Univeldaocorrencia,Udata,str(Utempoi),Uacao,sos))
+                                                   conn1.commit()
+                                                   conn1.close()
+                                                
+                                            else:
+                                                att = st.button("INSERIR DADOS")
+
+                                                if att:
+                                                   cnt3 = cnt1 + 1
+                                                if att:
+                                                   st.balloons()
+                                                   cursor1.execute("INSERT INTO ABERTURA (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA) VALUES (?, ?, ?, ?, ?, ?,?,?,?)", (cnt3 , str(solicitante), str(setor), str(status),str(niveldaocorrencia),data,str(tempoi),acao,'Não'))
+                                                   conn1.commit()
+                                                   conn1.close()
+                                               
+                     
+            with tab2:
+                st.header('Finalizar OS')
+                jefferson,lourdes=st.columns(2)
+                with jefferson:
+                    fnlz = st.number_input("Selecione o numero da OS que deseja Finalizar",min_value=1,max_value=cnt1,value=1,placeholder="Selecione")
+                    with st.form('my form'):
+                        finalizar = st.selectbox('OS finalizada?', ('Sim','Não'),index=None,placeholder='Selecione')
+                        fnlz1 = fnlz-1
+                        df3 = st.date_input("Data", value=None)
+                        st.write(df3)
+                        st.markdown("---")
+                        t = st.time_input('HORA', value=None)
+                        st.write(t)
+                        st.form_submit_button('↻')
+
+                                  
+                if fLIDERES == 'FELIPE LEITE':
+                    if fSETOR == 'TECNOLOGIA DA INFORMAÇÃO':
+                        if senha == '69':                                                                                                                     
+                            FIn=st.button("FINALIZAR")
+                            if FIn:
+                                cursor1.execute("UPDATE ABERTURA SET FINALIZADA = ? WHERE OS = ?",(finalizar,fnlz))
+                                conn1.commit()
+                                conn1.close()
+                                st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente com uma flor.')
+                                
+                            
+            with tab3:
+                st.metric(label="OS em aberto", value= fl1)
+                fl = pd.DataFrame(filas)
+                st.dataframe(fl)
+                st.write(fl1)
+                
+
+            with tab4:
+                st.metric(label="OS Finalizadas", value= fl3)
+                fl2 = pd.DataFrame(filas1)
+                st.dataframe(fl2)
+                st.write(fl3)
+
+            with tab5:
+                statuses,sats,statuses1=st.columns([90,8,20])
+                with statuses:   
+                    Nmr = st.number_input("Selecione o numero da OS",min_value=1,max_value=cnt1,value=1,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value= cnt1)
+                    Nmr1 = Nmr-1
+                    ln1 = ln.loc[Nmr1]
+                    def load_data1():
+                        return pd.DataFrame(ln1)
+                    st.checkbox("Estender", value=True, key="use_container_width")
+                    df = load_data1()
+                    st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                    
 
 
 
