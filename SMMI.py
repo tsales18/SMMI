@@ -41,7 +41,6 @@ df = pd.read_excel(
     
 )
 
-
 with st.sidebar:
     logo_teste = Image.open('./Midia/sales.jpeg')
     st.image(logo_teste, width=300)
