@@ -459,7 +459,7 @@ if fLIDERES == 'ROSIVALDO':
             with tab10:
                 statuses,sats,statuses1=st.columns([90,8,20])
                 with statuses:   
-                    Nmr = st.number_input("Selecione o numero da OS",min_value=1,max_value=allln1,value=1,placeholder="Selecione")
+                    Nmr = st.number_input("Selecione o numero da OS",min_value=1,max_value=allln1,value=0,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= allln1)
                     Nmr1 = Nmr-1
                     osespec = allinhas.loc[Nmr1]
