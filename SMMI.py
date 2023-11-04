@@ -437,8 +437,7 @@ if fLIDERES == 'ROSIVALDO':
                                                     cursor1.execute("INSERT INTO ROSIVALDO (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?)", (allln3 , str(Rsolicitante), str(Rsetor), str(Rstatus),str(Rniveldaocorrencia),Rdata,str(Rtempoi),Racao,'Não',None,None))
                                                     conn1.commit()
                                                     conn1.close()
-        
-                                                    
+                           
             with tab7:
                 st.header('Finalizar OS')
                 jefferson,lourdes=st.columns(2)
@@ -467,10 +466,11 @@ if fLIDERES == 'ROSIVALDO':
                                 
                             
             with tab8:
-                st.metric(label="OS em aberto", value= whrlinhas2)
-                whrlinhas1 = pd.DataFrame(whlinhas)
-                st.dataframe(whrlinhas1)
-                st.write(whrlinhas2)
+                with st.expander("See explanation"):
+                    st.metric(label="OS em aberto", value= whrlinhas2)
+                    whrlinhas1 = pd.DataFrame(whlinhas)
+                    st.dataframe(whrlinhas1)
+                    st.write(whrlinhas2)
                 
 
             with tab9:
