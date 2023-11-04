@@ -80,7 +80,7 @@ cursor.execute('''
         FINALIZADA TEXT,
         DATAF DATE,
         HORAF TIME
-                   
+                 
     )
 ''')
 
@@ -270,12 +270,33 @@ if fLIDERES == 'FELIPE LEITE':
                     conn.close()
                                                             
 if senha != '69':
+
     video_file = open('./Midia/SSMMOV.mp4', 'rb')
     video_bytes = video_file.read() 
     st.video(video_bytes)
 
+conn4 = sqlite3.connect('FERRAMENTARIA')
+cursor4 = conn4.cursor()
+cursor4.execute('''
+    CREATE TABLE IF NOT EXISTS FERRAMENTARIA (
+        OS INTEGER PRIMARY KEY,
+        SOLICITANTE TEXT,
+        SETOR TEXT,
+        OCORRENCIA TEXT,
+        GRAU TEXT,
+        DATA DATE,
+                
+        HORA TIME,
+        AÇÃO TEXT,
+        FINALIZADA TEXT,
+        DATAF,
+        HORAF
+       
+                   
+    )
+''')
 
-conn1 = sqlite3.connect('SMMI')
+conn1 = sqlite3.connect('ROSIVALDO')
 cursor1 = conn1.cursor()
 cursor1.execute('''
     CREATE TABLE IF NOT EXISTS ROSIVALDO (
@@ -303,10 +324,11 @@ consulta1 = "SELECT * FROM ROSIVALDO"
 allinhas = pd.read_sql_query(consulta1, conn1)
 
 #OS ABERTAS  NÃO FINALIZADAS 
-cursor1.execute("SELECT * FROM ROSIVALDO WHERE FINALIZADA = ?;", ('Não',))
+cursor1.execute("SELECT * FROM ROSIVALDO WHERE SETOR = ?;", ('FERRAMENTARIA',))
 whlinhas = cursor1.fetchall()
 whrlinhas1 = pd.DataFrame(whlinhas)
 whrlinhas2 = whrlinhas1.shape[0]  
+
 
 #OS FINALIZADAS
 cursor1.execute("SELECT * FROM ROSIVALDO WHERE FINALIZADA = ?;", ('Sim',))
@@ -347,14 +369,14 @@ if fLIDERES == 'ROSIVALDO':
                             RUsolicitante = st.selectbox('Atualize o Solicitante', ('FILIPE','JAMESON','MAURILIO SALES','BRUNO KAPPAUN','EDUARDO BICUDO','ADRIELY LEMOS','GILSON FREITAS','ALEX SANTOS','CESAR AUGUSTO'),index=None,placeholder='Atualize')
                             st.markdown("---")
 
-                        Rstatus = st.selectbox('Tipo de Ocorrência', ('ELETRICA PREDIAL MANUTENÇÃO EM PAINES TROCA DE COMPONENTES',),index=None, placeholder='Selecione')
+                        Rstatus = st.text_input('Atualize o tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
                         if atd1:
-                            RUstatus = st.selectbox('Atualize o Tipo de Ocorrência', ('ELETRICA PREDIAL MANUTENÇÃO EM PAINES TROCA DE COMPONENTES',),index=None, placeholder='Atualize')
+                            RUstatus = st.text_input('Tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
                             st.markdown("---")
 
                         Rsetor = st.selectbox('Setor', ('TECNOLOGIA DA INFORMAÇÃO','COMERCIAL','ADMINISTRATIVO','EXPEDIÇÃO','PRODUÇÃO','FERRAMENTARIA','SERRALHARIA'),index=None,placeholder='Selecione')
                         if atd1:
-                            RUsetor = st.selectbox('Aualize o Setor', ('TECNOLOGIA DA INFORMAÇÃO','ELETRICA'),index=None,placeholder='Atualize')
+                            RUsetor = st.selectbox('Aualize o Setor', ('TECNOLOGIA DA INFORMAÇÃO','COMERCIAL','ADMINISTRATIVO','EXPEDIÇÃO','PRODUÇÃO','FERRAMENTARIA','SERRALHARIA'),index=None,placeholder='Atualize')
                             st.markdown("---")
 
                         Rniveldaocorrencia = st.selectbox('Nivel da ocorrência', ('EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE','URGÊNTE'),index=None,placeholder='Selecione')
@@ -395,7 +417,7 @@ if fLIDERES == 'ROSIVALDO':
                         st.checkbox("Estender", value=True, key="use_container_widthh")
                         df = load_dataa()
                         st.dataframe(df, use_container_width=st.session_state.use_container_width)
-                        conn1.close()
+                      
 
 
                 if fLIDERES == 'ROSIVALDO':
@@ -408,21 +430,22 @@ if fLIDERES == 'ROSIVALDO':
                                                 st.caption('É necessario finalizar esta OS antes de inciar outra.')
                                                 atl = st.button('atualize')
                                                 if atl:
-                                                   st.balloons()
-                                                   cursor1.execute("UPDATE ROSIVALDO SET SOLICITANTE = ?, SETOR = ?,OCORRENCIA = ?,GRAU = ?, DATA = ?, HORA = ?, AÇÃO = ? WHERE OS = ?",(RUsolicitante, RUsetor, RUstatus,RUniveldaocorrencia,RUdata,str(RUtempoi),RUacao,numros))
-                                                   conn1.commit()
-                                                   conn1.close()
-                                                
+                                                    st.balloons()
+                                                    cursor1.execute("UPDATE ROSIVALDO SET SOLICITANTE = ?, SETOR = ?,OCORRENCIA = ?,GRAU = ?, DATA = ?, HORA = ?, AÇÃO = ? WHERE OS = ?",(RUsolicitante, RUsetor, RUstatus,RUniveldaocorrencia,RUdata,str(RUtempoi),RUacao,numros))
+                                                    conn1.commit()
+                                                    conn1.close()
+                                                                                           
                                             else:
                                                 insdds = st.button("INSERIR DADOS")
 
                                                 if insdds:
-                                                   allln3 = allln1 + 1
+                                                    allln3 = allln1 + 1
                                                 if insdds:
-                                                   st.balloons()
-                                                   cursor1.execute("INSERT INTO ROSIVALDO (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?)", (allln3 , str(Rsolicitante), str(Rsetor), str(Rstatus),str(Rniveldaocorrencia),Rdata,str(Rtempoi),Racao,'Não',None,None))
-                                                   conn1.commit()
-                                                   conn1.close()
+                                                    st.balloons()
+                                                    cursor1.execute("INSERT INTO ROSIVALDO (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?)", (allln3 , str(Rsolicitante), str(Rsetor), str(Rstatus),str(Rniveldaocorrencia),Rdata,str(Rtempoi),Racao,'Não',None,None))
+                                                    conn1.commit()
+                                                    conn1.close()
+        
                                                     
             with tab7:
                 st.header('Finalizar OS')
@@ -552,9 +575,9 @@ if fLIDERES == 'IVANILDO':
                             IUsolicitante = st.selectbox('Atualize o Solicitante', ('FILIPE','JAMESON','MAURILIO SALES','BRUNO KAPPAUN','EDUARDO BICUDO','ADRIELY LEMOS','GILSON FREITAS','ALEX SANTOS','CESAR AUGUSTO'),index=None,placeholder='Atualize')
                             st.markdown("---")
 
-                        Istatus = st.selectbox('Tipo de Ocorrência', ('ELETRICA PREDIAL MANUTENÇÃO EM PAINES TROCA DE COMPONENTES',),index=None, placeholder='Selecione')
+                        Istatus = st.text_input('Atualize o tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
                         if atd2:
-                            IUstatus = st.selectbox('Atualize o Tipo de Ocorrência', ('ELETRICA PREDIAL MANUTENÇÃO EM PAINES TROCA DE COMPONENTES',),index=None, placeholder='Atualize')
+                            st.text_input('Tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
                             st.markdown("---")
 
                         Isetor = st.selectbox('Setor', ('TECNOLOGIA DA INFORMAÇÃO','COMERCIAL','ADMINISTRATIVO','EXPEDIÇÃO','PRODUÇÃO','FERRAMENTARIA','SERRALHARIA'),index=None,placeholder='Selecione')
@@ -682,7 +705,6 @@ if fLIDERES == 'IVANILDO':
                     df = load_data()
                     st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
-
 conn2 = sqlite3.connect('CESAR')
 cursor2 = conn2.cursor()
 cursor2.execute('''
@@ -706,7 +728,7 @@ cursor2.execute('''
 
 
 #leitura do banco CESAR FILHO
-allln7 = pd.read_sql_query("SELECT * FROM CESAR FILHO", conn2)
+allln7 = pd.read_sql_query("SELECT * FROM CESAR", conn2)
 allln8 = allln7.shape[0]
 consulta2 = "SELECT * FROM CESAR FILHO"
 allinhas1 = pd.read_sql_query(consulta2, conn2)
@@ -722,8 +744,6 @@ cursor2.execute("SELECT * FROM CESAR WHERE FINALIZADA = ?;", ('Sim',))
 whrlinhas9 = cursor2.fetchall()
 whrlinhas10 = pd.DataFrame(whrlinhas9)
 whrlinhas11 = whrlinhas10.shape[0]
-
-
 
 if 'OS' not in st.session_state:
     st.session_state.OS = 0
@@ -756,14 +776,14 @@ if fLIDERES == 'CESAR FILHO':
                             CUsolicitante = st.selectbox('Atualize o Solicitante', ('FILIPE','JAMESON','MAURILIO SALES','BRUNO KAPPAUN','EDUARDO BICUDO','ADRIELY LEMOS','GILSON FREITAS','ALEX SANTOS','CESAR AUGUSTO'),index=None,placeholder='Atualize')
                             st.markdown("---")
 
-                        Cstatus = st.selectbox('Tipo de Ocorrência', ('ELETRICA PREDIAL MANUTENÇÃO EM PAINES TROCA DE COMPONENTES',),index=None, placeholder='Selecione')
+                        Cstatus = st.text_input('Tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
                         if atd3:
-                            CUstatus = st.selectbox('Atualize o Tipo de Ocorrência', ('ELETRICA PREDIAL MANUTENÇÃO EM PAINES TROCA DE COMPONENTES',),index=None, placeholder='Atualize')
+                            CUstatus = st.text_input('Atualize o tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
                             st.markdown("---")
 
                         Csetor = st.selectbox('Setor', ('TECNOLOGIA DA INFORMAÇÃO','COMERCIAL','ADMINISTRATIVO','EXPEDIÇÃO','PRODUÇÃO','FERRAMENTARIA','SERRALHARIA'),index=None,placeholder='Selecione')
                         if atd3:
-                            CUsetor = st.selectbox('Aualize o Setor', ('TECNOLOGIA DA INFORMAÇÃO','ELETRICA'),index=None,placeholder='Atualize')
+                            CUsetor = st.selectbox('Aualize o Setor', ('TECNOLOGIA DA INFORMAÇÃO','COMERCIAL','ADMINISTRATIVO','EXPEDIÇÃO','PRODUÇÃO','FERRAMENTARIA','SERRALHARIA'),index=None,placeholder='Atualize')
                             st.markdown("---")
 
                         Cniveldaocorrencia = st.selectbox('Nivel da ocorrência', ('EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE','URGÊNTE'),index=None,placeholder='Selecione')
@@ -959,14 +979,14 @@ if fLIDERES == 'MARCIO FABIO':
                             MUs = st.selectbox('Atualize o Solicitante', ('FILIPE','JAMESON','MAURILIO SALES','BRUNO KAPPAUN','EDUARDO BICUDO','ADRIELY LEMOS','GILSON FREITAS','ALEX SANTOS','CESAR AUGUSTO'),index=None,placeholder='Atualize')
                             st.markdown("---")
 
-                        Mst = st.selectbox('Tipo de Ocorrência', ('ELETRICA PREDIAL MANUTENÇÃO EM PAINES TROCA DE COMPONENTES',),index=None, placeholder='Selecione')
+                        Mst = st.text_input('Tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
                         if atd4:
-                            MUst = st.selectbox('Atualize o Tipo de Ocorrência', ('ELETRICA PREDIAL MANUTENÇÃO EM PAINES TROCA DE COMPONENTES',),index=None, placeholder='Atualize')
+                            MUst = st.text_input('Atualize o tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
                             st.markdown("---")
 
                         Mstr = st.selectbox('Setor', ('TECNOLOGIA DA INFORMAÇÃO','COMERCIAL','ADMINISTRATIVO','EXPEDIÇÃO','PRODUÇÃO','FERRAMENTARIA','SERRALHARIA'),index=None,placeholder='Selecione')
                         if atd4:
-                            MUstr = st.selectbox('Aualize o Setor', ('TECNOLOGIA DA INFORMAÇÃO','ELETRICA'),index=None,placeholder='Atualize')
+                            MUstr = st.selectbox('Aualize o Setor', ('TECNOLOGIA DA INFORMAÇÃO','COMERCIAL','ADMINISTRATIVO','EXPEDIÇÃO','PRODUÇÃO','FERRAMENTARIA','SERRALHARIA'),index=None,placeholder='Atualize')
                             st.markdown("---")
 
                         Mndo = st.selectbox('Nivel da ocorrência', ('EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE','URGÊNTE'),index=None,placeholder='Selecione')
@@ -1090,39 +1110,34 @@ if fLIDERES == 'MARCIO FABIO':
                     st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
 
+query = "SELECT * FROM ROSIVALDO WHERE SETOR = 'FERRAMENTARIA' AND FINALIZADA = 'Não'"
+df = pd.read_sql_query(query, conn1)
+df1 = df.shape[0]
+ddd = df.loc[0]
 
+query = "SELECT * FROM ROSIVALDO WHERE SETOR = 'FERRAMENTARIA' AND FINALIZADA = 'Sim'"
+rd = pd.read_sql_query(query, conn1)
+rd1 = rd.shape[0]
+rdd = rd.loc
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
 if fLIDERES == 'IVSON PAULINO':
     if fSETOR == 'FERRAMENTARIA':
         if senha == '70':
             image = Image.open('./Midia/ssmm.jpg')
             ps6,ps7= st.columns(2)
             with ps6:
-                st.image(image,width=1700)
                 st.title('Status e informações de OS')
 
             st.markdown("---")
-            tab4,tab5= st.tabs(["Cadastro","OS Abertas"])
+            tab4,tab5,tab6= st.tabs(["Cadastro","OS Abertas","OS Finalizadas"])
             with tab4:
                 st.header("Cadastro de ocorrência")
                 col1,col2= st.columns(2)  
                 with col1:
                     with st.form('my form2'):
+
+                        
+                        
                         st.markdown("---")
                         solicitanteF = st.selectbox('Solicitante', ('FILIPE',),index=0)
                         statusF = st.selectbox('Tipo de Ocorrência', ('ELETRICA PREDIAL MANUTENÇÃO EM PAINES TROCA DE COMPONENTES'),index=0,)   
@@ -1137,7 +1152,6 @@ if fLIDERES == 'IVSON PAULINO':
                         dataF = st.date_input("Data", value=None)
                         st.form_submit_button('↻')
                         
-                
                 if 'OS' not in st.session_state:
                     st.session_state.OS = 0
                     
@@ -1152,13 +1166,29 @@ if fLIDERES == 'IVSON PAULINO':
                                     if setorF != "Selecione":
                                         attt = st.button("INSERIR DADOS")
                                         
-                                            
-                                        
-                                          
             with tab5:
-                statuses,sats,statuses1=st.columns([80,8,20])
+                statuses,sats,statuses1=st.columns([80,0.1,0.1])
                 with statuses:
-                    st.dataframe(tempoi)
+                    numros14 = st.number_input("Selecione o numero da OS",min_value=1,max_value=df1,value=1,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value= df1)
+                    numros15 = numros14-1
+                    osespec3 = df.loc[numros15]
+                    def load_data():
+                        return pd.DataFrame(osespec3)
+                    st.checkbox("Estender", value=True, key="use_container_width")
+                    df = load_data()
+                    st.dataframe(df, use_container_width=st.session_state.use_container_width)
+
+
+
+            with tab6:
+                numros14 = st.number_input("Selecione o numero da OS",min_value=1,max_value=rd1,value=1,placeholder="Selecione")
+                st.metric(label="OS Existentes", value= rd1)
+                numros15 = numros14-1
+                osespec3 = rd.loc[numros15]
+                def load_data():
+                    return pd.DataFrame(osespec3)
+                st.checkbox("Estender", value=True, key="use_container_width")
+                df = load_data()
+                st.dataframe(df, use_container_width=st.session_state.use_container_width)
     
-                with statuses1:
-                    st.dataframe(tempoiF)
