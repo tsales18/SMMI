@@ -934,9 +934,9 @@ if 'OS' not in st.session_state:
 if 'FIN' not in st.session_state:
     st.session_state.FIN = 0
 
-if fLIDERES == 'MARCIO':
+if fLIDERES == 'MARCIO FABIO':
     if fSETOR == 'MECÂNICA':
-        if senha == '1407':
+        if senha == '1406':
             cl4 = st.button("DELETAR TABELA")
             if cl4:
                 cursor3.execute("DROP TABLE MARCIO")
@@ -1010,9 +1010,9 @@ if fLIDERES == 'MARCIO':
                         conn3.close()
 
 
-                if fLIDERES == 'MARCIO':
+                if fLIDERES == 'MARCIO FABIO':
                     if fSETOR == 'MECÂNICA':
-                        if senha == '1407':
+                        if senha == '1406':
                             if Mndo != "Selecione":
                                 if Ms != "Selecione":
                                     if Mstr != "Selecione":
@@ -1052,9 +1052,9 @@ if fLIDERES == 'MARCIO':
                         st.form_submit_button('↻')
 
                                   
-                if fLIDERES == 'MARCIO':
+                if fLIDERES == 'MARCIO FABIO':
                     if fSETOR == 'MECÂNICA':
-                        if senha == '1407':                                                                                                                     
+                        if senha == '1406':                                                                                                                     
                             fnl2=st.button("FINALIZAR")
                             if fnl2:
                                 cursor3.execute("UPDATE MARCIO SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput5,str(timeinput6),fnlz8))
