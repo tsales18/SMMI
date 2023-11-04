@@ -84,6 +84,26 @@ cursor.execute('''
     )
 ''')
 
+conn4 = sqlite3.connect('FERRAMENTARIA')
+cursor4 = conn4.cursor()
+cursor4.execute('''
+    CREATE TABLE IF NOT EXISTS FERRAMENTARIA (
+        OS INTEGER PRIMARY KEY,
+        SOLICITANTE TEXT,
+        SETOR TEXT,
+        OCORRENCIA TEXT,
+        GRAU TEXT,
+        DATA DATE,
+        HORA TIME,
+        AÇÃO TEXT,
+        FINALIZADA TEXT,
+        DATAF,
+        HORAF
+       
+                   
+    )
+''')
+
 
 
 #leitura do banco smmi
@@ -96,7 +116,7 @@ ln = pd.read_sql_query(consulta, conn)
 cursor.execute("SELECT * FROM ABERTURA WHERE FINALIZADA = ?;", ('Não',))
 filas = cursor.fetchall()
 fl = pd.DataFrame(filas)
-fl1 = fl.shape[0]  
+fl1 = fl.shape[0] 
 
 #OS FINALIZADAS
 cursor.execute("SELECT * FROM ABERTURA WHERE FINALIZADA = ?;", ('Sim',))
@@ -304,29 +324,30 @@ allln1 = allln.shape[0]
 consulta1 = "SELECT * FROM ROSIVALDO"
 allinhas = pd.read_sql_query(consulta1, conn1)
 
-#OS ABERTAS  NÃO FINALIZADAS 
-cursor1.execute("SELECT * FROM ROSIVALDO WHERE SETOR = ?;", ('FERRAMENTARIA',))
-whlinhas = cursor1.fetchall()
-whrlinhas1 = pd.DataFrame(whlinhas)
-whrlinhas2 = whrlinhas1.shape[0]  
-
+#OS ABERTAS  NÃO FINALIZADAS
+consulta4 = "SELECT * FROM ROSIVALDO WHERE FINALIZADA = 'Não'"
+whrlinhas1 = pd.read_sql_query(consulta4, conn1)
+whrlinhas2 = whrlinhas1.shape[0] 
 
 #OS FINALIZADAS
-cursor1.execute("SELECT * FROM ROSIVALDO WHERE FINALIZADA = ?;", ('Sim',))
-whrlinhas3 = cursor1.fetchall()
-whrlinhas4 = pd.DataFrame(whrlinhas3)
-whrlinhas5 = whrlinhas4.shape[0]
+consulta5 = "SELECT * FROM ROSIVALDO WHERE FINALIZADA = 'Sim'"
+whrlinhas3 = pd.read_sql_query(consulta5, conn1)
+whrlinhas4 = whrlinhas3.shape[0]
 
-#feedback
-query = "SELECT * FROM ROSIVALDO WHERE SETOR = 'FERRAMENTARIA' AND FINALIZADA = 'Não'"
-rd2 = pd.read_sql_query(query, conn1)
+
+
+
+#feedback ferramentaria
+query = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Não'"
+rd2 = pd.read_sql_query(query, conn4)
 rd3 = rd2.shape[0]
-ddd = rd2.loc[0]
 
-query = "SELECT * FROM ROSIVALDO WHERE SETOR = 'FERRAMENTARIA' AND FINALIZADA = 'Sim'"
-rd = pd.read_sql_query(query, conn1)
+query1 = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Sim'"
+rd = pd.read_sql_query(query1, conn4)
 rd1 = rd.shape[0]
-rdd = rd.loc
+
+allln13 = pd.read_sql_query("SELECT * FROM FERRAMENTARIA", conn4)
+allln14 = allln13.shape[0]
 
 
 
@@ -442,10 +463,12 @@ if fLIDERES == 'ROSIVALDO':
                 st.header('Finalizar OS')
                 jefferson,lourdes=st.columns(2)
                 with jefferson:
+                    setorescolhido = st.selectbox('Setor', ('TECNOLOGIA DA INFORMAÇÃO','COMERCIAL','ADMINISTRATIVO','EXPEDIÇÃO','PRODUÇÃO','FERRAMENTARIA','SERRALHARIA','ELÉTRICA'),index=None,placeholder='Selecione')
                     fnlz2 = st.number_input("Selecione o numero da OS que deseja Finalizar",min_value=0,max_value=allln1,value=0,placeholder="Selecione")
+                    fnlz3 = fnlz2-1
+                    st.write(fnlz2)
                     with st.form('my form'):
                         finalizar = st.selectbox('OS finalizada?', ('Sim','Não'),index=None,placeholder='Selecione')
-                        fnlz3 = fnlz2-1
                         datainput = st.date_input("Data", value=None)
                         st.write(datainput)
                         st.markdown("---")
@@ -456,28 +479,79 @@ if fLIDERES == 'ROSIVALDO':
                                   
                 if fLIDERES == 'ROSIVALDO':
                     if fSETOR == 'ELÉTRICA':
-                        if senha == '1409':                                                                                                                     
-                            fnl=st.button("FINALIZAR")
-                            if fnl:
-                                cursor1.execute("UPDATE ROSIVALDO SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput,str(timeinput),fnlz2))
-                                conn1.commit()
-                                conn1.close()
-                                st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente com uma flor.')
+                        if senha == '1409':
+                            if setorescolhido == 'FERRAMENTARIA':    
+                                fnl=st.button("FINALIZAR")
+                                if fnl:
+                                    cursor4.execute("UPDATE FERRAMENTARIA SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput,str(timeinput),fnlz2))
+                                    conn4.commit()
+                                    st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente como uma flor.')
+                            if setorescolhido == 'ELÉTRICA':    
+                                fnl=st.button("FINALIZAR")
+                                if fnl:
+                                    cursor1.execute("UPDATE ROSIVALDO SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput,str(timeinput),fnlz2))
+                                    conn1.commit()
+                                    conn1.close()
+                                    st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente como uma flor.')    
+
+                          
+                            
                                 
                             
             with tab8:
-                with st.expander("See explanation"):
-                    st.metric(label="OS em aberto", value= whrlinhas2)
-                    whrlinhas1 = pd.DataFrame(whlinhas)
-                    st.dataframe(whrlinhas1)
-                    st.write(whrlinhas2)
-                
+                with st.expander("Minhas OS"):
+                    numros2 = st.number_input("Selecione o numero da OS",min_value=0,max_value=whrlinhas2,value=0,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value= whrlinhas2)
+                    numros3 = numros2-1
+                    if whrlinhas2 == 0:
+                        st.success('Não há pendências')
+                    else:
+                        osespec = whrlinhas1.loc[numros3]
+                        def load_data():
+                            return pd.DataFrame(osespec)
+                        st.checkbox("Estender", value=True, key="use_container_width")
+                        df = load_data()
+                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
+                st.markdown('--------')
+                with st.expander("Ferramentaria"):
+                    numros2 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=rd3,value=0,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value=rd3)
+                    numros3 = numros2-1
+                    if rd3 == 0:
+                        st.success('Não há pendências')
+                    else:
+                        osespec = rd2.loc[numros3]
+                        def load_data():
+                            return pd.DataFrame(osespec)
+                        st.checkbox("Estender", value=True, key="use_container_widtth")
+                        df = load_data()
+                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                
             with tab9:
-                st.metric(label="OS Finalizadas",value=whrlinhas5)
-                whrlinhas4 = pd.DataFrame(whrlinhas3)
-                st.dataframe(whrlinhas4)
-                st.write(whrlinhas5)
+                with st.expander("Minhas OS"):
+                    numros2 = st.number_input("Selecione o numero da       OS",min_value=1,max_value=whrlinhas4,value=1,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value= whrlinhas4)
+                    numros3 = numros2-1
+                    osespec = whrlinhas3.loc[numros3]
+                    def load_data():
+                        return pd.DataFrame(osespec)
+                    st.checkbox("Estender", value=True, key="use_container_width")
+                    df = load_data()
+                    st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                
+                st.markdown('--------')
+                with st.expander("Ferramentaria"):
+                    numros2 = st.number_input("Selecione o numero da    OS",min_value=1,max_value=rd1,value=1,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value= rd1)
+                    numros3 = numros2-1
+                    osespec = rd.loc[numros3]
+                    def load_data():
+                        return pd.DataFrame(osespec)
+                    st.checkbox("Estender", value=True, key="use_contaainer_widtth")
+                    df = load_data()
+                    st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                
 
             with tab10:
                 statuses,sats,statuses1=st.columns([90,8,20])
@@ -489,7 +563,7 @@ if fLIDERES == 'ROSIVALDO':
                         osespec = allinhas.loc[numros3]
                         def load_data():
                             return pd.DataFrame(osespec)
-                        st.checkbox("Estender", value=True, key="use_container_width")
+                        st.checkbox("Estender", value=True, key="usee_container_width")
                         df = load_data()
                         st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
@@ -1102,25 +1176,6 @@ if fLIDERES == 'MARCIO FABIO':
                     df = load_data()
                     st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
-conn4 = sqlite3.connect('FERRAMENTARIA')
-cursor4 = conn4.cursor()
-cursor4.execute('''
-    CREATE TABLE IF NOT EXISTS FERRAMENTARIA (
-        OS INTEGER PRIMARY KEY,
-        SOLICITANTE TEXT,
-        SETOR TEXT,
-        OCORRENCIA TEXT,
-        GRAU TEXT,
-        DATA DATE,
-        HORA TIME,
-        AÇÃO TEXT,
-        FINALIZADA TEXT,
-        DATAF,
-        HORAF
-       
-                   
-    )
-''')
 
 allln13 = pd.read_sql_query("SELECT * FROM FERRAMENTARIA", conn4)
 allln14 = allln13.shape[0]
@@ -1128,8 +1183,8 @@ consulta2 = "SELECT * FROM FERRAMENTARIA"
 allinhas15 = pd.read_sql_query(consulta2, conn4)
 
 #OS ABERTAS  NÃO FINALIZADAS
-consulta3 = "SELECT * FROM ROSIVALDO WHERE SETOR = 'FERRAMENTARIA' AND FINALIZADA = 'Não'"
-whrlinhas12 = pd.read_sql_query(consulta3, conn1)
+consulta3 = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Não'"
+whrlinhas12 = pd.read_sql_query(consulta3, conn4)
 whrlinhas13 = whrlinhas12.shape[0]
 
 #OS FINALIZADAS
@@ -1214,7 +1269,7 @@ if fLIDERES == 'IVSON PAULINO':
                         st.checkbox("Estender", value=True, key="use_container_widthh")
                         df = load_dataa()
                         st.dataframe(df, use_container_width=st.session_state.use_container_width)
-                        conn4.close()
+                
                         
                 if 'OS' not in st.session_state:
                     st.session_state.OS = 0
@@ -1239,22 +1294,25 @@ if fLIDERES == 'IVSON PAULINO':
                 statuses,sats,statuses1=st.columns([80,0.1,0.1])
                 with statuses:
                     st.header('Manutenção', divider='rainbow')
-                    numros18 = st.number_input("Selecione o numero da OS",min_value=1,max_value=rd3,value=1,placeholder="Selecione")
+                    numros18 = st.number_input("Selecione o numero da OS",min_value=0,max_value=rd3,value=0,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= rd3)
                     numros19 = numros18-1
-                    osespec4 = rd2.loc[numros19]
-                    def load_data():
-                        return pd.DataFrame(osespec4)
-                    st.checkbox("Estender", value=True, key="use_container_width")
-                    df = load_data()
-                    st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                    if rd3 == 0:
+                        st.error('Não ha OS pendentes')
+                    else:
+                        osespec4 = rd2.loc[numros19]
+                        def load_data():
+                            return pd.DataFrame(osespec4)
+                        st.checkbox("Estender", value=True, key="use_container_width")
+                        df = load_data()
+                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
                     st.markdown('-------------')
                     st.header('Ferramentaria', divider='rainbow')
-                    numros18 = st.number_input("Selecione o numero da  OS",min_value=1,max_value=whrlinhas13,value=1,placeholder="Selecione")
+                    numros22 = st.number_input("Selecione o numero da  OS",min_value=1,max_value=whrlinhas13,value=1,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= whrlinhas13)
-                    numros19 = numros18-1
-                    osespec5 = whrlinhas12.loc[numros19]
+                    numros23 = numros22-1
+                    osespec5 = whrlinhas12.loc[numros23]
                     def load_data():
                         return pd.DataFrame(osespec5)
                     st.checkbox("Estender", value=True, key="usee_containner_widthh")
@@ -1271,8 +1329,9 @@ if fLIDERES == 'IVSON PAULINO':
                 st.checkbox("Estender", value=True, key= "use_containner_width")
                 df = load_data()
                 st.dataframe(df, use_container_width=st.session_state.use_container_width)
+
             with tab29:
-                numros20 = st.number_input("Selecione o numero da   OS",min_value=1,max_value=allln14,value=1,placeholder="Selecione")
+                numros20 = st.number_input("Selecione o numero da    OS",min_value=1,max_value=allln14,value=1,placeholder="Selecione")
                 st.metric(label="OS Existentes", value= allln14)
                 numros21 = numros20-1
                 osespec7 = allln13.loc[numros21]
