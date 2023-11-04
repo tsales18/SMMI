@@ -826,12 +826,12 @@ if fLIDERES == 'CESAR FILHO':
                                                 insdds2 = st.button("INSERIR DADOS")
 
                                                 if insdds2:
-                                                   allln6 = allln8 + 1
+                                                    allln6 = allln8 + 1
                                                 if insdds2:
-                                                   st.balloons()
-                                                   cursor2.execute("INSERT INTO CESAR (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?)", (allln6 , str(Csolicitante), str(Csetor), str(Cstatus),str(Cniveldaocorrencia),Cdata,str(Ctempoi),Cacao,'Não',None,None))
-                                                   conn2.commit()
-                                                   conn2.close()
+                                                    st.balloons()
+                                                    cursor2.execute("INSERT INTO CESAR (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?)", (allln6 , str(Csolicitante), str(Csetor), str(Cstatus),str(Cniveldaocorrencia),Cdata,str(Ctempoi),Cacao,'Não',None,None))
+                                                    conn2.commit()
+                                                    conn2.close()
                                                     
             with tab17:
                 st.header('Finalizar OS')
