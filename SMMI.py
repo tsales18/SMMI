@@ -334,9 +334,6 @@ consulta5 = "SELECT * FROM ROSIVALDO WHERE FINALIZADA = 'Sim'"
 whrlinhas3 = pd.read_sql_query(consulta5, conn1)
 whrlinhas4 = whrlinhas3.shape[0]
 
-
-
-
 #feedback ferramentaria
 query = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Não'"
 rd2 = pd.read_sql_query(query, conn4)
