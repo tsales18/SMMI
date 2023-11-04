@@ -481,16 +481,17 @@ if fLIDERES == 'ROSIVALDO':
 
             with tab10:
                 statuses,sats,statuses1=st.columns([90,8,20])
-                with statuses:   
-                    numros2 = st.number_input("Selecione o numero da OS",min_value=1,max_value=allln1,value=1,placeholder="Selecione")
-                    st.metric(label="OS Existentes", value= allln1)
-                    numros3 = numros2-1
-                    osespec = allinhas.loc[numros3]
-                    def load_data():
-                        return pd.DataFrame(osespec)
-                    st.checkbox("Estender", value=True, key="use_container_width")
-                    df = load_data()
-                    st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                with statuses:
+                    with st.expander("See explanation"):
+                        numros2 = st.number_input("Selecione o numero da OS",min_value=1,max_value=allln1,value=1,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value= allln1)
+                        numros3 = numros2-1
+                        osespec = allinhas.loc[numros3]
+                        def load_data():
+                            return pd.DataFrame(osespec)
+                        st.checkbox("Estender", value=True, key="use_container_width")
+                        df = load_data()
+                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
 
 
