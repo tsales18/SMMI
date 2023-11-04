@@ -336,6 +336,17 @@ whrlinhas3 = cursor1.fetchall()
 whrlinhas4 = pd.DataFrame(whrlinhas3)
 whrlinhas5 = whrlinhas4.shape[0]
 
+#feedback
+query = "SELECT * FROM ROSIVALDO WHERE SETOR = 'FERRAMENTARIA' AND FINALIZADA = 'Não'"
+rd2 = pd.read_sql_query(query, conn1)
+rd3 = rd2.shape[0]
+ddd = rd2.loc[0]
+
+query = "SELECT * FROM ROSIVALDO WHERE SETOR = 'FERRAMENTARIA' AND FINALIZADA = 'Sim'"
+rd = pd.read_sql_query(query, conn1)
+rd1 = rd.shape[0]
+rdd = rd.loc
+
 
 
 if 'OS' not in st.session_state:
@@ -1109,16 +1120,6 @@ if fLIDERES == 'MARCIO FABIO':
                     df = load_data()
                     st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
-
-query = "SELECT * FROM ROSIVALDO WHERE SETOR = 'FERRAMENTARIA' AND FINALIZADA = 'Não'"
-rd2 = pd.read_sql_query(query, conn1)
-rd3 = rd2.shape[0]
-ddd = rd2.loc[0]
-
-query = "SELECT * FROM ROSIVALDO WHERE SETOR = 'FERRAMENTARIA' AND FINALIZADA = 'Sim'"
-rd = pd.read_sql_query(query, conn1)
-rd1 = rd.shape[0]
-rdd = rd.loc
 
 if fLIDERES == 'IVSON PAULINO':
     if fSETOR == 'FERRAMENTARIA':
