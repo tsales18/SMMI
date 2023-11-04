@@ -552,7 +552,6 @@ if fLIDERES == 'ROSIVALDO':
                     df = load_data()
                     st.dataframe(df, use_container_width=st.session_state.use_container_width)
                 
-
             with tab10:
                 statuses,sats,statuses1=st.columns([90,8,20])
                 with statuses:
@@ -566,9 +565,6 @@ if fLIDERES == 'ROSIVALDO':
                         st.checkbox("Estender", value=True, key="usee_container_width")
                         df = load_data()
                         st.dataframe(df, use_container_width=st.session_state.use_container_width)
-
-
-
 
 conn2 = sqlite3.connect('IVANILDO')
 cursor2 = conn2.cursor()
@@ -1216,9 +1212,9 @@ if fLIDERES == 'IVSON PAULINO':
                     atd4 = st.toggle('Atualizar os dados')
                     with st.form('my form4'):
                         st.markdown("---")
-                        Fs = st.selectbox('Solicitante', ('FILIPE','JAMESON','MAURILIO SALES','BRUNO KAPPAUN','EDUARDO BICUDO','ADRIELY LEMOS','GILSON FREITAS','ALEX SANTOS','CESAR AUGUSTO'),index=None,placeholder='Selecione')
+                        Fs = st.selectbox('Solicitante', ('IVSON PAULINO',),index=None,placeholder='Selecione')
                         if atd4:
-                            FUs = st.selectbox('Atualize o Solicitante', ('FILIPE','JAMESON','MAURILIO SALES','BRUNO KAPPAUN','EDUARDO BICUDO','ADRIELY LEMOS','GILSON FREITAS','ALEX SANTOS','CESAR AUGUSTO'),index=None,placeholder='Atualize')
+                            FUs = st.selectbox('Atualize o Solicitante', ('IVSON PAULINO'),index=None,placeholder='Atualize')
                             st.markdown("---")
 
                         Fst = st.selectbox('Tipo de Ocorrência', ('ELETRICA PREDIAL MANUTENÇÃO EM PAINES TROCA DE COMPONENTES',),index=None, placeholder='Selecione')
@@ -1226,9 +1222,9 @@ if fLIDERES == 'IVSON PAULINO':
                             FUst = st.selectbox('Atualize o Tipo de Ocorrência', ('ELETRICA PREDIAL MANUTENÇÃO EM PAINES TROCA DE COMPONENTES',),index=None, placeholder='Atualize')
                             st.markdown("---")
 
-                        Fstr = st.selectbox('Setor', ('TECNOLOGIA DA INFORMAÇÃO','COMERCIAL','ADMINISTRATIVO','EXPEDIÇÃO','PRODUÇÃO','FERRAMENTARIA','SERRALHARIA'),index=None,placeholder='Selecione')
+                        Fstr = st.selectbox('Setor', ('FERRAMENTARIA',),index=None,placeholder='Selecione')
                         if atd4:
-                            Fustr = st.selectbox('Aualize o Setor', ('TECNOLOGIA DA INFORMAÇÃO','ELETRICA'),index=None,placeholder='Atualize')
+                            Fustr = st.selectbox('Aualize o Setor', ('FERRAMENTARIA'),index=None,placeholder='Atualize')
                             st.markdown("---")
 
                         Fndo = st.selectbox('Nivel da ocorrência', ('EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE','URGÊNTE'),index=None,placeholder='Selecione')
@@ -1293,53 +1289,47 @@ if fLIDERES == 'IVSON PAULINO':
             with tab27:
                 statuses,sats,statuses1=st.columns([80,0.1,0.1])
                 with statuses:
-                    st.header('Manutenção', divider='rainbow')
-                    numros18 = st.number_input("Selecione o numero da OS",min_value=0,max_value=rd3,value=0,placeholder="Selecione")
-                    st.metric(label="OS Existentes", value= rd3)
-                    numros19 = numros18-1
-                    if rd3 == 0:
-                        st.error('Não ha OS pendentes')
+                    st.markdown('-------------')
+                    st.header('Ferramentaria', divider='rainbow')
+                    numros22 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=whrlinhas13,value=0,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value= whrlinhas13)
+                    numros23 = numros22-1
+                    if whrlinhas13 == 0:
+                        st.success('Não há pendências')
                     else:
-                        osespec4 = rd2.loc[numros19]
+                        osespec5 = whrlinhas12.loc[numros23]
                         def load_data():
-                            return pd.DataFrame(osespec4)
-                        st.checkbox("Estender", value=True, key="use_container_width")
+                            return pd.DataFrame(osespec5)
+                        st.checkbox("Estender", value=True, key="usee_containner_widthh")
                         df = load_data()
                         st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
-                    st.markdown('-------------')
-                    st.header('Ferramentaria', divider='rainbow')
-                    numros22 = st.number_input("Selecione o numero da  OS",min_value=1,max_value=whrlinhas13,value=1,placeholder="Selecione")
-                    st.metric(label="OS Existentes", value= whrlinhas13)
-                    numros23 = numros22-1
-                    osespec5 = whrlinhas12.loc[numros23]
-                    def load_data():
-                        return pd.DataFrame(osespec5)
-                    st.checkbox("Estender", value=True, key="usee_containner_widthh")
-                    df = load_data()
-                    st.dataframe(df, use_container_width=st.session_state.use_container_width)
-
             with tab28:
+                st.markdown('----------')
+                st.header('Ferramentaria', divider='rainbow')
                 numros16 = st.number_input("Selecione o numero da   OS",min_value=1,max_value=rd1,value=1,placeholder="Selecione")
                 st.metric(label="OS Existentes", value= rd1)
                 numros17 = numros16-1
                 osespec6 = rd.loc[numros17]
                 def load_data():
                     return pd.DataFrame(osespec6)
-                st.checkbox("Estender", value=True, key= "use_containner_width")
+                st.checkbox("Estender", value=True, key="use_container_width")
                 df = load_data()
                 st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
             with tab29:
-                numros20 = st.number_input("Selecione o numero da    OS",min_value=1,max_value=allln14,value=1,placeholder="Selecione")
-                st.metric(label="OS Existentes", value= allln14)
-                numros21 = numros20-1
-                osespec7 = allln13.loc[numros21]
-                def load_data():
-                    return pd.DataFrame(osespec7)
-                st.checkbox("Estender", value=True, key= "uuse_containner_width")
-                df = load_data()
-                st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                with st.expander("Minhas OS"):
+                    st.markdown('----------')
+                    st.header('Ferramentaria', divider='rainbow')
+                    numros20 = st.number_input("Selecione o numero da    OS",min_value=1,max_value=allln14,value=1,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value= allln14)
+                    numros21 = numros20-1
+                    osespec7 = allln13.loc[numros21]
+                    def load_data():
+                        return pd.DataFrame(osespec7)
+                    st.checkbox("Estender", value=True, key= "uuse_containner_width")
+                    df = load_data()
+                    st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
 
 
