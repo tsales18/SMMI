@@ -1111,9 +1111,9 @@ if fLIDERES == 'MARCIO FABIO':
 
 
 query = "SELECT * FROM ROSIVALDO WHERE SETOR = 'FERRAMENTARIA' AND FINALIZADA = 'Não'"
-df = pd.read_sql_query(query, conn1)
-df1 = df.shape[0]
-ddd = df.loc[0]
+rd2 = pd.read_sql_query(query, conn1)
+rd3 = rd2.shape[0]
+ddd = rd2.loc[0]
 
 query = "SELECT * FROM ROSIVALDO WHERE SETOR = 'FERRAMENTARIA' AND FINALIZADA = 'Sim'"
 rd = pd.read_sql_query(query, conn1)
@@ -1169,10 +1169,10 @@ if fLIDERES == 'IVSON PAULINO':
             with tab5:
                 statuses,sats,statuses1=st.columns([80,0.1,0.1])
                 with statuses:
-                    numros14 = st.number_input("Selecione o numero da OS",min_value=1,max_value=df1,value=1,placeholder="Selecione")
-                    st.metric(label="OS Existentes", value= df1)
+                    numros14 = st.number_input("Selecione o numero da OS",min_value=1,max_value=rd3,value=1,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value= rd3)
                     numros15 = numros14-1
-                    osespec3 = df.loc[numros15]
+                    osespec3 = rd2.loc[numros15]
                     def load_data():
                         return pd.DataFrame(osespec3)
                     st.checkbox("Estender", value=True, key="use_container_width")
@@ -1182,12 +1182,12 @@ if fLIDERES == 'IVSON PAULINO':
 
 
             with tab6:
-                numros14 = st.number_input("Selecione o numero da OS",min_value=1,max_value=rd1,value=1,placeholder="Selecione")
+                numros16 = st.number_input("Selecione o numero da OS",min_value=1,max_value=rd1,value=1,placeholder="Selecione")
                 st.metric(label="OS Existentes", value= rd1)
-                numros15 = numros14-1
-                osespec3 = rd.loc[numros15]
+                numros17 = numros16-1
+                osespec4 = rd.loc[numros17]
                 def load_data():
-                    return pd.DataFrame(osespec3)
+                    return pd.DataFrame(osespec4)
                 st.checkbox("Estender", value=True, key="use_container_width")
                 df = load_data()
                 st.dataframe(df, use_container_width=st.session_state.use_container_width)
