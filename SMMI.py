@@ -610,6 +610,13 @@ if fLIDERES == 'ROSIVALDO':
                                 if fnl:
                                     cursor6.execute("UPDATE ADMINISTRATIVO SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput,str(timeinput),fnlz2))
                                     conn6.commit()
+                                    st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente como uma flor.') 
+                            
+                            if setorescolhido == 'COMERCIAL':    
+                                fnl=st.button("FINALIZAR")
+                                if fnl:
+                                    cursor7.execute("UPDATE COMERCIAL SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput,str(timeinput),fnlz2))
+                                    conn7.commit()
                                     st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente como uma flor.')  
 
 
@@ -673,6 +680,21 @@ if fLIDERES == 'ROSIVALDO':
                         st.checkbox("Estender", value=True, key="use_container_width ")
                         lddt = load_data()
                         st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
+
+                st.markdown('--------')
+                with st.expander("Comercial"):
+                    numros4 = st.number_input("Selecione o numero  da      OS",min_value=0,max_value=rd15,value=rd15,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value=rd15)
+                    numros5 = numros4-1
+                    if rd15 == 0:
+                        st.success('Não há pendências')
+                    else:
+                        osespec = rd14.loc[numros5]
+                        def load_data():
+                            return pd.DataFrame(osespec)
+                        st.checkbox("Estender", value=True, key="use_container_width ")
+                        lddt = load_data()
+                        st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
                 
                 
             with tab9:
@@ -731,6 +753,21 @@ if fLIDERES == 'ROSIVALDO':
                         st.success('Não há pendências')
                     else:
                         osespec = rd8.loc[numros5]
+                        def load_data():
+                            return pd.DataFrame(osespec)
+                        st.checkbox("Estender", value=True, key="use_container_width ")
+                        lddt = load_data()
+                        st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
+
+                st.markdown('--------')
+                with st.expander("Comercial"):
+                    numros4 = st.number_input("Selecione o numero  da      OS",min_value=0,max_value=rd13,value=rd13,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value=rd13)
+                    numros5 = numros4-1
+                    if rd13 == 0:
+                        st.success('Não há pendências')
+                    else:
+                        osespec = rd12.loc[numros5]
                         def load_data():
                             return pd.DataFrame(osespec)
                         st.checkbox("Estender", value=True, key="use_container_width ")
@@ -1877,7 +1914,7 @@ whrlinhas31 = pd.DataFrame(whrlinhas30)
 whrlinhas32 = whrlinhas31.shape[0]
 
 if fLIDERES == 'ADRIELY LEMOS':
-    if fSETOR == 'PRODUÇÃO':
+    if fSETOR == 'COMERCIAL':
         if senha == '1403':
             image = Image.open('./Midia/ssmm.jpg')
             ps6,ps7= st.columns(2)
@@ -1959,7 +1996,7 @@ if fLIDERES == 'ADRIELY LEMOS':
                     st.session_state.FIN = 0
                         
                 if fLIDERES == 'ADRIELY LEMOS':
-                    if fSETOR == 'PRODUÇÃO':
+                    if fSETOR == 'COMERCIAL':
                         if senha == '1403':
                             Inserts2 = st.button("INSERIR DADOS")
                             if Inserts2:
@@ -2021,3 +2058,9 @@ if fLIDERES == 'ADRIELY LEMOS':
                         st.checkbox("Estender", value=True, key= "uuse_containner_width")
                         df = load_data()
                         st.dataframe(df, use_container_width=st.session_state.use_container_width)
+
+
+
+st.write(fLIDERES) 
+st.write(fSETOR) 
+st.write(senha)
