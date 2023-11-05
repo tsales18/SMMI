@@ -527,7 +527,8 @@ if fLIDERES == 'ROSIVALDO':
                 
             with tab9:
                 with st.expander("Minhas OS"):
-                    numros6 = st.number_input("Selecione o numero da       OS",min_value=0,max_value=whrlinhas4,value=whrlinhas4,placeholder="Selecione")
+                    numros6 = st.number_input("Selecione o numero da  
+                                                   OS",min_value=0,max_value=whrlinhas4,value=whrlinhas4,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= whrlinhas4)
                     numros7 = numros6-1
                     if whrlinhas4 == 0:
@@ -1212,7 +1213,7 @@ if fLIDERES == 'IVSON PAULINO':
             st.markdown("---")
             tab26,tab27,tab28,tab29= st.tabs(["Cadastro","OS Abertas","OS Finalizadas","Geral"])
             with tab26:
-                st.header("Cadastro de ocorrência")
+               st.header('Cadastro de ocorrências', divider='rainbow')
                 col9,col10= st.columns(2)  
                 with col9:                  
                     atd4 = st.toggle('Atualizar os dados')
