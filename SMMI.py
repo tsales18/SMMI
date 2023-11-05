@@ -317,6 +317,26 @@ cursor1.execute('''
     )
 ''')
 
+conn2 = sqlite3.connect('CESAR')
+cursor2 = conn2.cursor()
+cursor2.execute('''
+    CREATE TABLE IF NOT EXISTS CESAR (
+        OS INTEGER PRIMARY KEY,
+        SOLICITANTE TEXT,
+        SETOR TEXT,
+        OCORRENCIA TEXT,
+        GRAU TEXT,
+        DATA DATE,
+        HORA TIME,
+        AÇÃO TEXT,
+        FINALIZADA TEXT,
+        DATAF,
+        HORAF
+       
+                   
+    )
+''')
+
 conn5 = sqlite3.connect('PRODUCAO')
 cursor5 = conn5.cursor()
 cursor5.execute('''
@@ -868,229 +888,6 @@ if fLIDERES == 'ROSIVALDO':
                             df = load_data()
                             st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
-conn2 = sqlite3.connect('IVANILDO')
-cursor2 = conn2.cursor()
-cursor2.execute('''
-    CREATE TABLE IF NOT EXISTS IVANILDO (
-        OS INTEGER PRIMARY KEY,
-        SOLICITANTE TEXT,
-        SETOR TEXT,
-        OCORRENCIA TEXT,
-        GRAU TEXT,
-        DATA DATE,
-        HORA TIME,
-        AÇÃO TEXT,
-        FINALIZADA TEXT,
-        DATAF,
-        HORAF
-       
-                   
-    )
-''')
-
-
-#leitura do banco ivanildo
-allln4 = pd.read_sql_query("SELECT * FROM IVANILDO", conn2)
-allln5 = allln4.shape[0]
-consulta2 = "SELECT * FROM IVANILDO"
-allinhas1 = pd.read_sql_query(consulta2, conn2)
-
-#OS ABERTAS  NÃO FINALIZADAS 
-cursor2.execute("SELECT * FROM IVANILDO WHERE FINALIZADA = ?;", ('Não',))
-whlinhas6 = cursor2.fetchall()
-whrlinhas7 = pd.DataFrame(whlinhas6)
-whrlinhas8 = whrlinhas7.shape[0]  
-
-#OS FINALIZADAS
-cursor2.execute("SELECT * FROM IVANILDO WHERE FINALIZADA = ?;", ('Sim',))
-whrlinhas9 = cursor2.fetchall()
-whrlinhas10 = pd.DataFrame(whrlinhas9)
-whrlinhas11 = whrlinhas10.shape[0]
-
-
-
-if 'OS' not in st.session_state:
-    st.session_state.OS = 0
-        
-if 'FIN' not in st.session_state:
-    st.session_state.FIN = 0
-
-if fLIDERES == 'IVANILDO':
-    if fSETOR == 'ELÉTRICA':
-        if senha == '1408':
-            cl2 = st.button("DELETAR TABELA")
-            if cl2:
-                cursor2.execute("DROP TABLE IVANILDO")
-                conn2.commit()
-            image = Image.open('./Midia/ssmm.jpg')
-            col3,col4 = st.columns([1,1])
-            with col3:
-                st.title('Status e informações de OS')
-           
-            tab11, tab12,tab13,tab14,tab15= st.tabs(["Cadastro", "Finalizar","OS Em aberto","OS Finalizadas","Geral"])
-            with tab11:
-                st.header("Cadastro de ocorrência")
-                colibrim,neymar= st.columns([2,3])  
-                with colibrim:
-                    atd2 = st.toggle('Atualizar os dados')
-                    with st.form('my form3'):
-                        st.markdown("---")
-                        Isolicitante = st.selectbox('Solicitante', ('FILIPE','JAMESON','MAURILIO SALES','BRUNO KAPPAUN','EDUARDO BICUDO','ADRIELY LEMOS','GILSON FREITAS','ALEX SANTOS','CESAR AUGUSTO'),index=None,placeholder='Selecione')
-                        if atd2:
-                            IUsolicitante = st.selectbox('Atualize o Solicitante', ('FILIPE','JAMESON','MAURILIO SALES','BRUNO KAPPAUN','EDUARDO BICUDO','ADRIELY LEMOS','GILSON FREITAS','ALEX SANTOS','CESAR AUGUSTO'),index=None,placeholder='Atualize')
-                            st.markdown("---")
-
-                        Istatus = st.text_input('Atualize o tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
-                        if atd2:
-                            st.text_input('Tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
-                            st.markdown("---")
-
-                        Isetor = st.selectbox('Setor', ('TECNOLOGIA DA INFORMAÇÃO','COMERCIAL','ADMINISTRATIVO','EXPEDIÇÃO','PRODUÇÃO','FERRAMENTARIA','SERRALHARIA'),index=None,placeholder='Selecione')
-                        if atd2:
-                            IUsetor = st.selectbox('Aualize o Setor', ('TECNOLOGIA DA INFORMAÇÃO','ELETRICA'),index=None,placeholder='Atualize')
-                            st.markdown("---")
-
-                        Iniveldaocorrencia = st.selectbox('Nivel da ocorrência', ('EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE','URGÊNTE'),index=None,placeholder='Selecione')
-                        if atd2:
-                            IUniveldaocorrencia = st.selectbox('Atualize o Nivel da ocorrência',('EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE','URGÊNTE'),index=None, placeholder='Atualize')
-                            st.markdown("---")
-                        Iacao = st.selectbox('Tipo da ação', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
-                        if atd2:
-                            IUacao = st.selectbox('Atualize o Tipo da ação', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
-                            st.markdown("---")
-
-                        relatorio = st.text_input('Relatorio')
-                        if atd2:
-                            Urelatorio = st.text_input('Atualize o Relatorio')
-                            st.markdown("---")
-
-                        Itempoi = st.time_input('Horario', value=None)
-                        if atd2:
-                            IUtempoi = st.time_input('Atualize o Horario', value=None)
-                            st.write(Itempoi)
-
-                        Idata = st.date_input("Data", value=None)
-                        if atd2:
-                            IUdata = st.date_input("Atualize a Data", value=None)
-                        uploaded_files = st.file_uploader("Choose a CSV file", accept_multiple_files=True)
-                        for uploaded_file in uploaded_files:
-                            bytes_data = uploaded_file.read()
-                        st.form_submit_button('↻')
-
-                with neymar:
-                    if atd2:
-                        numros4 = st.number_input("Selecione o numero da OS que deseja atualizar",min_value=1,max_value=allln5,value=1,placeholder="Selecione")
-                        st.metric(label="OS Existentes", value= allln5)
-                        numros5 = numros4-1
-                        osespec1 = allinhas1.loc[numros5]
-                        def load_dataa():
-                            return pd.DataFrame(osespec1)
-                        st.checkbox("Estender", value=True, key="use_container_widthh")
-                        df = load_dataa()
-                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
-                        conn2.close()
-
-
-                if fLIDERES == 'IVANILDO':
-                    if fSETOR == 'ELÉTRICA':
-                        if senha == '1408':
-                            if Iniveldaocorrencia != "Selecione":
-                                if Isolicitante != "Selecione":
-                                    if Isetor != "Selecione":
-                                            if atd2: 
-                                                st.caption('É necessario finalizar esta OS antes de inciar outra.')
-                                                atl1 = st.button('atualize')
-                                                if atl1:
-                                                   st.balloons()
-                                                   cursor2.execute("UPDATE IVANILDO SET SOLICITANTE = ?, SETOR = ?,OCORRENCIA = ?,GRAU = ?, DATA = ?, HORA = ?, AÇÃO = ? WHERE OS = ?",(IUsolicitante, IUsetor, IUstatus,IUniveldaocorrencia,IUdata,str(IUtempoi),IUacao,numros4))
-                                                   conn2.commit()
-                                                   conn2.close()
-                                                
-                                            else:
-                                                insdds1 = st.button("INSERIR DADOS")
-
-                                                if insdds1:
-                                                   allln3 = allln5 + 1
-                                                if insdds1:
-                                                   st.balloons()
-                                                   cursor2.execute("INSERT INTO IVANILDO (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?)", (allln3 , str(Isolicitante), str(Isetor), str(Istatus),str(Iniveldaocorrencia),Idata,str(Itempoi),Iacao,'Não',None,None))
-                                                   conn2.commit()
-                                                   conn2.close()
-                                                    
-            with tab12:
-                st.header('Finalizar OS')
-                jefferson,lourdes=st.columns(2)
-                with jefferson:
-                    fnlz4 = st.number_input("Selecione o numero da OS que deseja Finalizar",min_value=0,max_value=allln5,value=0,placeholder="Selecione")
-                    with st.form('my form'):
-                        finalizar = st.selectbox('OS finalizada?', ('Sim','Não'),index=None,placeholder='Selecione')
-                        fnlz5 = fnlz4-1
-                        datainput2 = st.date_input("Data", value=None)
-                        st.write(datainput2)
-                        st.markdown("---")
-                        timeinput2 = st.time_input('HORA', value=None)
-                        st.write(timeinput2)
-                        st.form_submit_button('↻')
-
-                                  
-                if fLIDERES == 'IVANILDO':
-                    if fSETOR == 'ELÉTRICA':
-                        if senha == '1408':                                                                                                                     
-                            fnl=st.button("FINALIZAR")
-                            if fnl:
-                                cursor2.execute("UPDATE IVANILDO SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput2,str(timeinput2),fnlz4))
-                                conn2.commit()
-                                conn2.close()
-                                st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente com uma flor.')
-                                
-                            
-            with tab13:
-                st.metric(label="OS em aberto", value= whrlinhas8)
-                whrlinhas7 = pd.DataFrame(whlinhas6)
-                st.dataframe(whrlinhas7)
-                st.write(whrlinhas8)
-                
-
-            with tab14:
-                st.metric(label="OS Finalizadas",value=whrlinhas11)
-                whrlinhas10 = pd.DataFrame(whrlinhas9)
-                st.dataframe(whrlinhas10)
-                st.write(whrlinhas11)
-
-            with tab15:
-                statuses,sats,statuses1=st.columns([90,8,20])
-                with statuses:   
-                    numros6 = st.number_input("Selecione o numero da OS",min_value=1,max_value=allln5,value=1,placeholder="Selecione")
-                    st.metric(label="OS Existentes", value= allln5)
-                    numros7 = numros6-1
-                    osespec1 = allinhas1.loc[numros7]
-                    def load_data():
-                        return pd.DataFrame(osespec1)
-                    st.checkbox("Estender", value=True, key="use_container_width")
-                    df = load_data()
-                    st.dataframe(df, use_container_width=st.session_state.use_container_width)
-
-conn2 = sqlite3.connect('CESAR')
-cursor2 = conn2.cursor()
-cursor2.execute('''
-    CREATE TABLE IF NOT EXISTS CESAR (
-        OS INTEGER PRIMARY KEY,
-        SOLICITANTE TEXT,
-        SETOR TEXT,
-        OCORRENCIA TEXT,
-        GRAU TEXT,
-        DATA DATE,
-        HORA TIME,
-        AÇÃO TEXT,
-        FINALIZADA TEXT,
-        DATAF,
-        HORAF
-       
-                   
-    )
-''')
-
-
 
 #leitura do banco CESAR FILHO
 allln7 = pd.read_sql_query("SELECT * FROM CESAR", conn2)
@@ -1271,208 +1068,7 @@ if fLIDERES == 'CESAR FILHO':
                     df = load_data()
                     st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
-conn3 = sqlite3.connect('MARCIO')
-cursor3 = conn3.cursor()
-cursor3.execute('''
-    CREATE TABLE IF NOT EXISTS MARCIO (
-        OS INTEGER PRIMARY KEY,
-        SOLICITANTE TEXT,
-        SETOR TEXT,
-        OCORRENCIA TEXT,
-        GRAU TEXT,
-        DATA DATE,
-        HORA TIME,
-        AÇÃO TEXT,
-        FINALIZADA TEXT,
-        DATAF,
-        HORAF
-       
-                   
-    )
-''')
 
-
-
-#leitura do banco MARCIO
-allln10 = pd.read_sql_query("SELECT * FROM MARCIO", conn3)
-allln11 = allln10.shape[0]
-consulta2 = "SELECT * FROM MARCIO"
-allinhas1 = pd.read_sql_query(consulta2, conn3)
-
-#OS ABERTAS  NÃO FINALIZADAS 
-cursor3.execute("SELECT * FROM MARCIO WHERE FINALIZADA = ?;", ('Não',))
-whlinhas6 = cursor3.fetchall()
-whrlinhas7 = pd.DataFrame(whlinhas6)
-whrlinhas8 = whrlinhas7.shape[0]  
-
-#OS FINALIZADAS
-cursor3.execute("SELECT * FROM MARCIO WHERE FINALIZADA = ?;", ('Sim',))
-whrlinhas9 = cursor3.fetchall()
-whrlinhas10 = pd.DataFrame(whrlinhas9)
-whrlinhas11 = whrlinhas10.shape[0]
-
-
-
-if 'OS' not in st.session_state:
-    st.session_state.OS = 0
-        
-if 'FIN' not in st.session_state:
-    st.session_state.FIN = 0
-
-if fLIDERES == 'MARCIO FABIO':
-    if fSETOR == 'MECÂNICA':
-        if senha == '1406':
-            cl4 = st.button("DELETAR TABELA")
-            if cl4:
-                cursor3.execute("DROP TABLE MARCIO")
-                conn3.commit()
-            image = Image.open('./Midia/ssmm.jpg')
-            col7,col8 = st.columns([1,1])
-            with col7:
-                st.title('Status e informações de OS')
-           
-            tab21, tab22,tab23,tab24,tab25= st.tabs(["Cadastro", "Finalizar","OS Em aberto","OS Finalizadas","Geral"])
-            with tab21:
-                st.header("Cadastro de ocorrência")
-                colibrim,neymar= st.columns([2,3])  
-                with colibrim:
-                    atd4 = st.toggle('Atualizar os dados')
-                    with st.form('my form3'):
-                        st.markdown("---")
-                        Ms = st.selectbox('Solicitante', ('FILIPE','JAMESON','MAURILIO SALES','BRUNO KAPPAUN','EDUARDO BICUDO','ADRIELY LEMOS','GILSON FREITAS','ALEX SANTOS','CESAR AUGUSTO'),index=None,placeholder='Selecione')
-                        if atd4:
-                            MUs = st.selectbox('Atualize o Solicitante', ('FILIPE','JAMESON','MAURILIO SALES','BRUNO KAPPAUN','EDUARDO BICUDO','ADRIELY LEMOS','GILSON FREITAS','ALEX SANTOS','CESAR AUGUSTO'),index=None,placeholder='Atualize')
-                            st.markdown("---")
-
-                        Mst = st.text_input('Tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
-                        if atd4:
-                            MUst = st.text_input('Atualize o tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
-                            st.markdown("---")
-
-                        Mstr = st.selectbox('Setor', ('TECNOLOGIA DA INFORMAÇÃO','COMERCIAL','ADMINISTRATIVO','EXPEDIÇÃO','PRODUÇÃO','FERRAMENTARIA','SERRALHARIA'),index=None,placeholder='Selecione')
-                        if atd4:
-                            MUstr = st.selectbox('Aualize o Setor', ('TECNOLOGIA DA INFORMAÇÃO','COMERCIAL','ADMINISTRATIVO','EXPEDIÇÃO','PRODUÇÃO','FERRAMENTARIA','SERRALHARIA'),index=None,placeholder='Atualize')
-                            st.markdown("---")
-
-                        Mndo = st.selectbox('Nivel da ocorrência', ('EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE','URGÊNTE'),index=None,placeholder='Selecione')
-                        if atd4:
-                            MUndo = st.selectbox('Atualize o Nivel da ocorrência',('EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE','URGÊNTE'),index=None, placeholder='Atualize')
-                            st.markdown("---")
-                        Mac = st.selectbox('Tipo da ação', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
-                        if atd4:
-                            MUac = st.selectbox('Atualize o Tipo da ação', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
-                            st.markdown("---")
-
-                        relatorio = st.text_input('Relatorio')
-                        if atd4:
-                            Urelatorio = st.text_input('Atualize o Relatorio')
-                            st.markdown("---")
-
-                        Mtemp = st.time_input('Horario', value=None)
-                        if atd4:
-                            MUtempoi = st.time_input('Atualize o Horario', value=None)
-                            st.write(Mtemp)
-
-                        Mdata = st.date_input("Data", value=None)
-                        if atd4:
-                            MUdata = st.date_input("Atualize a Data", value=None)
-                        uploaded_files = st.file_uploader("Choose a CSV file", accept_multiple_files=True)
-                        for uploaded_file in uploaded_files:
-                            bytes_data = uploaded_file.read()
-                        st.form_submit_button('↻')
-
-                with neymar:
-                    if atd4:
-                        numros12 = st.number_input("Selecione o numero da OS que deseja atualizar",min_value=1,max_value=allln11,value=1,placeholder="Selecione")
-                        st.metric(label="OS Existentes", value= allln11)
-                        numros13 = numros12-1
-                        osespec3 = allinhas1.loc[numros13]
-                        def load_dataa():
-                            return pd.DataFrame(osespec3)
-                        st.checkbox("Estender", value=True, key="use_container_widthh")
-                        df = load_dataa()
-                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
-                        conn3.close()
-
-
-                if fLIDERES == 'MARCIO FABIO':
-                    if fSETOR == 'MECÂNICA':
-                        if senha == '1406':
-                            if Mndo != "Selecione":
-                                if Ms != "Selecione":
-                                    if Mstr != "Selecione":
-                                            if atd4: 
-                                                st.caption('É necessario finalizar esta OS antes de inciar outra.')
-                                                atl3 = st.button('atualize')
-                                                if atl3:
-                                                   st.balloons()
-                                                   cursor3.execute("UPDATE MARCIO SET SOLICITANTE = ?, SETOR = ?,OCORRENCIA = ?,GRAU = ?, DATA = ?, HORA = ?, AÇÃO = ? WHERE OS = ?",(MUs, MUstr, MUst,MUndo,MUdata,str(MUtempoi),MUac,numros12))
-                                                   conn3.commit()
-                                                   conn3.close()
-                                                
-                                            else:
-                                                insdds3 = st.button("INSERIR DADOS")
-
-                                                if insdds3:
-                                                   allln9 = allln11 + 1
-                                                if insdds3:
-                                                   st.balloons()
-                                                   cursor3.execute("INSERT INTO MARCIO (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?)", (allln9 , str(Ms), str(Mstr), str(Mst),str(Mndo),Mdata,str(Mtemp),Mac,'Não',None,None))
-                                                   conn3.commit()
-                                                   conn3.close()
-                                                    
-            with tab22:
-                st.header('Finalizar OS')
-                jefferson,lourdes=st.columns(2)
-                with jefferson:
-                    fnlz8 = st.number_input("Selecione o numero da OS que deseja Finalizar",min_value=0,max_value=allln11,value=0,placeholder="Selecione")
-                    with st.form('my form'):
-                        finalizar = st.selectbox('OS finalizada?', ('Sim','Não'),index=None,placeholder='Selecione')
-                        fnlz9 = fnlz8-1
-                        datainput5 = st.date_input("Data", value=None)
-                        st.write(datainput5)
-                        st.markdown("---")
-                        timeinput6 = st.time_input('HORA', value=None)
-                        st.write(timeinput6)
-                        st.form_submit_button('↻')
-
-                                  
-                if fLIDERES == 'MARCIO FABIO':
-                    if fSETOR == 'MECÂNICA':
-                        if senha == '1406':                                                                                                                     
-                            fnl2=st.button("FINALIZAR")
-                            if fnl2:
-                                cursor3.execute("UPDATE MARCIO SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput5,str(timeinput6),fnlz8))
-                                conn3.commit()
-                                conn3.close()
-                                st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente com uma flor.')
-                                
-                            
-            with tab23:
-                st.metric(label="OS em aberto", value= whrlinhas8)
-                whrlinhas7 = pd.DataFrame(whlinhas6)
-                st.dataframe(whrlinhas7)
-                st.write(whrlinhas8)
-                
-
-            with tab24:
-                st.metric(label="OS Finalizadas",value=whrlinhas11)
-                whrlinhas10 = pd.DataFrame(whrlinhas9)
-                st.dataframe(whrlinhas10)
-                st.write(whrlinhas11)
-
-            with tab25:
-                statuses,sats,statuses1=st.columns([90,8,20])
-                with statuses:   
-                    numros14 = st.number_input("Selecione o numero da OS",min_value=1,max_value=allln11,value=1,placeholder="Selecione")
-                    st.metric(label="OS Existentes", value= allln11)
-                    numros15 = numros14-1
-                    osespec3 = allinhas1.loc[numros15]
-                    def load_data():
-                        return pd.DataFrame(osespec3)
-                    st.checkbox("Estender", value=True, key="use_container_width")
-                    df = load_data()
-                    st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
 
 allln13 = pd.read_sql_query("SELECT * FROM FERRAMENTARIA", conn4)
@@ -1490,8 +1086,6 @@ cursor4.execute("SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = ?;", ('Sim',))
 whrlinhas15 = cursor4.fetchall()
 whrlinhas16 = pd.DataFrame(whrlinhas15)
 whrlinhas17 = whrlinhas16.shape[0]
-
-
 
 if fLIDERES == 'IVSON PAULINO':
     if fSETOR == 'FERRAMENTARIA':
@@ -1660,8 +1254,6 @@ cursor5.execute("SELECT * FROM PRODUCAO WHERE FINALIZADA = ?;", ('Sim',))
 whrlinhas20 = cursor5.fetchall()
 whrlinhas21 = pd.DataFrame(whrlinhas20)
 whrlinhas22 = whrlinhas21.shape[0]
-
-
 
 if fLIDERES == 'MAURILIO SALES':
     if fSETOR == 'PRODUÇÃO':
@@ -2263,7 +1855,7 @@ if fLIDERES == 'ALEX SANTOS':
             with tab43:
                 statuses,sats,statuses1=st.columns([80,0.1,0.1])
                 with statuses:
-                    st.header('EXPEDICAO', divider='rainbow')
+                    st.header('EXPEDIÇÃO', divider='rainbow')
                     with st.expander("Abertas"):
                         numros24 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=whrlinhas34,value=whrlinhas34,placeholder="Selecione")
                         st.metric(label="OS Existentes", value= whrlinhas34)
@@ -2279,7 +1871,7 @@ if fLIDERES == 'ALEX SANTOS':
                             st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
             with tab44:
-                st.header('PRODUÇÃO', divider='rainbow')
+                st.header('EXPEDIÇÃO', divider='rainbow')
                 with st.expander("Finalizadas"):
                     numros24 = st.number_input("Selecione o numero da   OS",min_value=0,max_value=rd17,value=rd17,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= rd17)
@@ -2296,7 +1888,7 @@ if fLIDERES == 'ALEX SANTOS':
                         st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
             with tab45:
-                st.header('PRODUÇÃO', divider='rainbow')
+                st.header('EXPEDIÇÃO', divider='rainbow')
                 with st.expander("Geral"):
                     numros24 = st.number_input("Selecione o numero da    OS",min_value=0,max_value=allln22,value=allln22,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= allln22)
