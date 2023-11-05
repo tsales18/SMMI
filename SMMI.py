@@ -527,8 +527,7 @@ if fLIDERES == 'ROSIVALDO':
                 
             with tab9:
                 with st.expander("Minhas OS"):
-                    numros6 = st.number_input("Selecione o numero da  
-                                                   OS",min_value=0,max_value=whrlinhas4,value=whrlinhas4,placeholder="Selecione")
+                    numros6 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=whrlinhas4,value=whrlinhas4,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= whrlinhas4)
                     numros7 = numros6-1
                     if whrlinhas4 == 0:
