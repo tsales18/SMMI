@@ -945,7 +945,7 @@ if fLIDERES == 'ROSIVALDO':
                 statuses,sats,statuses1=st.columns([90,8,20])
                 with statuses:
                     with st.expander("See explanation"):
-                        numros10 = st.number_input("Selecione o numero da    OS",min_value=0,max_value=allln1,value=allln1,placeholder="Selecione")
+                        numros10 = st.number_input(" Selecione o  numero da     OS",min_value=0,max_value=allln1,value=allln1,placeholder="Selecione")
                         st.metric(label="OS Existentes", value= allln1)
                         numros11 = numros10-1
                         if allln1 == 0:
