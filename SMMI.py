@@ -1224,7 +1224,7 @@ if fLIDERES == 'IVSON PAULINO':
                             st.markdown("---")
 
                         Fst = st.text_input('Atualize o tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
-                        if atd1:
+                        if atd4:
                             FUst = st.text_input('Tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
                             st.markdown("---")
 
