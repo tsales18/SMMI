@@ -218,7 +218,7 @@ if fLIDERES == 'MAURILIO SALES':
                 with statuses:
                     st.header('PRODUCAO', divider='rainbow')
                     with st.expander("Abertas"):
-                        numros22 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=whrlinhas19,value=0,placeholder="Selecione")
+                        numros22 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=whrlinhas19,value=whrlinhas19,placeholder="Selecione")
                         st.metric(label="OS Existentes", value= whrlinhas19)
                         numros23 = numros22-1
                         if whrlinhas19 == 0:
@@ -227,12 +227,12 @@ if fLIDERES == 'MAURILIO SALES':
                             osespec9 = whrlinhas18.loc[numros23]
                             def load_data():
                                 return pd.DataFrame(osespec9)
-                            st.checkbox("Estender", value=True, key="usee_containner_widthh")
+                            st.checkbox("Estender", value=True, key="use_container_width")
                             df = load_data()
                             st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
             with tab32:
-                st.header('PRODUCAO', divider='rainbow')
+                st.header('PRODUÇÃO', divider='rainbow')
                 with st.expander("Finalizadas"):
                     numros18 = st.number_input("Selecione o numero da   OS",min_value=0,max_value=rd5,value=rd5,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= rd5)
@@ -249,7 +249,7 @@ if fLIDERES == 'MAURILIO SALES':
                         st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
             with tab33:
-                st.header('PRODUCAO', divider='rainbow')
+                st.header('PRODUÇÃO', divider='rainbow')
                 with st.expander("Geral"):
                     numros20 = st.number_input("Selecione o numero da    OS",min_value=0,max_value=allln16,value=allln16,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= allln16)

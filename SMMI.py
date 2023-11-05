@@ -531,6 +531,7 @@ if fLIDERES == 'ROSIVALDO':
                                     st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente como uma flor.')   
 
             with tab8:
+                st.header('Manutenção', divider='rainbow')
                 with st.expander("Minhas OS"):
                     numros2 = st.number_input("Selecione o numero da OS",min_value=whrlinhas2,max_value=whrlinhas2,value=whrlinhas2,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= whrlinhas2)
@@ -577,6 +578,7 @@ if fLIDERES == 'ROSIVALDO':
                 
                 
             with tab9:
+                st.header('Manutenção', divider='rainbow')
                 with st.expander("Minhas OS"):
                     numros6 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=whrlinhas4,value=whrlinhas4,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= whrlinhas4)
@@ -607,7 +609,23 @@ if fLIDERES == 'ROSIVALDO':
                         df = load_data()
                         st.dataframe(df, use_container_width=st.session_state.use_container_width)
                 
+                st.markdown('--------')
+                with st.expander("Produção"):
+                    numros4 = st.number_input("Selecione o numero da      OS",min_value=0,max_value=rd5,value=rd5,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value=rd5)
+                    numros5 = numros4-1
+                    if rd5 == 0:
+                        st.success('Não há pendências')
+                    else:
+                        osespec = rd4.loc[numros5]
+                        def load_data():
+                            return pd.DataFrame(osespec)
+                        st.checkbox("Estender", value=True, key="use_container_width ")
+                        lddtt = load_data()
+                        st.dataframe(lddtt, use_container_width=st.session_state.use_container_width)
+                
             with tab10:
+                st.header('Manutenção', divider='rainbow')
                 statuses,sats,statuses1=st.columns([90,8,20])
                 with statuses:
                     with st.expander("See explanation"):
