@@ -1328,18 +1328,21 @@ if fLIDERES == 'IVSON PAULINO':
                         st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
             with tab29:
+                st.markdown('----------')
+                st.header('Ferramentaria', divider='rainbow')
                 with st.expander("Geral"):
-                    st.markdown('----------')
-                    st.header('Ferramentaria', divider='rainbow')
                     numros20 = st.number_input("Selecione o numero da    OS",min_value=0,max_value=allln14,value=allln14,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= allln14)
                     numros21 = numros20-1
-                    osespec7 = allln13.loc[numros21]
-                    def load_data():
-                        return pd.DataFrame(osespec7)
-                    st.checkbox("Estender", value=True, key= "uuse_containner_width")
-                    df = load_data()
-                    st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                    if allln14 == 0:
+                        st.success('Não há pendências')
+                    else:
+                        osespec7 = allln13.loc[numros21]
+                        def load_data():
+                            return pd.DataFrame(osespec7)
+                        st.checkbox("Estender", value=True, key= "uuse_containner_width")
+                        df = load_data()
+                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
 
 
