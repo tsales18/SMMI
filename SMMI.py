@@ -536,7 +536,7 @@ if fLIDERES == 'ROSIVALDO':
                         osespec = whrlinhas3.loc[numros7]
                         def load_data():
                             return pd.DataFrame(osespec)
-                        st.checkbox("Estender", value=True, key="use_container_width")
+                        st.checkbox("Estender", value=True, key="use_container_width ")
                         df = load_data()
                         st.dataframe(df, use_container_width=st.session_state.use_container_width)
                 
@@ -544,6 +544,7 @@ if fLIDERES == 'ROSIVALDO':
                 with st.expander("Ferramentaria"):
                     numros8 = st.number_input("Selecione o numero da    OS",min_value=0,max_value=rd1,value=rd1,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= rd1)
+
                     numros9 = numros8-1
                     if rd1 == 0:
                         st.success('Não há pendências')
@@ -1223,9 +1224,9 @@ if fLIDERES == 'IVSON PAULINO':
                             FUs = st.selectbox('Atualize o Solicitante', ('IVSON PAULINO'),index=None,placeholder='Atualize')
                             st.markdown("---")
 
-                        Fst = st.text_input('Atualize o tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
+                        Fst = st.text_input('Tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
                         if atd4:
-                            FUst = st.text_input('Tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
+                            FUst = st.text_input('Atualize o tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
                             st.markdown("---")
 
                         Fstr = st.selectbox('Setor', ('FERRAMENTARIA',),index=None,placeholder='Selecione')
@@ -1297,7 +1298,7 @@ if fLIDERES == 'IVSON PAULINO':
                 with statuses:
                     st.header('Ferramentaria', divider='rainbow')
                     with st.expander("Abertas"):
-                        numros22 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=whrlinhas13,value=0,placeholder="Selecione")
+                        numros22 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=whrlinhas13,value=whrlinhas13,placeholder="Selecione")
                         st.metric(label="OS Existentes", value= whrlinhas13)
                         numros23 = numros22-1
                         if whrlinhas13 == 0:
