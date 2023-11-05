@@ -743,13 +743,13 @@ if fLIDERES == 'ROSIVALDO':
                 
                 st.markdown('--------')
                 with st.expander("Expedição"):
-                    numros4 = st.number_input("Selecione o numero  da       OS",min_value=0,max_value=rd17,value=rd17,placeholder="Selecione")
-                    st.metric(label="OS Existentes", value=rd17)
+                    numros4 = st.number_input("Selecione o numero  da       OS",min_value=0,max_value=rd19,value=rd19,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value=rd19)
                     numros5 = numros4-1
-                    if rd17 == 0:
+                    if rd19 == 0:
                         st.success('Não há pendências')
                     else:
-                        osespec = rd16.loc[numros5]
+                        osespec = rd18.loc[numros5]
                         def load_data():
                             return pd.DataFrame(osespec)
                         st.checkbox("Estender", value=True, key="use_container_width ")
@@ -836,13 +836,13 @@ if fLIDERES == 'ROSIVALDO':
                 
                 st.markdown('--------')
                 with st.expander("Comercial"):
-                    numros4 = st.number_input("Selecione  o numero  da         OS",min_value=0,max_value=rd16,value=rd16,placeholder="Selecione")
-                    st.metric(label="OS Existentes", value=rd16)
+                    numros4 = st.number_input("Selecione  o  numero  da         OS",min_value=0,max_value=rd17,value=rd17,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value=rd17)
                     numros5 = numros4-1
-                    if rd16 == 0:
+                    if rd17 == 0:
                         st.success('Não há pendências')
                     else:
-                        osespec = rd15.loc[numros5]
+                        osespec = rd16.loc[numros5]
                         def load_data():
                             return pd.DataFrame(osespec)
                         st.checkbox("Estender", value=True, key="use_container_width      ")
