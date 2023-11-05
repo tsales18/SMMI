@@ -952,7 +952,7 @@ if fLIDERES == 'ROSIVALDO':
                 st.markdown('--------')
                 with st.expander("Expedição"):
                   if genre == 'ELÉTRICA':
-                        numros4 = st.number_input(" Selecione   o  numero   da   OS",min_value=0,max_value=rd58,value=rd58,placeholder="Selecione")
+                        numros4 = st.number_input("  Selecione   o  numero   da   OS",min_value=0,max_value=rd58,value=rd58,placeholder="Selecione")
                         st.metric(label="OS Existentes", value=rd58)
                         numros5 = numros4-1
                         if rd58 == 0:
