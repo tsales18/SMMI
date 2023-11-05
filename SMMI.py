@@ -558,7 +558,15 @@ if fLIDERES == 'ROSIVALDO':
                                 if fnl:
                                     cursor5.execute("UPDATE PRODUCAO SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput,str(timeinput),fnlz2))
                                     conn5.commit()
-                                    st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente como uma flor.')   
+                                    st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente como uma flor.')
+                            
+                            if setorescolhido == 'ADMINISTRATIVO':    
+                                fnl=st.button("FINALIZAR")
+                                if fnl:
+                                    cursor5.execute("UPDATE ADMINSTRATIVO SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput,str(timeinput),fnlz2))
+                                    conn5.commit()
+                                    st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente como uma flor.')  
+
 
             with tab8:
                 st.header('Manutenção', divider='rainbow')
@@ -684,7 +692,6 @@ if fLIDERES == 'ROSIVALDO':
                         lddt = load_data()
                         st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
 
-                
             with tab10:
                 st.header('Manutenção', divider='rainbow')
                 statuses,sats,statuses1=st.columns([90,8,20])
