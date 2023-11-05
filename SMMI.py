@@ -836,7 +836,7 @@ if fLIDERES == 'ROSIVALDO':
                 
                 st.markdown('--------')
                 with st.expander("Comercial"):
-                    numros4 = st.number_input("Selecione  o numero  da       OS",min_value=0,max_value=rd16,value=rd16,placeholder="Selecione")
+                    numros4 = st.number_input("Selecione  o numero  da         OS",min_value=0,max_value=rd16,value=rd16,placeholder="Selecione")
                     st.metric(label="OS Existentes", value=rd16)
                     numros5 = numros4-1
                     if rd16 == 0:
