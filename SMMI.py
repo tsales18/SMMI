@@ -1212,7 +1212,7 @@ if fLIDERES == 'IVSON PAULINO':
             st.markdown("---")
             tab26,tab27,tab28,tab29= st.tabs(["Cadastro","OS Abertas","OS Finalizadas","Geral"])
             with tab26:
-               st.header('Cadastro de ocorrências', divider='rainbow')
+                st.header('Cadastro de ocorrências', divider='rainbow')
                 col9,col10= st.columns(2)  
                 with col9:                  
                     atd4 = st.toggle('Atualizar os dados')
