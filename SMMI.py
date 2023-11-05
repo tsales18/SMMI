@@ -1223,9 +1223,9 @@ if fLIDERES == 'IVSON PAULINO':
                             FUs = st.selectbox('Atualize o Solicitante', ('IVSON PAULINO'),index=None,placeholder='Atualize')
                             st.markdown("---")
 
-                        Fst = st.selectbox('Tipo de Ocorrência', ('ELETRICA PREDIAL MANUTENÇÃO EM PAINES TROCA DE COMPONENTES',),index=None, placeholder='Selecione')
-                        if atd4:
-                            FUst = st.selectbox('Atualize o Tipo de Ocorrência', ('ELETRICA PREDIAL MANUTENÇÃO EM PAINES TROCA DE COMPONENTES',),index=None, placeholder='Atualize')
+                        Fst = st.text_input('Atualize o tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
+                        if atd1:
+                            FUst = st.text_input('Tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
                             st.markdown("---")
 
                         Fstr = st.selectbox('Setor', ('FERRAMENTARIA',),index=None,placeholder='Selecione')
@@ -1318,6 +1318,7 @@ if fLIDERES == 'IVSON PAULINO':
                     numros17 = numros16-1
                     if rd1 == 0:
                         st.success('Não há pendências')
+                        
                     else:
                         osespec6 = rd.loc[numros17]
                         def load_data():
