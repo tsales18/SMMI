@@ -512,13 +512,13 @@ if fLIDERES == 'ROSIVALDO':
 
                 st.markdown('--------')
                 with st.expander("Ferramentaria"):
-                    numros2 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=rd3,value=0,placeholder="Selecione")
+                    numros4 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=rd3,value=0,placeholder="Selecione")
                     st.metric(label="OS Existentes", value=rd3)
-                    numros3 = numros2-1
+                    numros5 = numros4-1
                     if rd3 == 0:
                         st.success('Não há pendências')
                     else:
-                        osespec = rd2.loc[numros3]
+                        osespec = rd2.loc[numros5]
                         def load_data():
                             return pd.DataFrame(osespec)
                         st.checkbox("Estender", value=True, key="use_container_widtth")
@@ -527,10 +527,10 @@ if fLIDERES == 'ROSIVALDO':
                 
             with tab9:
                 with st.expander("Minhas OS"):
-                    numros2 = st.number_input("Selecione o numero da       OS",min_value=1,max_value=whrlinhas4,value=1,placeholder="Selecione")
+                    numros6 = st.number_input("Selecione o numero da       OS",min_value=1,max_value=whrlinhas4,value=1,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= whrlinhas4)
-                    numros3 = numros2-1
-                    osespec = whrlinhas3.loc[numros3]
+                    numros7 = numros6-1
+                    osespec = whrlinhas3.loc[numros7]
                     def load_data():
                         return pd.DataFrame(osespec)
                     st.checkbox("Estender", value=True, key="use_container_width")
@@ -539,10 +539,10 @@ if fLIDERES == 'ROSIVALDO':
                 
                 st.markdown('--------')
                 with st.expander("Ferramentaria"):
-                    numros2 = st.number_input("Selecione o numero da    OS",min_value=1,max_value=rd1,value=1,placeholder="Selecione")
+                    numros8 = st.number_input("Selecione o numero da    OS",min_value=1,max_value=rd1,value=1,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= rd1)
-                    numros3 = numros2-1
-                    osespec = rd.loc[numros3]
+                    numros9 = numros8-1
+                    osespec = rd.loc[numros9]
                     def load_data():
                         return pd.DataFrame(osespec)
                     st.checkbox("Estender", value=True, key="use_contaainer_widtth")
@@ -553,10 +553,10 @@ if fLIDERES == 'ROSIVALDO':
                 statuses,sats,statuses1=st.columns([90,8,20])
                 with statuses:
                     with st.expander("See explanation"):
-                        numros2 = st.number_input("Selecione o numero da OS",min_value=1,max_value=allln1,value=1,placeholder="Selecione")
+                        numros10 = st.number_input("Selecione o numero da OS",min_value=1,max_value=allln1,value=1,placeholder="Selecione")
                         st.metric(label="OS Existentes", value= allln1)
-                        numros3 = numros2-1
-                        osespec = allinhas.loc[numros3]
+                        numros11 = numros10-1
+                        osespec = allinhas.loc[numros11]
                         def load_data():
                             return pd.DataFrame(osespec)
                         st.checkbox("Estender", value=True, key="usee_container_width")
