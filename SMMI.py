@@ -1297,7 +1297,6 @@ if fLIDERES == 'IVSON PAULINO':
                 with statuses:
                     st.header('Ferramentaria', divider='rainbow')
                     with st.expander("Abertas"):
-                        st.header('Ferramentaria', divider='rainbow')
                         numros22 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=whrlinhas13,value=0,placeholder="Selecione")
                         st.metric(label="OS Existentes", value= whrlinhas13)
                         numros23 = numros22-1
