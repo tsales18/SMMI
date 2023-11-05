@@ -671,7 +671,7 @@ if fLIDERES == 'ROSIVALDO':
                 
                 st.markdown('--------')
                 with st.expander("Administrativo"):
-                    numros4 = st.number_input("Selecione o numero da      OS",min_value=0,max_value=rd9,value=rd9,placeholder="Selecione")
+                    numros4 = st.number_input("Selecione o numero da               OS",min_value=0,max_value=rd9,value=rd9,placeholder="Selecione")
                     st.metric(label="OS Existentes", value=rd9)
                     numros5 = numros4-1
                     if rd9 == 0:
