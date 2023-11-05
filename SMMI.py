@@ -1295,23 +1295,23 @@ if fLIDERES == 'IVSON PAULINO':
             with tab27:
                 statuses,sats,statuses1=st.columns([80,0.1,0.1])
                 with statuses:
-                    st.markdown('-------------')
                     st.header('Ferramentaria', divider='rainbow')
-                    numros22 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=whrlinhas13,value=0,placeholder="Selecione")
-                    st.metric(label="OS Existentes", value= whrlinhas13)
-                    numros23 = numros22-1
-                    if whrlinhas13 == 0:
-                        st.success('Não há pendências')
-                    else:
-                        osespec5 = whrlinhas12.loc[numros23]
-                        def load_data():
-                            return pd.DataFrame(osespec5)
-                        st.checkbox("Estender", value=True, key="usee_containner_widthh")
-                        df = load_data()
-                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                    with st.expander("Minhas OS"):
+                        st.header('Ferramentaria', divider='rainbow')
+                        numros22 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=whrlinhas13,value=0,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value= whrlinhas13)
+                        numros23 = numros22-1
+                        if whrlinhas13 == 0:
+                            st.success('Não há pendências')
+                        else:
+                            osespec5 = whrlinhas12.loc[numros23]
+                            def load_data():
+                                return pd.DataFrame(osespec5)
+                            st.checkbox("Estender", value=True, key="usee_containner_widthh")
+                            df = load_data()
+                            st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
             with tab28:
-                st.markdown('----------')
                 st.header('Ferramentaria', divider='rainbow')
                 with st.expander("Minhas OS"):
                     numros16 = st.number_input("Selecione o numero da   OS",min_value=0,max_value=rd1,value=rd1,placeholder="Selecione")
@@ -1328,7 +1328,6 @@ if fLIDERES == 'IVSON PAULINO':
                         st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
             with tab29:
-                st.markdown('----------')
                 st.header('Ferramentaria', divider='rainbow')
                 with st.expander("Geral"):
                     numros20 = st.number_input("Selecione o numero da    OS",min_value=0,max_value=allln14,value=allln14,placeholder="Selecione")
