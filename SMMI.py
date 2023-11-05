@@ -512,7 +512,7 @@ if fLIDERES == 'ROSIVALDO':
 
                 st.markdown('--------')
                 with st.expander("Ferramentaria"):
-                    numros4 = st.number_input("Selecione o numero da  OS",min_value=1,max_value=rd3,value=rd3,placeholder="Selecione")
+                    numros4 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=rd3,value=rd3,placeholder="Selecione")
                     st.metric(label="OS Existentes", value=rd3)
                     numros5 = numros4-1
                     if rd3 == 0:
@@ -527,7 +527,7 @@ if fLIDERES == 'ROSIVALDO':
                 
             with tab9:
                 with st.expander("Minhas OS"):
-                    numros6 = st.number_input("Selecione o numero da       OS",min_value=1,max_value=whrlinhas4,value=whrlinhas4,placeholder="Selecione")
+                    numros6 = st.number_input("Selecione o numero da       OS",min_value=0,max_value=whrlinhas4,value=whrlinhas4,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= whrlinhas4)
                     numros7 = numros6-1
                     if whrlinhas4 == 0:
@@ -542,7 +542,7 @@ if fLIDERES == 'ROSIVALDO':
                 
                 st.markdown('--------')
                 with st.expander("Ferramentaria"):
-                    numros8 = st.number_input("Selecione o numero da    OS",min_value=1,max_value=rd1,value=rd1,placeholder="Selecione")
+                    numros8 = st.number_input("Selecione o numero da    OS",min_value=0,max_value=rd1,value=rd1,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= rd1)
                     numros9 = numros8-1
                     if rd1 == 0:
@@ -559,7 +559,7 @@ if fLIDERES == 'ROSIVALDO':
                 statuses,sats,statuses1=st.columns([90,8,20])
                 with statuses:
                     with st.expander("See explanation"):
-                        numros10 = st.number_input("Selecione o numero da OS",min_value=1,max_value=allln1,value=allln1,placeholder="Selecione")
+                        numros10 = st.number_input("Selecione o numero da OS",min_value=0,max_value=allln1,value=allln1,placeholder="Selecione")
                         st.metric(label="OS Existentes", value= allln1)
                         numros11 = numros10-1
                         if allln1 == 0:
