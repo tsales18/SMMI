@@ -755,13 +755,13 @@ if fLIDERES == 'ROSIVALDO':
                         osespec = rd8.loc[numros5]
                         def load_data():
                             return pd.DataFrame(osespec)
-                        st.checkbox("Estender", value=True, key="use_container_width    ")
+                        st.checkbox("Estender", value=True, key="use_container_width     ")
                         lddt = load_data()
                         st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
 
                 st.markdown('--------')
                 with st.expander("Comercial"):
-                    numros4 = st.number_input("Selecione o numero  da      OS",min_value=0,max_value=rd13,value=rd13,placeholder="Selecione")
+                    numros4 = st.number_input("Selecione  o numero  da      OS",min_value=0,max_value=rd13,value=rd13,placeholder="Selecione")
                     st.metric(label="OS Existentes", value=rd13)
                     numros5 = numros4-1
                     if rd13 == 0:
@@ -770,7 +770,7 @@ if fLIDERES == 'ROSIVALDO':
                         osespec = rd12.loc[numros5]
                         def load_data():
                             return pd.DataFrame(osespec)
-                        st.checkbox("Estender", value=True, key="use_container_width ")
+                        st.checkbox("Estender", value=True, key="use_container_width      ")
                         lddt = load_data()
                         st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
 
