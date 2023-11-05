@@ -536,7 +536,7 @@ if fLIDERES == 'ROSIVALDO':
                         osespec = whrlinhas3.loc[numros7]
                         def load_data():
                             return pd.DataFrame(osespec)
-                        st.checkbox("Estender", value=True, key="use_containerr_width")
+                        st.checkbox("Estender", value=True, key="use_container_width")
                         df = load_data()
                         st.dataframe(df, use_container_width=st.session_state.use_container_width)
                 
