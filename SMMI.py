@@ -1296,7 +1296,7 @@ if fLIDERES == 'IVSON PAULINO':
                 statuses,sats,statuses1=st.columns([80,0.1,0.1])
                 with statuses:
                     st.header('Ferramentaria', divider='rainbow')
-                    with st.expander("Minhas OS"):
+                    with st.expander("Abertas"):
                         st.header('Ferramentaria', divider='rainbow')
                         numros22 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=whrlinhas13,value=0,placeholder="Selecione")
                         st.metric(label="OS Existentes", value= whrlinhas13)
@@ -1313,7 +1313,7 @@ if fLIDERES == 'IVSON PAULINO':
 
             with tab28:
                 st.header('Ferramentaria', divider='rainbow')
-                with st.expander("Minhas OS"):
+                with st.expander("Finalizadas"):
                     numros16 = st.number_input("Selecione o numero da   OS",min_value=0,max_value=rd1,value=rd1,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= rd1)
                     numros17 = numros16-1
