@@ -2105,7 +2105,7 @@ if fLIDERES == 'CESAR AUGUSTO':
                             st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
             with tab48:
-                st.header('PRODUÇÃO', divider='rainbow')
+                st.header('SERRALHARIA', divider='rainbow')
                 with st.expander("Finalizadas"):
                     numros26 = st.number_input("Selecione o numero da   OS",min_value=0,max_value=rd21,value=rd21,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= rd21)
@@ -2122,7 +2122,7 @@ if fLIDERES == 'CESAR AUGUSTO':
                         st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
             with tab49:
-                st.header('PRODUÇÃO', divider='rainbow')
+                st.header('SERRALHARIA', divider='rainbow')
                 with st.expander("Geral"):
                     numros26 = st.number_input("Selecione o numero da    OS",min_value=0,max_value=allln24,value=allln24,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= allln24)
