@@ -461,7 +461,7 @@ if fLIDERES == 'ROSIVALDO':
                 jefferson,lourdes=st.columns(2)
                 with jefferson:
                     setorescolhido = st.selectbox('Setor', ('TECNOLOGIA DA INFORMAÇÃO','COMERCIAL','ADMINISTRATIVO','EXPEDIÇÃO','PRODUÇÃO','FERRAMENTARIA','SERRALHARIA','ELÉTRICA'),index=None,placeholder='Selecione')
-                    fnlz2 = st.number_input("Selecione o numero da OS que deseja Finalizar",min_value=0,max_value=allln1,value=0,placeholder="Selecione")
+                    fnlz2 = st.number_input("Selecione o numero da OS que deseja Finalizar",min_value=0,max_value=1000,value=0,placeholder="Selecione")
                     fnlz3 = fnlz2-1
                     st.write(fnlz2)
                     with st.form('my form'):
