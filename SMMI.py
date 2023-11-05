@@ -526,9 +526,8 @@ if fLIDERES == 'ROSIVALDO':
                             if setorescolhido == 'PRODUÇÃO':    
                                 fnl=st.button("FINALIZAR")
                                 if fnl:
-                                    cursor1.execute("UPDATE PRODUCAO SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput,str(timeinput),fnlz2))
-                                    conn1.commit()
-                                    conn1.close()
+                                    cursor5.execute("UPDATE PRODUCAO SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput,str(timeinput),fnlz2))
+                                    conn5.commit()
                                     st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente como uma flor.')   
 
             with tab8:
