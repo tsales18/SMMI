@@ -1011,7 +1011,7 @@ if fLIDERES == 'ROSIVALDO':
                             lddt = load_data()
                             st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
             
-                  if genre == 'MECÂNICA':
+                    if genre == 'MECÂNICA':
                         numros4 = st.number_input("Selecione  o    numero   da    OS",min_value=0,max_value=rd68,value=rd68,placeholder="Selecione")
                         st.metric(label="OS Existentes", value=rd68)
                         numros5 = numros4-1
