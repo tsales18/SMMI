@@ -497,7 +497,7 @@ if fLIDERES == 'ROSIVALDO':
                             
             with tab8:
                 with st.expander("Minhas OS"):
-                    numros2 = st.number_input("Selecione o numero da OS",min_value=0,max_value=whrlinhas2,value=0,placeholder="Selecione")
+                    numros2 = st.number_input("Selecione o numero da OS",min_value=whrlinhas2,max_value=whrlinhas2,value=whrlinhas2,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= whrlinhas2)
                     numros3 = numros2-1
                     if whrlinhas2 == 0:
@@ -512,7 +512,7 @@ if fLIDERES == 'ROSIVALDO':
 
                 st.markdown('--------')
                 with st.expander("Ferramentaria"):
-                    numros4 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=rd3,value=0,placeholder="Selecione")
+                    numros4 = st.number_input("Selecione o numero da  OS",min_value=1,max_value=rd3,value=rd3,placeholder="Selecione")
                     st.metric(label="OS Existentes", value=rd3)
                     numros5 = numros4-1
                     if rd3 == 0:
@@ -521,47 +521,56 @@ if fLIDERES == 'ROSIVALDO':
                         osespec = rd2.loc[numros5]
                         def load_data():
                             return pd.DataFrame(osespec)
-                        st.checkbox("Estender", value=True, key="use_container_widtth")
-                        df = load_data()
-                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                        st.checkbox("Estender", value=True, key="use_container_width")
+                        lddt = load_data()
+                        st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
                 
             with tab9:
                 with st.expander("Minhas OS"):
-                    numros6 = st.number_input("Selecione o numero da       OS",min_value=1,max_value=whrlinhas4,value=1,placeholder="Selecione")
+                    numros6 = st.number_input("Selecione o numero da       OS",min_value=1,max_value=whrlinhas4,value=whrlinhas4,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= whrlinhas4)
                     numros7 = numros6-1
-                    osespec = whrlinhas3.loc[numros7]
-                    def load_data():
-                        return pd.DataFrame(osespec)
-                    st.checkbox("Estender", value=True, key="use_container_width")
-                    df = load_data()
-                    st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                    if whrlinhas4 == 0:
+                        st.success('Não há pendências')
+                    else:
+                        osespec = whrlinhas3.loc[numros7]
+                        def load_data():
+                            return pd.DataFrame(osespec)
+                        st.checkbox("Estender", value=True, key="use_containerr_width")
+                        df = load_data()
+                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
                 
                 st.markdown('--------')
                 with st.expander("Ferramentaria"):
-                    numros8 = st.number_input("Selecione o numero da    OS",min_value=1,max_value=rd1,value=1,placeholder="Selecione")
+                    numros8 = st.number_input("Selecione o numero da    OS",min_value=1,max_value=rd1,value=rd1,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= rd1)
                     numros9 = numros8-1
-                    osespec = rd.loc[numros9]
-                    def load_data():
-                        return pd.DataFrame(osespec)
-                    st.checkbox("Estender", value=True, key="use_contaainer_widtth")
-                    df = load_data()
-                    st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                    if rd1 == 0:
+                        st.success('Não há pendências')
+                    else:
+                        osespec = rd.loc[numros9]
+                        def load_data():
+                            return pd.DataFrame(osespec)
+                        st.checkbox("Estender", value=True, key="use_contaainer_widtth")
+                        df = load_data()
+                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
                 
             with tab10:
                 statuses,sats,statuses1=st.columns([90,8,20])
                 with statuses:
                     with st.expander("See explanation"):
-                        numros10 = st.number_input("Selecione o numero da OS",min_value=1,max_value=allln1,value=1,placeholder="Selecione")
+                        numros10 = st.number_input("Selecione o numero da OS",min_value=1,max_value=allln1,value=allln1,placeholder="Selecione")
                         st.metric(label="OS Existentes", value= allln1)
                         numros11 = numros10-1
-                        osespec = allinhas.loc[numros11]
-                        def load_data():
-                            return pd.DataFrame(osespec)
-                        st.checkbox("Estender", value=True, key="usee_container_width")
-                        df = load_data()
-                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                        if allln1 == 0:
+                            st.success('Não há pendências')
+                        else:
+                            osespec = allinhas.loc[numros11]
+                            def load_data():
+                                return pd.DataFrame(osespec)
+                            st.checkbox("Estender", value=True, key="usee_container_width")
+                            df = load_data()
+                            st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
 conn2 = sqlite3.connect('IVANILDO')
 cursor2 = conn2.cursor()
