@@ -506,7 +506,6 @@ if fLIDERES == 'ROSIVALDO':
                         st.write(timeinput)
                         st.form_submit_button('↻')
 
-                                  
                 if fLIDERES == 'ROSIVALDO':
                     if fSETOR == 'ELÉTRICA':
                         if senha == '1409':
@@ -522,7 +521,15 @@ if fLIDERES == 'ROSIVALDO':
                                     cursor1.execute("UPDATE ROSIVALDO SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput,str(timeinput),fnlz2))
                                     conn1.commit()
                                     conn1.close()
-                                    st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente como uma flor.')    
+                                    st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente como uma flor.') 
+
+                            if setorescolhido == 'PRODUÇÃO':    
+                                fnl=st.button("FINALIZAR")
+                                if fnl:
+                                    cursor1.execute("UPDATE PRODUCAO SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput,str(timeinput),fnlz2))
+                                    conn1.commit()
+                                    conn1.close()
+                                    st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente como uma flor.')   
 
             with tab8:
                 with st.expander("Minhas OS"):
