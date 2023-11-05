@@ -612,7 +612,7 @@ if fLIDERES == 'ROSIVALDO':
                 statuses,sats,statuses1=st.columns([90,8,20])
                 with statuses:
                     with st.expander("See explanation"):
-                        numros10 = st.number_input("Selecione o numero da OS",min_value=0,max_value=allln1,value=allln1,placeholder="Selecione")
+                        numros10 = st.number_input("Selecione o numero da    OS",min_value=0,max_value=allln1,value=allln1,placeholder="Selecione")
                         st.metric(label="OS Existentes", value= allln1)
                         numros11 = numros10-1
                         if allln1 == 0:
@@ -1397,39 +1397,6 @@ if fLIDERES == 'IVSON PAULINO':
                         st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
 
-conn5 = sqlite3.connect('PRODUCAO')
-cursor5 = conn5.cursor()
-cursor5.execute('''
-    CREATE TABLE IF NOT EXISTS PRODUCAO (
-        OS INTEGER PRIMARY KEY,
-        SOLICITANTE TEXT,
-        SETOR TEXT,
-        OCORRENCIA TEXT,
-        GRAU TEXT,
-        DATA DATE,
-        HORA TIME,
-        AÇÃO TEXT,
-        FINALIZADA TEXT,
-        DATAF,
-        HORAF
-       
-                   
-    )
-''')
-
-#MANUTENÇÃO 
-query = "SELECT * FROM PRODUCAO WHERE FINALIZADA = 'Não'"
-rd6 = pd.read_sql_query(query, conn5)
-rd7 = rd6.shape[0]
-
-query1 = "SELECT * FROM PRODUCAO WHERE FINALIZADA = 'Sim'"
-rd4 = pd.read_sql_query(query1, conn5)
-rd5 = rd4.shape[0]
-
-allln15 = pd.read_sql_query("SELECT * FROM PRODUCAO", conn5)
-allln16 = allln15.shape[0]
-
-
 #PRODUCAO
 #GERAL PRODUCAO
 allln15 = pd.read_sql_query("SELECT * FROM PRODUCAO", conn5)
@@ -1564,7 +1531,7 @@ if fLIDERES == 'MAURILIO SALES':
                             st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
             with tab32:
-                st.header('PRODUCAO', divider='rainbow')
+                st.header('PRODUÇÃO', divider='rainbow')
                 with st.expander("Finalizadas"):
                     numros18 = st.number_input("Selecione o numero da   OS",min_value=0,max_value=rd5,value=rd5,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= rd5)
@@ -1581,7 +1548,7 @@ if fLIDERES == 'MAURILIO SALES':
                         st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
             with tab33:
-                st.header('PRODUCAO', divider='rainbow')
+                st.header('PRODUÇÃO', divider='rainbow')
                 with st.expander("Geral"):
                     numros20 = st.number_input("Selecione o numero da    OS",min_value=0,max_value=allln16,value=allln16,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= allln16)
