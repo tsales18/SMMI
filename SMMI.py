@@ -1883,7 +1883,7 @@ if fLIDERES == 'ALEX SANTOS':
                         osespec22 = rd16.loc[numros25]
                         def load_data():
                             return pd.DataFrame(osespec22)
-                        st.checkbox("Estender", value=True, key="use_container_width      ")
+                        st.checkbox("Estender", value=True, key="use_container_width                              ")
                         df = load_data()
                         st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
@@ -1899,6 +1899,6 @@ if fLIDERES == 'ALEX SANTOS':
                         osespec23 = allln21.loc[numros25]
                         def load_data():
                             return pd.DataFrame(osespec23)
-                        st.checkbox("Estender", value=True, key= "uuse_containner_width")
+                        st.checkbox("Estender", value=True, key= "use_container_width                     ")
                         df = load_data()
                         st.dataframe(df, use_container_width=st.session_state.use_container_width)
