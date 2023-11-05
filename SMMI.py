@@ -377,6 +377,29 @@ cursor7.execute('''
     )
 ''')
 
+conn8 = sqlite3.connect('EXPEDICAO')
+cursor8 = conn8.cursor()
+cursor8.execute('''
+    CREATE TABLE IF NOT EXISTS EXPEDICAO (
+        OS INTEGER PRIMARY KEY,
+        SOLICITANTE TEXT,
+        SETOR TEXT,
+        OCORRENCIA TEXT,
+        GRAU TEXT,
+        DATA DATE,
+        HORA TIME,
+        AÇÃO TEXT,
+        FINALIZADA TEXT,
+        DATAF,
+        HORAF
+       
+                   
+    )
+''')
+
+
+
+
 #MANUTENÇÃO 
 query = "SELECT * FROM COMERCIAL WHERE FINALIZADA = 'Não'"
 rd14 = pd.read_sql_query(query, conn7)
@@ -453,6 +476,18 @@ rd13 = rd12.shape[0]
 
 allln19 = pd.read_sql_query("SELECT * FROM COMERCIAL", conn7)
 allln120 = allln19.shape[0]
+
+#FEEDBACK EXPEDIÇÃO
+query = "SELECT * FROM EXPEDICAO WHERE FINALIZADA = 'Não'"
+rd18 = pd.read_sql_query(query, conn8)
+rd19 = rd18.shape[0]
+
+query1 = "SELECT * FROM EXPEDICAO WHERE FINALIZADA = 'Sim'"
+rd16 = pd.read_sql_query(query1, conn8)
+rd17 = rd16.shape[0]
+
+allln21 = pd.read_sql_query("SELECT * FROM EXPEDICAO", conn8)
+allln22 = allln21.shape[0]
 
 
 
@@ -621,8 +656,14 @@ if fLIDERES == 'ROSIVALDO':
                                 if fnl:
                                     cursor7.execute("UPDATE COMERCIAL SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput,str(timeinput),fnlz2))
                                     conn7.commit()
-                                    st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente como uma flor.')  
+                                    st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente como uma flor.') 
 
+                            if setorescolhido == 'EXPEDIÇÃO':    
+                                fnl=st.button("FINALIZAR")
+                                if fnl:
+                                    cursor8.execute("UPDATE COMERCIAL SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput,str(timeinput),fnlz2))
+                                    conn8.commit()
+                                    st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente como uma flor.')  
 
             with tab8:
                 st.header('Manutenção', divider='rainbow')
@@ -700,6 +741,21 @@ if fLIDERES == 'ROSIVALDO':
                         lddt = load_data()
                         st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
                 
+                st.markdown('--------')
+                with st.expander("Expedição"):
+                    numros4 = st.number_input("Selecione o numero  da       OS",min_value=0,max_value=rd17,value=rd17,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value=rd17)
+                    numros5 = numros4-1
+                    if rd17 == 0:
+                        st.success('Não há pendências')
+                    else:
+                        osespec = rd16.loc[numros5]
+                        def load_data():
+                            return pd.DataFrame(osespec)
+                        st.checkbox("Estender", value=True, key="use_container_width ")
+                        lddt = load_data()
+                        st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
+                
                 
             with tab9:
                 st.header('Manutenção', divider='rainbow')
@@ -765,7 +821,7 @@ if fLIDERES == 'ROSIVALDO':
 
                 st.markdown('--------')
                 with st.expander("Comercial"):
-                    numros4 = st.number_input("Selecione  o numero  da      OS",min_value=0,max_value=rd13,value=rd13,placeholder="Selecione")
+                    numros4 = st.number_input("Selecione  o numero  da       OS",min_value=0,max_value=rd13,value=rd13,placeholder="Selecione")
                     st.metric(label="OS Existentes", value=rd13)
                     numros5 = numros4-1
                     if rd13 == 0:
@@ -777,6 +833,22 @@ if fLIDERES == 'ROSIVALDO':
                         st.checkbox("Estender", value=True, key="use_container_width      ")
                         lddt = load_data()
                         st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
+                
+                st.markdown('--------')
+                with st.expander("Comercial"):
+                    numros4 = st.number_input("Selecione  o numero  da       OS",min_value=0,max_value=rd16,value=rd16,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value=rd16)
+                    numros5 = numros4-1
+                    if rd16 == 0:
+                        st.success('Não há pendências')
+                    else:
+                        osespec = rd15.loc[numros5]
+                        def load_data():
+                            return pd.DataFrame(osespec)
+                        st.checkbox("Estender", value=True, key="use_container_width      ")
+                        lddt = load_data()
+                        st.dataframe(lddt, use_container_width=st.session_state.use_container_width)         
+
 
             with tab10:
                 st.header('Manutenção', divider='rainbow')
@@ -1938,9 +2010,9 @@ if fLIDERES == 'ADRIELY LEMOS':
                 st.title('Status e informações de OS')
 
             st.markdown("---")
-            tab38,tab39,tab40,tab41= st.tabs(["CadCastro","OS Abertas","OS Finalizadas","Geral"])
+            tab38,tab39,tab40,tab41= st.tabs(["Cadastro","OS Abertas","OS Finalizadas","Geral"])
             with tab38:
-                st.header('CadCastro de ocorrências', divider='rainbow')
+                st.header('Cadastro de ocorrências', divider='rainbow')
                 col15,col16= st.columns(2)  
                 with col15:                  
                     atd7 = st.toggle('Atualizar os dados')
@@ -2069,6 +2141,172 @@ if fLIDERES == 'ADRIELY LEMOS':
                         osespec19 = allln19.loc[numros23]
                         def load_data():
                             return pd.DataFrame(osespec19)
+                        st.checkbox("Estender", value=True, key= "uuse_containner_width")
+                        df = load_data()
+                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
+
+#EXPEDICAO
+#GERAL EXPEDICAO
+allln21 = pd.read_sql_query("SELECT * FROM EXPEDICAO", conn8)
+allln22 = allln21.shape[0]
+consulta2 = "SELECT * FROM EXPEDICAO"
+allinhas19 = pd.read_sql_query(consulta2, conn8)
+
+#OS ABERTAS  NÃO FINALIZADAS
+consulta3 = "SELECT * FROM EXPEDICAO WHERE FINALIZADA = 'Não'"
+whrlinhas33 = pd.read_sql_query(consulta3, conn8)
+whrlinhas34 = whrlinhas33.shape[0]
+
+#OS FINALIZADAS
+cursor8.execute("SELECT * FROM EXPEDICAO WHERE FINALIZADA = ?;", ('Sim',))
+whrlinhas35 = cursor8.fetchall()
+whrlinhas36 = pd.DataFrame(whrlinhas35)
+whrlinhas37 = whrlinhas36.shape[0]
+
+if fLIDERES == 'ALEX SANTOS':
+    if fSETOR == 'EXPEDIÇÃO':
+        if senha == '1402':
+            image = Image.open('./Midia/ssmm.jpg')
+            ps6,ps7= st.columns(2)
+            cl9 = st.button("DELETAR TABELA")
+            if cl9:
+                cursor8.execute("DROP TABLE EXPEDICAO")
+                conn8.commit()
+            with ps6:
+                st.title('Status e informações de OS')
+
+            st.markdown("---")
+            tab42,tab43,tab44,tab45= st.tabs(["Cadastro","OS Abertas","OS Finalizadas","Geral"])
+            with tab42:
+                st.header('Cadastro de ocorrências', divider='rainbow')
+                col17,col18= st.columns(2)  
+                with col17:                  
+                    atd8 = st.toggle('Atualizar os dados')
+                    with st.form('my form4'):
+                        st.markdown("---")
+                        Ec = st.selectbox('Solicitante', ('ALEX SANTOS',),index=None,placeholder='Selecione')
+                        if atd8:
+                            Eus = st.selectbox('Atualize o Solicitante', ('ALEX SANTOS'),index=None,placeholder='Atualize')
+                            st.markdown("---")
+
+                        East = st.text_input('Tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
+                        if atd8:
+                            Eust = st.text_input('Atualize o tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
+                            st.markdown("---")
+
+                        Eastr = st.selectbox('Setor', ('EXPEDICAO',),index=None,placeholder='Selecione')
+                        if atd8:
+                            EUstr = st.selectbox('Aualize o Setor', ('EXPEDICAO'),index=None,placeholder='Atualize')
+                            st.markdown("---")
+
+                        Endo = st.selectbox('Nivel da ocorrência', ('EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE','URGÊNTE'),index=None,placeholder='Selecione')
+                        if atd8:
+                            EUndo = st.selectbox('Atualize o Nivel da ocorrência',('EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE','URGÊNTE'),index=None, placeholder='Atualize')
+                            st.markdown("---")
+                        Eac = st.selectbox('Tipo da ação', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
+                        if atd8:
+                            EUac = st.selectbox('Atualize o Tipo da ação', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
+                            st.markdown("---")
+
+                        relatorio = st.text_input('Relatorio')
+                        if atd8:
+                            Urelatorio = st.text_input('Atualize o Relatorio')
+                            st.markdown("---")
+
+                        Etemp = st.time_input('Horario', value=None)
+                        if atd8:
+                            EUtemp = st.time_input('Atualize o Horario', value=None)
+                            st.write(Etemp)
+
+                        Edata = st.date_input("Data", value=None)
+                        if atd8:
+                            EUdata = st.date_input("Atualize a Data", value=None)
+                        uploaded_files = st.file_uploader("Choose a EcV file", accept_multiple_files=True)
+                        for uploaded_file in uploaded_files:
+                            bytes_data = uploaded_file.read()
+                        st.form_submit_button('↻')
+
+                with col18:
+                    if atd8:
+                        numros12 = st.number_input("Selecione o numero da OS que deseja atualizar",min_value=0,max_value=allln22,value=allln22,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value= allln22)
+                        numros25 = numros12-1
+                        if allln22 == 0:
+                            st.success('Não há pendências')
+                        else:    
+                            osespec20 = allinhas19.loc[numros25]
+                            def load_dataa():
+                                return pd.DataFrame(osespec20)
+                            st.checkbox("Estender", value=True, key="use_container_widthh")
+                            df = load_dataa()
+                            st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                
+                if 'OS' not in st.session_state:
+                    st.session_state.OS = 0
+                    
+                if 'FIN' not in st.session_state:
+                    st.session_state.FIN = 0
+                        
+                if fLIDERES == 'ALEX SANTOS':
+                    if fSETOR == 'EXPEDIÇÃO':
+                        if senha == '1402':
+                            Inserts3 = st.button("INSERIR DADOS")
+                            if Inserts3:
+                                allln12 = allln22 + 1
+
+                            if Inserts3:
+                                st.balloons()
+                                cursor8.execute("INSERT INTO EXPEDICAO (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?)", (allln12 , str(Ec), str(Eastr), str(East),str(Endo),Edata,str(Etemp),Eac,'Não',None,None))
+                                conn8.commit()
+                                conn8.close()
+                                        
+            with tab43:
+                statuses,sats,statuses1=st.columns([80,0.1,0.1])
+                with statuses:
+                    st.header('EXPEDICAO', divider='rainbow')
+                    with st.expander("Abertas"):
+                        numros24 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=whrlinhas34,value=whrlinhas34,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value= whrlinhas34)
+                        numros25 = numros24-1
+                        if whrlinhas34 == 0:
+                            st.success('Não há pendências')
+                        else:
+                            osespec21 = whrlinhas33.loc[numros25]
+                            def load_data():
+                                return pd.DataFrame(osespec21)
+                            st.checkbox("Estender", value=True, key="use_container_width")
+                            df = load_data()
+                            st.dataframe(df, use_container_width=st.session_state.use_container_width)
+
+            with tab44:
+                st.header('PRODUÇÃO', divider='rainbow')
+                with st.expander("Finalizadas"):
+                    numros24 = st.number_input("Selecione o numero da   OS",min_value=0,max_value=rd17,value=rd17,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value= rd17)
+                    numros25 = numros24-1
+                    if rd17 == 0:
+                        st.success('Não há pendências')
+                        
+                    else:
+                        osespec22 = rd16.loc[numros25]
+                        def load_data():
+                            return pd.DataFrame(osespec22)
+                        st.checkbox("Estender", value=True, key="use_container_width      ")
+                        df = load_data()
+                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
+
+            with tab45:
+                st.header('PRODUÇÃO', divider='rainbow')
+                with st.expander("Geral"):
+                    numros24 = st.number_input("Selecione o numero da    OS",min_value=0,max_value=allln22,value=allln22,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value= allln22)
+                    numros25 = numros24-1
+                    if allln22 == 0:
+                        st.success('Não há pendências')
+                    else:
+                        osespec23 = allln21.loc[numros25]
+                        def load_data():
+                            return pd.DataFrame(osespec23)
                         st.checkbox("Estender", value=True, key= "uuse_containner_width")
                         df = load_data()
                         st.dataframe(df, use_container_width=st.session_state.use_container_width)
