@@ -611,7 +611,7 @@ if fLIDERES == 'ROSIVALDO':
                     numros4 = st.number_input("Selecione o numero da      OS",min_value=0,max_value=rd11,value=rd11,placeholder="Selecione")
                     st.metric(label="OS Existentes", value=rd11)
                     numros5 = numros4-1
-                    if rd10 == 0:
+                    if rd11 == 0:
                         st.success('Não há pendências')
                     else:
                         osespec = rd10.loc[numros5]
