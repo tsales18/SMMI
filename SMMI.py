@@ -866,7 +866,7 @@ if fLIDERES == 'ROSIVALDO':
                                 osespec = rd35.loc[numros5]
                                 def load_data():
                                     return pd.DataFrame(osespec)
-                                st.checkbox("Estender", value=True, key="use_container_width")
+                                st.checkbox("Estender", value=True, key="           use_container_width   ")
                                 lddt = load_data()
                                 st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
 
