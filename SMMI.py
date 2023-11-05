@@ -467,16 +467,30 @@ query = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Não'"
 rd2 = pd.read_sql_query(query, conn4)
 rd3 = rd2.shape[0]
 
-query = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'MECÂNICA'"
-rd25 = pd.read_sql_query(query, conn4)
-rd26 = rd25.shape[0]
-
 query1 = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Sim'"
 rd = pd.read_sql_query(query1, conn4)
 rd1 = rd.shape[0]
 
 allln13 = pd.read_sql_query("SELECT * FROM FERRAMENTARIA", conn4)
 allln14 = allln13.shape[0]
+
+query = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'MECÂNICA'"
+rd25 = pd.read_sql_query(query, conn4)
+rd26 = rd25.shape[0]
+
+query1 = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'ELÉTRICA'"
+rd27 = pd.read_sql_query(query1, conn4)
+rd28 = rd27.shape[0]
+
+query = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'MECÂNICA'"
+rd29 = pd.read_sql_query(query, conn4)
+rd30 = rd29.shape[0]
+
+query1 = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'ELÉTRICA'"
+rd31 = pd.read_sql_query(query1, conn4)
+rd32 = rd31.shape[0]
+
+
 
 #FEEDBACK PRODUÇÃO
 query = "SELECT * FROM PRODUCAO WHERE FINALIZADA = 'Não'"
@@ -490,6 +504,23 @@ rd5 = rd4.shape[0]
 allln15 = pd.read_sql_query("SELECT * FROM PRODUCAO", conn5)
 allln16 = allln15.shape[0]
 
+query = "SELECT * FROM PRODUCAO WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'ELÉTRICA'"
+rd33 = pd.read_sql_query(query, conn5)
+rd34 = rd33.shape[0]
+
+query = "SELECT * FROM PRODUCAO WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'MECÂNICA'"
+rd35 = pd.read_sql_query(query, conn5)
+rd36 = rd35.shape[0]
+
+query = "SELECT * FROM PRODUCAO WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'ELÉTRICA'"
+rd37 = pd.read_sql_query(query, conn5)
+rd38 = rd37.shape[0]
+
+query = "SELECT * FROM PRODUCAO WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'MECÂNICA'"
+rd39 = pd.read_sql_query(query, conn5)
+rd40 = rd39.shape[0]
+
+
 #FEEDBACK ADMINISTRATIVO
 query = "SELECT * FROM ADMINISTRATIVO WHERE FINALIZADA = 'Não'"
 rd10 = pd.read_sql_query(query, conn6)
@@ -501,6 +532,22 @@ rd9 = rd8.shape[0]
 
 allln17 = pd.read_sql_query("SELECT * FROM ADMINISTRATIVO", conn6)
 allln18 = allln17.shape[0]
+
+query = "SELECT * FROM ADMINISTRATIVO WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'ELÉTRICA'"
+rd41 = pd.read_sql_query(query, conn6)
+rd42 = rd10.shape[0]
+
+query = "SELECT * FROM ADMINISTRATIVO WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'MECÂNICA'"
+rd43 = pd.read_sql_query(query, conn6)
+rd44 = rd10.shape[0]
+
+query = "SELECT * FROM ADMINISTRATIVO WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'ELÉTRICA'"
+rd45 = pd.read_sql_query(query, conn6)
+rd6 = rd10.shape[0]
+
+query = "SELECT * FROM ADMINISTRATIVO WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'MECÂNICA'"
+rd10 = pd.read_sql_query(query, conn6)
+rd11 = rd10.shape[0]
 
 #FEEDBACK COMERCIAL
 query = "SELECT * FROM COMERCIAL WHERE FINALIZADA = 'Não'"
@@ -725,8 +772,12 @@ if fLIDERES == 'ROSIVALDO':
             with tab8:
                 st.header('Manutenção', divider='rainbow')
                 with st.expander("Filtros"):
-                    st.button('MECANICA')
-                    st.button('ELÉTRICA')
+                    genre = st.radio(
+                       "Selecione",
+                        ["ELÉTRICA", "MECÂNICA"],
+                        index=None,
+                        )
+                    
                 with st.expander("Minhas OS"):
                     numros2 = st.number_input("Selecione o numero da OS",min_value=whrlinhas2,max_value=whrlinhas2,value=whrlinhas2,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= whrlinhas2)
@@ -740,66 +791,101 @@ if fLIDERES == 'ROSIVALDO':
                         st.checkbox("Estender", value=True, key="use_container_width")
                         df = load_data()
                         st.dataframe(df, use_container_width=st.session_state.use_container_width)
-
-                st.markdown('--------')
+                        
+                st.markdown('--------')       
                 with st.expander("Ferramentaria"):
-                    numros4 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=rd3,value=rd3,placeholder="Selecione")
-                    st.metric(label="OS Existentes", value=rd3)
-                    numros5 = numros4-1
-                    if rd3 == 0:
-                        st.success('Não há pendências')
-                    else:
-                        osespec = rd2.loc[numros5]
-                        def load_data():
-                            return pd.DataFrame(osespec)
-                        st.checkbox("Estender", value=True, key="use_container_width")
-                        lddt = load_data()
-                        st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
-                
+                    if genre == 'MECÂNICA':
+                        numros4 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=rd26,value=rd26,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value=rd26)
+                        numros5 = numros4-1
+                        if rd26 == 0:
+                            st.success('Não há pendências')
+                        else:
+                            osespec = rd25.loc[numros5]
+                            def load_data():
+                                return pd.DataFrame(osespec)
+                            st.checkbox("Estender", value=True, key="use_container_width")
+                            lddt = load_data()
+                            st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
+
+                    if genre == 'ELÉTRICA':
+                        numros4 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=rd28,value=rd28,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value=rd28)
+                        numros5 = numros4-1
+                        if rd28 == 0:
+                            st.success('Não há pendências')
+                        else:
+                            osespec = rd27.loc[numros5]
+                            def load_data():
+                                return pd.DataFrame(osespec)
+                            st.checkbox("Estender", value=True, key="use_container_width")
+                            lddt = load_data()
+                            st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
+                    
+                    
+                #PRODUÇÃO
                 st.markdown('--------')
                 with st.expander("Produção"):
-                    numros4 = st.number_input("Selecione o numero da      OS",min_value=0,max_value=rd7,value=rd7,placeholder="Selecione")
-                    st.metric(label="OS Existentes", value=rd7)
-                    numros5 = numros4-1
-                    if rd7 == 0:
-                        st.success('Não há pendências')
-                    else:
-                        osespec = rd6.loc[numros5]
-                        def load_data():
-                            return pd.DataFrame(osespec)
-                        st.checkbox("Estender", value=True, key="use_container_width ")
-                        lddt = load_data()
-                        st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
+                    if genre == 'ELÉTRICA':
+                        numros4 = st.number_input("Selecione o numero   da   OS",min_value=0,max_value=rd34,value=rd34,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value=rd34)
+                        numros5 = numros4-1
+                        if rd34 == 0:
+                           st.success('Não há pendências')
+                        else:
+                            osespec = rd33.loc[numros5]
+                            def load_data():
+                                return pd.DataFrame(osespec)
+                            st.checkbox("Estender", value=True, key="use_containeEr_width")
+                            lddt = load_data()
+                            st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
+            
+                    if genre == 'MECÂNICA':
+                            numros4 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=rd36,value=rd36,placeholder="Selecione")
+                            st.metric(label="OS Existentes", value=rd36)
+                            numros5 = numros4-1
+                            if rd36 == 0:
+                               st.success('Não há pendências')
+                            else:
+                                osespec = rd35.loc[numros5]
+                                def load_data():
+                                    return pd.DataFrame(osespec)
+                                st.checkbox("Estender", value=True, key="use_container_width")
+                                lddt = load_data()
+                                st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
+
+
+                
 
                 st.markdown('--------')
                 with st.expander("Administrativo"):
-                    numros4 = st.number_input("Selecione o numero  da      OS",min_value=0,max_value=rd11,value=rd11,placeholder="Selecione")
-                    st.metric(label="OS Existentes", value=rd11)
-                    numros5 = numros4-1
-                    if rd11 == 0:
-                        st.success('Não há pendências')
-                    else:
-                        osespec = rd10.loc[numros5]
-                        def load_data():
-                            return pd.DataFrame(osespec)
-                        st.checkbox("Estender", value=True, key="use_container_width ")
-                        lddt = load_data()
-                        st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
-
-                st.markdown('--------')
-                with st.expander("Comercial"):
-                    numros4 = st.number_input("Selecione o numero  da      OS",min_value=0,max_value=rd15,value=rd15,placeholder="Selecione")
-                    st.metric(label="OS Existentes", value=rd15)
-                    numros5 = numros4-1
-                    if rd15 == 0:
-                        st.success('Não há pendências')
-                    else:
-                        osespec = rd14.loc[numros5]
-                        def load_data():
-                            return pd.DataFrame(osespec)
-                        st.checkbox("Estender", value=True, key="use_container_width ")
-                        lddt = load_data()
-                        st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
+                    if genre == 'ELÉTRICA':
+                        numros4 = st.number_input("Selecione   o  numero   da   OS",min_value=0,max_value=rd34,value=rd34,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value=rd34)
+                        numros5 = numros4-1
+                        if rd34 == 0:
+                           st.success('Não há pendências')
+                        else:
+                            osespec = rd33.loc[numros5]
+                            def load_data():
+                                return pd.DataFrame(osespec)
+                            st.checkbox("Estender", value=True, key="    use_containeEr_width  ")
+                            lddt = load_data()
+                            st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
+            
+                    if genre == 'MECÂNICA':
+                            numros4 = st.number_input("Selecione  o numero  da    OS",min_value=0,max_value=rd36,value=rd36,placeholder="Selecione")
+                            st.metric(label="OS Existentes", value=rd36)
+                            numros5 = numros4-1
+                            if rd36 == 0:
+                               st.success('Não há pendências')
+                            else:
+                                osespec = rd35.loc[numros5]
+                                def load_data():
+                                    return pd.DataFrame(osespec)
+                                st.checkbox("Estender", value=True, key="use_container_width")
+                                lddt = load_data()
+                                st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
                 
                 st.markdown('--------')
                 with st.expander("Expedição"):
@@ -812,7 +898,7 @@ if fLIDERES == 'ROSIVALDO':
                         osespec = rd18.loc[numros5]
                         def load_data():
                             return pd.DataFrame(osespec)
-                        st.checkbox("Estender", value=True, key="use_container_width          ")
+                        st.checkbox("Estender", value=True, key="use_container_width")
                         lddt = load_data()
                         st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
                 
@@ -834,8 +920,8 @@ if fLIDERES == 'ROSIVALDO':
                 
             with tab9:
                 st.header('Manutenção', divider='rainbow')
-                with st.expander("Minhas OS"):
-                    numros6 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=whrlinhas4,value=whrlinhas4,placeholder="Selecione")
+                with st.expander("Minhas OS"): 
+                    numros6 = st.number_input(" Selecione  o numero da    OS",min_value=0,max_value=whrlinhas4,value=whrlinhas4,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= whrlinhas4)
                     numros7 = numros6-1
                     if whrlinhas4 == 0:
@@ -1615,6 +1701,11 @@ if fLIDERES == 'MAURILIO SALES':
                         if atd5:
                             PUac = st.selectbox('Atualize o Tipo da ação', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
                             st.markdown("---")
+                        
+                        Pmnt = st.selectbox('Eletrica ou Mecânica', ('ELÉTRICA','MECÂNICA'),index=None,placeholder='Selecione')
+                        if atd5:
+                            Pmnt = st.selectbox('Eletrica ou Mecânica', ('ELÉTRICA','MECÂNICA'),index=None,placeholder='Selecione')
+                            st.markdown("---")
 
                         relatorio = st.text_input('Relatorio')
                         if atd5:
@@ -1665,7 +1756,7 @@ if fLIDERES == 'MAURILIO SALES':
 
                             if Inserts:
                                 st.balloons()
-                                cursor5.execute("INSERT INTO PRODUCAO (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?)", (allln12 , str(Ps), str(Pstr), str(Pst),str(Pndo),Pdata,str(Ptemp),Pac,'Não',None,None))
+                                cursor5.execute("INSERT INTO PRODUCAO (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF,MANUTENTOR) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?,?)", (allln12 , str(Ps), str(Pstr), str(Pst),str(Pndo),Pdata,str(Ptemp),Pac,'Não',None,None,Pmnt))
                                 conn5.commit()
                                 conn5.close()
                                         
@@ -1782,6 +1873,11 @@ if fLIDERES == 'GILSON FREITAS':
                         if atd6:
                             AUac = st.selectbox('Atualize o Tipo da ação', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
                             st.markdown("---")
+                        
+                        Amnt = st.selectbox('Eletrica ou Mecânica', ('ELÉTRICA','MECÂNICA'),index=None,placeholder='Selecione')
+                        if atd6:
+                            Amnt = st.selectbox('Eletrica ou Mecânica', ('ELÉTRICA','MECÂNICA'),index=None,placeholder='Selecione')
+                            st.markdown("---")
 
                         relatorio = st.text_input('Relatorio')
                         if atd6:
@@ -1831,7 +1927,7 @@ if fLIDERES == 'GILSON FREITAS':
 
                             if Inserts1:
                                 st.balloons()
-                                cursor6.execute("INSERT INTO ADMINISTRATIVO (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?)", (allln12 , str(As), str(Astr), str(Ast),str(Ando),Adata,str(Atemp),Aac,'Não',None,None))
+                                cursor6.execute("INSERT INTO ADMINISTRATIVO (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF,MANUTENTOR) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?,?)", (allln12 , str(As), str(Astr), str(Ast),str(Ando),Adata,str(Atemp),Aac,'Não',None,None,Amnt))
                                 conn6.commit()
                                 conn6.close()
                                         
@@ -1948,7 +2044,12 @@ if fLIDERES == 'ADRIELY LEMOS':
                         if atd7:
                             CUac = st.selectbox('Atualize o Tipo da ação', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
                             st.markdown("---")
-
+                        
+                        Cmnt = st.selectbox('Eletrica ou Mecânica', ('ELÉTRICA','MECÂNICA'),index=None,placeholder='Selecione')
+                        if atd7:
+                            Cmnt = st.selectbox('Eletrica ou Mecânica', ('ELÉTRICA','MECÂNICA'),index=None,placeholder='Selecione')
+                            st.markdown("---")
+                                                
                         relatorio = st.text_input('Relatorio')
                         if atd7:
                             Urelatorio = st.text_input('Atualize o Relatorio')
@@ -1997,7 +2098,7 @@ if fLIDERES == 'ADRIELY LEMOS':
 
                             if Inserts2:
                                 st.balloons()
-                                cursor7.execute("INSERT INTO COMERCIAL (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?)", (allln12 , str(Cs), str(Castr), str(Cast),str(Cando),Cdata,str(Ctemp),Cac,'Não',None,None))
+                                cursor7.execute("INSERT INTO COMERCIAL (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF,MANUTENTOR) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?,?)", (allln12 , str(Cs), str(Castr), str(Cast),str(Cando),Cdata,str(Ctemp),Cac,'Não',None,None,Cmnt))
                                 conn7.commit()
                                 conn7.close()
                                         
@@ -2071,6 +2172,7 @@ whrlinhas36 = pd.DataFrame(whrlinhas35)
 whrlinhas37 = whrlinhas36.shape[0]
 
 if fLIDERES == 'ALEX SANTOS':
+
     if fSETOR == 'EXPEDIÇÃO':
         if senha == '1402':
             image = Image.open('./Midia/ssmm.jpg')
@@ -2113,6 +2215,11 @@ if fLIDERES == 'ALEX SANTOS':
                         Eac = st.selectbox('Tipo da ação', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
                         if atd8:
                             EUac = st.selectbox('Atualize o Tipo da ação', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
+                            st.markdown("---")
+                        
+                        Emnt = st.selectbox('Eletrica ou Mecânica', ('ELÉTRICA','MECÂNICA'),index=None,placeholder='Selecione')
+                        if atd8:
+                            Emnt = st.selectbox('Eletrica ou Mecânica', ('ELÉTRICA','MECÂNICA'),index=None,placeholder='Selecione')
                             st.markdown("---")
 
                         relatorio = st.text_input('Relatorio')
@@ -2163,7 +2270,7 @@ if fLIDERES == 'ALEX SANTOS':
 
                             if Inserts3:
                                 st.balloons()
-                                cursor8.execute("INSERT INTO EXPEDICAO (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?)", (allln12 , str(Ec), str(Eastr), str(East),str(Endo),Edata,str(Etemp),Eac,'Não',None,None))
+                                cursor8.execute("INSERT INTO EXPEDICAO (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF,MANUTENTOR) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?,?)", (allln12 , str(Ec), str(Eastr), str(East),str(Endo),Edata,str(Etemp),Eac,'Não',None,None,Emnt))
                                 conn8.commit()
                                 conn8.close()
                                         
@@ -2280,6 +2387,11 @@ if fLIDERES == 'CESAR AUGUSTO':
                         if atd9:
                             EUac = st.selectbox('Atualize o Tipo da ação', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
                             st.markdown("---")
+                        
+                        Smnt = st.selectbox('Eletrica ou Mecânica', ('ELÉTRICA','MECÂNICA'),index=None,placeholder='Selecione')
+                        if atd9:
+                            Smnt = st.selectbox('Eletrica ou Mecânica', ('ELÉTRICA','MECÂNICA'),index=None,placeholder='Selecione')
+                            st.markdown("---")
 
                         relatorio = st.text_input('Relatorio')
                         if atd9:
@@ -2329,7 +2441,7 @@ if fLIDERES == 'CESAR AUGUSTO':
 
                             if Inserts4:
                                 st.balloons()
-                                cursor9.execute("INSERT INTO SERRALHARIA (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?)", (allln12 , str(Sc), str(Sstr), str(Sst),str(Sndo),Sdata,str(Stemp),Sac,'Não',None,None))
+                                cursor9.execute("INSERT INTO SERRALHARIA (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF,MANUTENTOR) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?,?)", (allln12 , str(Sc), str(Sstr), str(Sst),str(Sndo),Sdata,str(Stemp),Sac,'Não',None,None,Smnt))
                                 conn9.commit()
                                 conn9.close()
                                         
@@ -2364,7 +2476,7 @@ if fLIDERES == 'CESAR AUGUSTO':
                         osespec26 = rd20.loc[numros27]
                         def load_data():
                             return pd.DataFrame(osespec26)
-                        st.checkbox("Estender", value=True, key="use_container_width      ")
+                        st.checkbox("Estender", value=True, key="use_container_width")
                         df = load_data()
                         st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
@@ -2382,4 +2494,7 @@ if fLIDERES == 'CESAR AUGUSTO':
                             return pd.DataFrame(osespec27)
                         st.checkbox("Estender", value=True, key= "uuse_containner_width")
                         df = load_data()
-                        st.dataframe(df, use_container_width=st.session_state.use_container_width)                  
+                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
+
+
+st.dataframe(rd25)            
