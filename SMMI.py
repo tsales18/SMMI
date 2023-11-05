@@ -556,7 +556,7 @@ if fLIDERES == 'ROSIVALDO':
                 
                 st.markdown('--------')
                 with st.expander("Produção"):
-                    numros4 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=rd7,value=rd7,placeholder="Selecione")
+                    numros4 = st.number_input("Selecione o numero da      OS",min_value=0,max_value=rd7,value=rd7,placeholder="Selecione")
                     st.metric(label="OS Existentes", value=rd6)
                     numros5 = numros4-1
                     if rd6 == 0:
