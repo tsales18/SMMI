@@ -526,15 +526,19 @@ if fLIDERES == 'ROSIVALDO':
 
                 with neymar:
                     if atd1:
-                        numros = st.number_input("Selecione o numero da OS que deseja atualizar",min_value=1,max_value=allln1,value=1,placeholder="Selecione")
+                        numros = st.number_input("Selecione o numero da OS que deseja atualizar",min_value=0,max_value=allln1,value=allln1,placeholder="Selecione")
                         st.metric(label="OS Existentes", value= allln1)
                         numros1 = numros-1
-                        osespec = allinhas.loc[numros1]
-                        def load_dataa():
-                            return pd.DataFrame(osespec)
-                        st.checkbox("Estender", value=True, key="use_container_widthh")
-                        df = load_dataa()
-                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                        if allln1 == 0:
+                            st.success('Não há pendências')
+                        else:
+                            osespec = allinhas.loc[numros1]
+                            def load_dataa():
+
+                                return pd.DataFrame(osespec)
+                            st.checkbox("Estender", value=True, key="use_container_widthh")
+                            df = load_dataa()
+                            st.dataframe(df, use_container_width=st.session_state.use_container_width)
                       
 
 
@@ -1482,15 +1486,18 @@ if fLIDERES == 'IVSON PAULINO':
 
                 with col10:
                     if atd4:
-                        numros12 = st.number_input("Selecion6numros16 o numero da OS que deseja atualizar",min_value=1,max_value=allln14,value=1,placeholder="Selecione")
+                        numros12 = st.number_input("Selecion6numros16 o numero da OS que deseja atualizar",min_value=0,max_value=allln14,value=allln14,placeholder="Selecione")
                         st.metric(label="OS Existentes", value= allln14)
                         numros17 = numros12-1
-                        osespec4 = allinhas15.loc[numros17]
-                        def load_dataa():
-                            return pd.DataFrame(osespec4)
-                        st.checkbox("Estender", value=True, key="use_container_widthh")
-                        df = load_dataa()
-                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                        if allln14 == 0:
+                            st.success('Não há pendências')
+                        else:
+                            osespec4 = allinhas15.loc[numros17]
+                            def load_dataa():
+                                return pd.DataFrame(osespec4)
+                            st.checkbox("Estender", value=True, key="use_container_widthh")
+                            df = load_dataa()
+                            st.dataframe(df, use_container_width=st.session_state.use_container_width)
                 
                         
                 if 'OS' not in st.session_state:
@@ -1649,15 +1656,18 @@ if fLIDERES == 'MAURILIO SALES':
 
                 with col12:
                     if atd5:
-                        numros12 = st.number_input("Selecion6numros18 o numero da OS que deseja atualizar",min_value=1,max_value=allln16,value=1,placeholder="Selecione")
+                        numros12 = st.number_input("Selecion6numros18 o numero da OS que deseja atualizar",min_value=0,max_value=allln16,value=allln16,placeholder="Selecione")
                         st.metric(label="OS Existentes", value= allln16)
                         numros19 = numros12-1
-                        osespec8 = allinhas16.loc[numros19]
-                        def load_dataa():
-                            return pd.DataFrame(osespec8)
-                        st.checkbox("Estender", value=True, key="use_container_widthh")
-                        df = load_dataa()
-                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                        if allln16 == 0:
+                            st.success('Não há pendências')
+                        else:
+                            osespec8 = allinhas16.loc[numros19]
+                            def load_dataa():
+                                return pd.DataFrame(osespec8)
+                            st.checkbox("Estender", value=True, key="use_container_widthh")
+                            df = load_dataa()
+                            st.d0ataframe(df, use_container_width=st.session_state.use_container_width)
                 
                         
                 if 'OS' not in st.session_state:
@@ -1814,17 +1824,19 @@ if fLIDERES == 'GILSON FREITAS':
 
                 with col14:
                     if atd6:
-                        numros12 = st.number_input("Selecione o numero da OS que deseja atualizar",min_value=1,max_value=allln18,value=1,placeholder="Selecione")
+                        numros12 = st.number_input("Selecione o numero da OS que deseja atualizar",min_value=0,max_value=allln18,value=allln18,placeholder="Selecione")
                         st.metric(label="OS Existentes", value= allln18)
                         numros21 = numros12-1
-                        osespec12 = allinhas17.loc[numros21]
-                        def load_dataa():
-                            return pd.DataFrame(osespec12)
-                        st.checkbox("Estender", value=True, key="use_container_widthh")
-                        df = load_dataa()
-                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                        if allln18 ==0:
+                            st.success('Não há pendências')
+                        else:
+                            osespec12 = allinhas17.loc[numros21]
+                            def load_dataa():
+                                return pd.DataFrame(osespec12)
+                            st.checkbox("Estender", value=True, key="use_container_widthh")
+                            df = load_dataa()
+                            st.dataframe(df, use_container_width=st.session_state.use_container_width)
                 
-                        
                 if 'OS' not in st.session_state:
                     st.session_state.OS = 0
                     
@@ -1978,17 +1990,19 @@ if fLIDERES == 'ADRIELY LEMOS':
 
                 with col16:
                     if atd7:
-                        numros12 = st.number_input("Selecione o numero da OS que deseja atualizar",min_value=1,max_value=allln120,value=1,placeholder="Selecione")
+                        numros12 = st.number_input("Selecione o numero da OS que deseja atualizar",min_value=0,max_value=allln120,value=allln120,placeholder="Selecione")
                         st.metric(label="OS Existentes", value= allln120)
                         numros23 = numros12-1
-                        osespec16 = allinhas18.loc[numros23]
-                        def load_dataa():
-                            return pd.DataFrame(osespec16)
-                        st.checkbox("Estender", value=True, key="use_container_widthh")
-                        df = load_dataa()
-                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                        if allln120 == 0:
+                            st.success('Não há pendências')
+                        else:    
+                            osespec16 = allinhas18.loc[numros23]
+                            def load_dataa():
+                                return pd.DataFrame(osespec16)
+                            st.checkbox("Estender", value=True, key="use_container_widthh")
+                            df = load_dataa()
+                            st.dataframe(df, use_container_width=st.session_state.use_container_width)
                 
-                        
                 if 'OS' not in st.session_state:
                     st.session_state.OS = 0
                     
