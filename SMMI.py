@@ -661,7 +661,7 @@ if fLIDERES == 'ROSIVALDO':
                             if setorescolhido == 'EXPEDIÇÃO':    
                                 fnl=st.button("FINALIZAR")
                                 if fnl:
-                                    cursor8.execute("UPDATE COMERCIAL SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput,str(timeinput),fnlz2))
+                                    cursor8.execute("UPDATE EXPEDICAO SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput,str(timeinput),fnlz2))
                                     conn8.commit()
                                     st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente como uma flor.')  
 
@@ -752,7 +752,7 @@ if fLIDERES == 'ROSIVALDO':
                         osespec = rd18.loc[numros5]
                         def load_data():
                             return pd.DataFrame(osespec)
-                        st.checkbox("Estender", value=True, key="use_container_width ")
+                        st.checkbox("Estender", value=True, key="use_container_width          ")
                         lddt = load_data()
                         st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
                 
@@ -845,7 +845,7 @@ if fLIDERES == 'ROSIVALDO':
                         osespec = rd16.loc[numros5]
                         def load_data():
                             return pd.DataFrame(osespec)
-                        st.checkbox("Estender", value=True, key="use_container_width      ")
+                        st.checkbox("Estender", value=True, key="use_container_width               ")
                         lddt = load_data()
                         st.dataframe(lddt, use_container_width=st.session_state.use_container_width)         
 
