@@ -337,7 +337,25 @@ cursor5.execute('''
     )
 ''')
 
-
+conn6 = sqlite3.connect('ADMINISTRATIVO')
+cursor6 = conn6.cursor()
+cursor6.execute('''
+    CREATE TABLE IF NOT EXISTS ADMINISTRATIVO (
+        OS INTEGER PRIMARY KEY,
+        SOLICITANTE TEXT,
+        SETOR TEXT,
+        OCORRENCIA TEXT,
+        GRAU TEXT,
+        DATA DATE,
+        HORA TIME,
+        AÇÃO TEXT,
+        FINALIZADA TEXT,
+        DATAF,
+        HORAF
+       
+                   
+    )
+''')
 
 #leitura do banco rosivaldo
 allln = pd.read_sql_query("SELECT * FROM ROSIVALDO", conn1)
@@ -378,6 +396,18 @@ rd5 = rd4.shape[0]
 
 allln15 = pd.read_sql_query("SELECT * FROM PRODUCAO", conn5)
 allln16 = allln15.shape[0]
+
+#FEEDBACK ADMINISTRATIVO
+query = "SELECT * FROM ADMINISTRATIVO WHERE FINALIZADA = 'Não'"
+rd10 = pd.read_sql_query(query, conn6)
+rd11 = rd10.shape[0]
+
+query1 = "SELECT * FROM ADMINISTRATIVO WHERE FINALIZADA = 'Sim'"
+rd8 = pd.read_sql_query(query1, conn6)
+rd9 = rd8.shape[0]
+
+allln17 = pd.read_sql_query("SELECT * FROM ADMINISTRATIVO", conn6)
+allln18 = allln17.shape[0]
 
 
 
@@ -575,6 +605,21 @@ if fLIDERES == 'ROSIVALDO':
                         st.checkbox("Estender", value=True, key="use_container_width ")
                         lddt = load_data()
                         st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
+
+                st.markdown('--------')
+                with st.expander("Administrativo"):
+                    numros4 = st.number_input("Selecione o numero da      OS",min_value=0,max_value=rd11,value=rd11,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value=rd11)
+                    numros5 = numros4-1
+                    if rd10 == 0:
+                        st.success('Não há pendências')
+                    else:
+                        osespec = rd10.loc[numros5]
+                        def load_data():
+                            return pd.DataFrame(osespec)
+                        st.checkbox("Estender", value=True, key="use_container_width ")
+                        lddt = load_data()
+                        st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
                 
                 
             with tab9:
@@ -623,6 +668,22 @@ if fLIDERES == 'ROSIVALDO':
                         st.checkbox("Estender", value=True, key="use_container_width ")
                         lddtt = load_data()
                         st.dataframe(lddtt, use_container_width=st.session_state.use_container_width)
+                
+                st.markdown('--------')
+                with st.expander("Administrativo"):
+                    numros4 = st.number_input("Selecione o numero da      OS",min_value=0,max_value=rd9,value=rd9,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value=rd9)
+                    numros5 = numros4-1
+                    if rd9 == 0:
+                        st.success('Não há pendências')
+                    else:
+                        osespec = rd8.loc[numros5]
+                        def load_data():
+                            return pd.DataFrame(osespec)
+                        st.checkbox("Estender", value=True, key="use_container_width ")
+                        lddt = load_data()
+                        st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
+
                 
             with tab10:
                 st.header('Manutenção', divider='rainbow')
@@ -1576,6 +1637,171 @@ if fLIDERES == 'MAURILIO SALES':
                         osespec11 = allln15.loc[numros21]
                         def load_data():
                             return pd.DataFrame(osespec11)
+                        st.checkbox("Estender", value=True, key= "uuse_containner_width")
+                        df = load_data()
+                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
+
+
+#ADMINISTRATIVO
+#GERAL ADMINISTRATIVO
+allln17 = pd.read_sql_query("SELECT * FROM ADMINISTRATIVO", conn6)
+allln18 = allln17.shape[0]
+consulta2 = "SELECT * FROM ADMINISTRATIVO"
+allinhas17 = pd.read_sql_query(consulta2, conn6)
+
+#OS ABERTAS  NÃO FINALIZADAS
+consulta3 = "SELECT * FROM ADMINISTRATIVO WHERE FINALIZADA = 'Não'"
+whrlinhas23 = pd.read_sql_query(consulta3, conn6)
+whrlinhas24 = whrlinhas23.shape[0]
+
+#OS FINALIZADAS
+cursor6.execute("SELECT * FROM ADMINISTRATIVO WHERE FINALIZADA = ?;", ('Sim',))
+whrlinhas25 = cursor6.fetchall()
+whrlinhas26 = pd.DataFrame(whrlinhas25)
+whrlinhas27 = whrlinhas26.shape[0]
+
+if fLIDERES == 'GILSON FREITAS':
+    if fSETOR == 'ADMINISTRATIVO':
+        if senha == '1404':
+            image = Image.open('./Midia/ssmm.jpg')
+            ps6,ps7= st.columns(2)
+            cl7 = st.button("DELETAR TABELA")
+            if cl7:
+                cursor6.execute("DROP TABLE ADMINISTRATIVO")
+                conn6.commit()
+            with ps6:
+                st.title('Status e informações de OS')
+
+            st.markdown("---")
+            tab34,tab35,tab36,tab37= st.tabs(["Cadastro","OS Abertas","OS Finalizadas","Geral"])
+            with tab34:
+                st.header('Cadastro de ocorrências', divider='rainbow')
+                col13,col14= st.columns(2)  
+                with col13:                  
+                    atd6 = st.toggle('Atualizar os dados')
+                    with st.form('my form4'):
+                        st.markdown("---")
+                        As = st.selectbox('Solicitante', ('GILSON FREITAS',),index=None,placeholder='Selecione')
+                        if atd6:
+                            AUs = st.selectbox('Atualize o Solicitante', ('GILSON FREITAS'),index=None,placeholder='Atualize')
+                            st.markdown("---")
+
+                        Ast = st.text_input('Tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
+                        if atd6:
+                            AUst = st.text_input('Atualize o tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
+                            st.markdown("---")
+
+                        Astr = st.selectbox('Setor', ('ADMINISTRATIVO',),index=None,placeholder='Selecione')
+                        if atd6:
+                            AUstr = st.selectbox('Aualize o Setor', ('ADMINISTRATIVO'),index=None,placeholder='Atualize')
+                            st.markdown("---")
+
+                        Ando = st.selectbox('Nivel da ocorrência', ('EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE','URGÊNTE'),index=None,placeholder='Selecione')
+                        if atd6:
+                            AUndo = st.selectbox('Atualize o Nivel da ocorrência',('EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE','URGÊNTE'),index=None, placeholder='Atualize')
+                            st.markdown("---")
+                        Aac = st.selectbox('Tipo da ação', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
+                        if atd6:
+                            AUac = st.selectbox('Atualize o Tipo da ação', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
+                            st.markdown("---")
+
+                        relatorio = st.text_input('Relatorio')
+                        if atd6:
+                            Urelatorio = st.text_input('Atualize o Relatorio')
+                            st.markdown("---")
+
+                        Atemp = st.time_input('Horario', value=None)
+                        if atd6:
+                            AUtemp = st.time_input('Atualize o Horario', value=None)
+                            st.write(Atemp)
+
+                        Adata = st.date_input("Data", value=None)
+                        if atd6:
+                            AUdata = st.date_input("Atualize a Data", value=None)
+                        uploaded_files = st.file_uploader("Choose a CSV file", accept_multiple_files=True)
+                        for uploaded_file in uploaded_files:
+                            bytes_data = uploaded_file.read()
+                        st.form_submit_button('↻')
+
+                with col14:
+                    if atd6:
+                        numros12 = st.number_input("Selecione o numero da OS que deseja atualizar",min_value=1,max_value=allln18,value=1,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value= allln18)
+                        numros21 = numros12-1
+                        osespec12 = allinhas17.loc[numros21]
+                        def load_dataa():
+                            return pd.DataFrame(osespec12)
+                        st.checkbox("Estender", value=True, key="use_container_widthh")
+                        df = load_dataa()
+                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                
+                        
+                if 'OS' not in st.session_state:
+                    st.session_state.OS = 0
+                    
+                if 'FIN' not in st.session_state:
+                    st.session_state.FIN = 0
+                        
+                if fLIDERES == 'GILSON FREITAS':
+                    if fSETOR == 'ADMINISTRATIVO':
+                        if senha == '1404':
+                            Inserts1 = st.button("INSERIR DADOS")
+                            if Inserts1:
+                                allln12 = allln18 + 1
+
+                            if Inserts1:
+                                st.balloons()
+                                cursor6.execute("INSERT INTO ADMINISTRATIVO (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?)", (allln12 , str(As), str(Astr), str(Ast),str(Ando),Adata,str(Atemp),Aac,'Não',None,None))
+                                conn6.commit()
+                                conn6.close()
+                                        
+            with tab35:
+                statuses,sats,statuses1=st.columns([80,0.1,0.1])
+                with statuses:
+                    st.header('ADMINISTRATIVO', divider='rainbow')
+                    with st.expander("Abertas"):
+                        numros22 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=whrlinhas24,value=whrlinhas24,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value= whrlinhas24)
+                        numros23 = numros22-1
+                        if whrlinhas24 == 0:
+                            st.success('Não há pendências')
+                        else:
+                            osespec13 = whrlinhas23.loc[numros23]
+                            def load_data():
+                                return pd.DataFrame(osespec13)
+                            st.checkbox("Estender", value=True, key="use_container_width")
+                            df = load_data()
+                            st.dataframe(df, use_container_width=st.session_state.use_container_width)
+
+            with tab36:
+                st.header('ADMINISTRATIVO', divider='rainbow')
+                with st.expander("Finalizadas"):
+                    numros20 = st.number_input("Selecione o numero da   OS",min_value=0,max_value=rd9,value=rd9,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value= rd9)
+                    numros21 = numros20-1
+                    if rd9 == 0:
+                        st.success('Não há pendências')
+                        
+                    else:
+                        osespec14 = rd8.loc[numros21]
+                        def load_data():
+                            return pd.DataFrame(osespec14)
+                        st.checkbox("Estender", value=True, key="use_container_width")
+                        df = load_data()
+                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
+
+            with tab37:
+                st.header('ADMINISTRATIVO', divider='rainbow')
+                with st.expander("Geral"):
+                    numros20 = st.number_input("Selecione o numero da    OS",min_value=0,max_value=allln18,value=allln18,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value= allln18)
+                    numros21 = numros20-1
+                    if allln18 == 0:
+                        st.success('Não há pendências')
+                    else:
+                        osespec15 = allln17.loc[numros21]
+                        def load_data():
+                            return pd.DataFrame(osespec15)
                         st.checkbox("Estender", value=True, key= "uuse_containner_width")
                         df = load_data()
                         st.dataframe(df, use_container_width=st.session_state.use_container_width)
