@@ -84,27 +84,6 @@ cursor.execute('''
     )
 ''')
 
-conn4 = sqlite3.connect('FERRAMENTARIA')
-cursor4 = conn4.cursor()
-cursor4.execute('''
-    CREATE TABLE IF NOT EXISTS FERRAMENTARIA (
-        OS INTEGER PRIMARY KEY,
-        SOLICITANTE TEXT,
-        SETOR TEXT,
-        OCORRENCIA TEXT,
-        GRAU TEXT,
-        DATA DATE,
-        HORA TIME,
-        AÇÃO TEXT,
-        FINALIZADA TEXT,
-        DATAF,
-        HORAF
-       
-                   
-    )
-''')
-
-
 
 #leitura do banco smmi
 cnt = pd.read_sql_query("SELECT * FROM ABERTURA", conn)
@@ -317,10 +296,10 @@ cursor1.execute('''
     )
 ''')
 
-conn2 = sqlite3.connect('CESAR')
-cursor2 = conn2.cursor()
-cursor2.execute('''
-    CREATE TABLE IF NOT EXISTS CESAR (
+conn4 = sqlite3.connect('FERRAMENTARIA')
+cursor4 = conn4.cursor()
+cursor4.execute('''
+    CREATE TABLE IF NOT EXISTS FERRAMENTARIA (
         OS INTEGER PRIMARY KEY,
         SOLICITANTE TEXT,
         SETOR TEXT,
@@ -331,11 +310,14 @@ cursor2.execute('''
         AÇÃO TEXT,
         FINALIZADA TEXT,
         DATAF,
-        HORAF
+        HORAF,
+        MANUTENTOR
        
                    
     )
 ''')
+
+
 
 conn5 = sqlite3.connect('PRODUCAO')
 cursor5 = conn5.cursor()
@@ -351,8 +333,8 @@ cursor5.execute('''
         AÇÃO TEXT,
         FINALIZADA TEXT,
         DATAF,
-        HORAF
-       
+        HORAF,
+        MANUTENTOR
                    
     )
 ''')
@@ -371,7 +353,9 @@ cursor6.execute('''
         AÇÃO TEXT,
         FINALIZADA TEXT,
         DATAF,
-        HORAF
+        HORAF,
+        MANUTENTOR
+                
        
                    
     )
@@ -391,7 +375,9 @@ cursor7.execute('''
         AÇÃO TEXT,
         FINALIZADA TEXT,
         DATAF,
-        HORAF
+        HORAF,
+        MANUTENTOR
+        
        
                    
     )
@@ -411,7 +397,8 @@ cursor8.execute('''
         AÇÃO TEXT,
         FINALIZADA TEXT,
         DATAF,
-        HORAF
+        HORAF,
+        MANUTENTOR
        
                    
     )
@@ -431,23 +418,32 @@ cursor9.execute('''
         AÇÃO TEXT,
         FINALIZADA TEXT,
         DATAF,
-        HORAF
+        HORAF,
+        MANUTENTOR
        
                    
     )
 ''')
 
-#MANUTENÇÃO 
-query = "SELECT * FROM COMERCIAL WHERE FINALIZADA = 'Não'"
-rd14 = pd.read_sql_query(query, conn7)
-rd15 = rd14.shape[0]
-
-query1 = "SELECT * FROM COMERCIAL WHERE FINALIZADA = 'Sim'"
-rd12 = pd.read_sql_query(query1, conn7)
-rd13 = rd12.shape[0]
-
-allln19 = pd.read_sql_query("SELECT * FROM COMERCIAL", conn7)
-allln120 = allln19.shape[0]
+conn10 = sqlite3.connect('CESAR')
+cursor10 = conn10.cursor()
+cursor10.execute('''
+    CREATE TABLE IF NOT EXISTS CESAR (
+        OS INTEGER PRIMARY KEY,
+        SOLICITANTE TEXT,
+        SETOR TEXT,
+        OCORRENCIA TEXT,
+        GRAU TEXT,
+        DATA DATE,
+        HORA TIME,
+        AÇÃO TEXT,
+        FINALIZADA TEXT,
+        DATAF,
+        HORAF
+       
+                   
+    )
+''')
 
 
 #leitura do banco rosivaldo
@@ -470,6 +466,10 @@ whrlinhas4 = whrlinhas3.shape[0]
 query = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Não'"
 rd2 = pd.read_sql_query(query, conn4)
 rd3 = rd2.shape[0]
+
+query = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'MECÂNICA'"
+rd25 = pd.read_sql_query(query, conn4)
+rd26 = rd25.shape[0]
 
 query1 = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Sim'"
 rd = pd.read_sql_query(query1, conn4)
@@ -649,7 +649,7 @@ if fLIDERES == 'ROSIVALDO':
                                                     allln3 = allln1 + 1
                                                 if insdds:
                                                     st.balloons()
-                                                    cursor1.execute("INSERT INTO ROSIVALDO (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?)", (allln3 , str(Rsolicitante), str(Rsetor), str(Rstatus),str(Rniveldaocorrencia),Rdata,str(Rtempoi),Racao,'Não',None,None))
+                                                    cursor1.execute("INSERT INTO ROSIVALDO (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF,MANUTENTOR) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?)", (allln3 , str(Rsolicitante), str(Rsetor), str(Rstatus),str(Rniveldaocorrencia),Rdata,str(Rtempoi),Racao,'Não',None,None))
                                                     conn1.commit()
                                                     conn1.close()
                            
@@ -715,7 +715,7 @@ if fLIDERES == 'ROSIVALDO':
                                     conn8.commit()
                                     st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente como uma flor.')  
 
-                            if setorescolhido == 'SERALHARIA':    
+                            if setorescolhido == 'SERRALHARIA':    
                                 fnl=st.button("FINALIZAR")
                                 if fnl:
                                     cursor9.execute("UPDATE SERRALHARIA SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput,str(timeinput),fnlz2))
@@ -724,6 +724,9 @@ if fLIDERES == 'ROSIVALDO':
 
             with tab8:
                 st.header('Manutenção', divider='rainbow')
+                with st.expander("Filtros"):
+                    st.button('MECANICA')
+                    st.button('ELÉTRICA')
                 with st.expander("Minhas OS"):
                     numros2 = st.number_input("Selecione o numero da OS",min_value=whrlinhas2,max_value=whrlinhas2,value=whrlinhas2,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= whrlinhas2)
@@ -815,7 +818,7 @@ if fLIDERES == 'ROSIVALDO':
                 
                 st.markdown('--------')
                 with st.expander("Serralharia"):
-                    numros4 = st.number_input("Selecione o numero  da       OS",min_value=0,max_value=rd23,value=rd23,placeholder="Selecione")
+                    numros4 = st.number_input("Selecione  o numero  da       OS",min_value=0,max_value=rd23,value=rd23,placeholder="Selecione")
                     st.metric(label="OS Existentes", value=rd23)
                     numros5 = numros4-1
                     if rd23 == 0:
@@ -824,7 +827,7 @@ if fLIDERES == 'ROSIVALDO':
                         osespec = rd22.loc[numros5]
                         def load_data():
                             return pd.DataFrame(osespec)
-                        st.checkbox("Estender", value=True, key="use_container_width          ")
+                        st.checkbox("Estender", value=True, key="use_container_width                                                     ")
                         lddt = load_data()
                         st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
                 
@@ -893,7 +896,7 @@ if fLIDERES == 'ROSIVALDO':
 
                 st.markdown('--------')
                 with st.expander("Comercial"):
-                    numros4 = st.number_input("Selecione  o numero  da       OS",min_value=0,max_value=rd13,value=rd13,placeholder="Selecione")
+                    numros4 = st.number_input(" Selecione  o numero  da       OS",min_value=0,max_value=rd13,value=rd13,placeholder="Selecione")
                     st.metric(label="OS Existentes", value=rd13)
                     numros5 = numros4-1
                     if rd13 == 0:
@@ -923,7 +926,7 @@ if fLIDERES == 'ROSIVALDO':
                 
                 st.markdown('--------')
                 with st.expander("Serralharia"):
-                    numros4 = st.number_input("Selecione o numero  da       OS",min_value=0,max_value=rd21,value=rd21,placeholder="Selecione")
+                    numros4 = st.number_input("Selecione o numero   da       OS",min_value=0,max_value=rd21,value=rd21,placeholder="Selecione")
                     st.metric(label="OS Existentes", value=rd21)
                     numros5 = numros4-1
                     if rd21 == 0:
@@ -932,7 +935,8 @@ if fLIDERES == 'ROSIVALDO':
                         osespec = rd20.loc[numros5]
                         def load_data():
                             return pd.DataFrame(osespec)
-                        st.checkbox("Estender", value=True, key="use_container_width          ")
+                        
+                        st.checkbox("Estender", value=True, key=" use_container_width                                                        ")
                         lddt = load_data()
                         st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
 
@@ -954,189 +958,431 @@ if fLIDERES == 'ROSIVALDO':
                             df = load_data()
                             st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
+#leitura do banco CESAR
+allln = pd.read_sql_query("SELECT * FROM CESAR", conn10)
+allln1 = allln.shape[0]
+consulta1 = "SELECT * FROM CESAR"
+allinhas = pd.read_sql_query(consulta1, conn10)
 
-#leitura do banco CESAR FILHO
-allln7 = pd.read_sql_query("SELECT * FROM CESAR", conn2)
-allln8 = allln7.shape[0]
-consulta2 = "SELECT * FROM CESAR FILHO"
-allinhas1 = pd.read_sql_query(consulta2, conn2)
-
-#OS ABERTAS  NÃO FINALIZADAS 
-cursor2.execute("SELECT * FROM CESAR WHERE FINALIZADA = ?;", ('Não',))
-whlinhas6 = cursor2.fetchall()
-whrlinhas7 = pd.DataFrame(whlinhas6)
-whrlinhas8 = whrlinhas7.shape[0]  
+#OS ABERTAS  NÃO FINALIZADAS
+consulta4 = "SELECT * FROM CESAR WHERE FINALIZADA = 'Não'"
+whrlinhas1 = pd.read_sql_query(consulta4, conn10)
+whrlinhas2 = whrlinhas1.shape[0] 
 
 #OS FINALIZADAS
-cursor2.execute("SELECT * FROM CESAR WHERE FINALIZADA = ?;", ('Sim',))
-whrlinhas9 = cursor2.fetchall()
-whrlinhas10 = pd.DataFrame(whrlinhas9)
-whrlinhas11 = whrlinhas10.shape[0]
-
-if 'OS' not in st.session_state:
-    st.session_state.OS = 0
-        
-if 'FIN' not in st.session_state:
-    st.session_state.FIN = 0
-
+consulta5 = "SELECT * FROM CESAR WHERE FINALIZADA = 'Sim'"
+whrlinhas3 = pd.read_sql_query(consulta5, conn10)
+whrlinhas4 = whrlinhas3.shape[0]
+#leitura do banco FERRAMENTARIA
 if fLIDERES == 'CESAR FILHO':
     if fSETOR == 'MECÂNICA':
-        if senha == '1407':
-            cl3 = st.button("DELETAR TABELA")
-            if cl3:
-                cursor2.execute("DROP TABLE CESAR")
-                conn2.commit()
+        if senha == '1400':
+            cl1 = st.button("DELETAR TABELA")
+            if cl1:
+                cursor10.execute("DROP TABLE CESAR")
+                conn10.commit()
             image = Image.open('./Midia/ssmm.jpg')
-            col5,col6 = st.columns([1,1])
-            with col5:
+            col1,col2 = st.columns([1,1])
+            with col1:
                 st.title('Status e informações de OS')
            
-            tab16, tab17,tab18,tab19,tab20= st.tabs(["Cadastro", "Finalizar","OS Em aberto","OS Finalizadas","Geral"])
-            with tab16:
+            tab6, tab7,tab8,tab9,tab10= st.tabs(["Cadastro", "Finalizar","OS Em aberto","OS Finalizadas","Geral"])
+            with tab6:
                 st.header("Cadastro de ocorrência")
                 colibrim,neymar= st.columns([2,3])  
                 with colibrim:
-                    atd3 = st.toggle('Atualizar os dados')
+                    atd1 = st.toggle('Atualizar os dados')
                     with st.form('my form3'):
                         st.markdown("---")
-                        Csolicitante = st.selectbox('Solicitante', ('FILIPE','JAMESON','MAURILIO SALES','BRUNO KAPPAUN','EDUARDO BICUDO','ADRIELY LEMOS','GILSON FREITAS','ALEX SANTOS','CESAR AUGUSTO'),index=None,placeholder='Selecione')
-                        if atd3:
-                            CUsolicitante = st.selectbox('Atualize o Solicitante', ('FILIPE','JAMESON','MAURILIO SALES','BRUNO KAPPAUN','EDUARDO BICUDO','ADRIELY LEMOS','GILSON FREITAS','ALEX SANTOS','CESAR AUGUSTO'),index=None,placeholder='Atualize')
+                        Rsolicitante = st.selectbox('Solicitante', ('FILIPE','JAMESON','MAURILIO SALES','BRUNO KAPPAUN','EDUARDO BICUDO','ADRIELY LEMOS','GILSON FREITAS','ALEX SANTOS','CESAR AUGUSTO'),index=None,placeholder='Selecione')
+                        if atd1:
+                            RUsolicitante = st.selectbox('Atualize o Solicitante', ('FILIPE','JAMESON','MAURILIO SALES','BRUNO KAPPAUN','EDUARDO BICUDO','ADRIELY LEMOS','GILSON FREITAS','ALEX SANTOS','CESAR AUGUSTO'),index=None,placeholder='Atualize')
                             st.markdown("---")
 
-                        Cstatus = st.text_input('Tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
-                        if atd3:
-                            CUstatus = st.text_input('Atualize o tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
+                        Rstatus = st.text_input('Atualize o tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
+                        if atd1:
+                            RUstatus = st.text_input('Tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
                             st.markdown("---")
 
-                        Csetor = st.selectbox('Setor', ('TECNOLOGIA DA INFORMAÇÃO','COMERCIAL','ADMINISTRATIVO','EXPEDIÇÃO','PRODUÇÃO','FERRAMENTARIA','SERRALHARIA'),index=None,placeholder='Selecione')
-                        if atd3:
-                            CUsetor = st.selectbox('Aualize o Setor', ('TECNOLOGIA DA INFORMAÇÃO','COMERCIAL','ADMINISTRATIVO','EXPEDIÇÃO','PRODUÇÃO','FERRAMENTARIA','SERRALHARIA'),index=None,placeholder='Atualize')
+                        Rsetor = st.selectbox('Setor', ('TECNOLOGIA DA INFORMAÇÃO','COMERCIAL','ADMINISTRATIVO','EXPEDIÇÃO','PRODUÇÃO','FERRAMENTARIA','SERRALHARIA'),index=None,placeholder='Selecione')
+                        if atd1:
+                            RUsetor = st.selectbox('Aualize o Setor', ('TECNOLOGIA DA INFORMAÇÃO','COMERCIAL','ADMINISTRATIVO','EXPEDIÇÃO','PRODUÇÃO','FERRAMENTARIA','SERRALHARIA'),index=None,placeholder='Atualize')
                             st.markdown("---")
 
-                        Cniveldaocorrencia = st.selectbox('Nivel da ocorrência', ('EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE','URGÊNTE'),index=None,placeholder='Selecione')
-                        if atd3:
-                            CUniveldaocorrencia = st.selectbox('Atualize o Nivel da ocorrência',('EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE','URGÊNTE'),index=None, placeholder='Atualize')
+                        Rniveldaocorrencia = st.selectbox('Nivel da ocorrência', ('EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE','URGÊNTE'),index=None,placeholder='Selecione')
+                        if atd1:
+                            RUniveldaocorrencia = st.selectbox('Atualize o Nivel da ocorrência',('EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE','URGÊNTE'),index=None, placeholder='Atualize')
                             st.markdown("---")
-                        Cacao = st.selectbox('Tipo da ação', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
-                        if atd3:
-                            CUacao = st.selectbox('Atualize o Tipo da ação', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
+                        Racao = st.selectbox('Tipo da ação', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
+                        if atd1:
+                            RUacao = st.selectbox('Atualize o Tipo da ação', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
                             st.markdown("---")
 
                         relatorio = st.text_input('Relatorio')
-                        if atd3:
+                        if atd1:
                             Urelatorio = st.text_input('Atualize o Relatorio')
                             st.markdown("---")
 
-                        Ctempoi = st.time_input('Horario', value=None)
-                        if atd3:
-                            CUtempoi = st.time_input('Atualize o Horario', value=None)
-                            st.write(Ctempoi)
+                        Rtempoi = st.time_input('Horario', value=None)
+                        if atd1:
+                            RUtempoi = st.time_input('Atualize o Horario', value=None)
+                            st.write(Rtempoi)
 
-                        Cdata = st.date_input("Data", value=None)
-                        if atd3:
-                            CUdata = st.date_input("Atualize a Data", value=None)
+                        Rdata = st.date_input("Data", value=None)
+                        if atd1:
+                            RUdata = st.date_input("Atualize a Data", value=None)
                         uploaded_files = st.file_uploader("Choose a CSV file", accept_multiple_files=True)
                         for uploaded_file in uploaded_files:
                             bytes_data = uploaded_file.read()
                         st.form_submit_button('↻')
 
                 with neymar:
-                    if atd3:
-                        numros8 = st.number_input("Selecione o numero da OS que deseja atualizar",min_value=1,max_value=allln8,value=1,placeholder="Selecione")
-                        st.metric(label="OS Existentes", value= allln8)
-                        numros9 = numros8-1
-                        osespec2 = allinhas1.loc[numros9]
-                        def load_dataa():
-                            return pd.DataFrame(osespec2)
-                        st.checkbox("Estender", value=True, key="use_container_widthh")
-                        df = load_dataa()
-                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
-                        conn2.close()
+                    if atd1:
+                        numros = st.number_input("Selecione o numero da OS que deseja atualizar",min_value=0,max_value=allln1,value=allln1,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value= allln1)
+                        numros1 = numros-1
+                        if allln1 == 0:
+                            st.success('Não há pendências')
+                        else:
+                            osespec = allinhas.loc[numros1]
+                            def load_dataa():
+
+                                return pd.DataFrame(osespec)
+                            st.checkbox("Estender", value=True, key="use_container_widthh")
+                            df = load_dataa()
+                            st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                      
 
 
                 if fLIDERES == 'CESAR FILHO':
                     if fSETOR == 'MECÂNICA':
-                        if senha == '1407':
-                            if Cniveldaocorrencia != "Selecione":
-                                if Csolicitante != "Selecione":
-                                    if Csetor != "Selecione":
-                                            if atd3: 
+                        if senha == '1400':
+                            if Rniveldaocorrencia != "Selecione":
+                                if Rsolicitante != "Selecione":
+                                    if Rsetor != "Selecione":
+                                            if atd1: 
                                                 st.caption('É necessario finalizar esta OS antes de inciar outra.')
-                                                atl2 = st.button('atualize')
-                                                if atl2:
-                                                   st.balloons()
-                                                   cursor2.execute("UPDATE CESAR SET SOLICITANTE = ?, SETOR = ?,OCORRENCIA = ?,GRAU = ?, DATA = ?, HORA = ?, AÇÃO = ? WHERE OS = ?",(CUsolicitante, CUsetor, CUstatus,CUniveldaocorrencia,CUdata,str(CUtempoi),CUacao,numros8))
-                                                   conn2.commit()
-                                                   conn2.close()
-                                                
-                                            else:
-                                                insdds2 = st.button("INSERIR DADOS")
-
-                                                if insdds2:
-                                                    allln6 = allln8 + 1
-                                                if insdds2:
+                                                atl = st.button('atualize')
+                                                if atl:
                                                     st.balloons()
-                                                    cursor2.execute("INSERT INTO CESAR (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?)", (allln6 , str(Csolicitante), str(Csetor), str(Cstatus),str(Cniveldaocorrencia),Cdata,str(Ctempoi),Cacao,'Não',None,None))
-                                                    conn2.commit()
-                                                    conn2.close()
-                                                    
-            with tab17:
+                                                    cursor10.execute("UPDATE CESAR SET SOLICITANTE = ?, SETOR = ?,OCORRENCIA = ?,GRAU = ?, DATA = ?, HORA = ?, AÇÃO = ? WHERE OS = ?",(RUsolicitante, RUsetor, RUstatus,RUniveldaocorrencia,RUdata,str(RUtempoi),RUacao,numros))
+                                                    conn10.commit()
+                                                    conn10.close()
+                                                                                           
+                                            else:
+                                                insdds = st.button("INSERIR DADOS")
+
+                                                if insdds:
+                                                    allln3 = allln1 + 1
+                                                if insdds:
+                                                    st.balloons()
+                                                    cursor10.execute("INSERT INTO CESAR (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?)", (allln3 , str(Rsolicitante), str(Rsetor), str(Rstatus),str(Rniveldaocorrencia),Rdata,str(Rtempoi),Racao,'Não',None,None))
+                                                    conn10.commit()
+                                                    conn10.close()
+                           
+            with tab7:
                 st.header('Finalizar OS')
                 jefferson,lourdes=st.columns(2)
                 with jefferson:
-                    fnlz6 = st.number_input("Selecione o numero da OS que deseja Finalizar",min_value=0,max_value=allln8,value=0,placeholder="Selecione")
+                    setorescolhido = st.selectbox('Setor', ('TECNOLOGIA DA INFORMAÇÃO','COMERCIAL','ADMINISTRATIVO','EXPEDIÇÃO','PRODUÇÃO','FERRAMENTARIA','SERRALHARIA','MECÂNICA'),index=None,placeholder='Selecione')
+                    fnlz2 = st.number_input("Selecione o numero da OS que deseja Finalizar",min_value=0,max_value=1000,value=0,placeholder="Selecione")
+                    fnlz3 = fnlz2-1
+                    st.write(fnlz2)
                     with st.form('my form'):
                         finalizar = st.selectbox('OS finalizada?', ('Sim','Não'),index=None,placeholder='Selecione')
-                        fnlz7 = fnlz6-1
-                        datainput3 = st.date_input("Data", value=None)
-                        st.write(datainput3)
+                        datainput = st.date_input("Data", value=None)
+                        st.write(datainput)
                         st.markdown("---")
-                        timeinput4 = st.time_input('HORA', value=None)
-                        st.write(timeinput4)
+                        timeinput = st.time_input('HORA', value=None)
+                        st.write(timeinput)
                         st.form_submit_button('↻')
 
-                                  
-                if fLIDERES == 'CESAR FILHO':
+                if fLIDERES == 'CESAR':
                     if fSETOR == 'MECÂNICA':
-                        if senha == '1407':                                                                                                                     
-                            fnl1=st.button("FINALIZAR")
-                            if fnl1:
-                                cursor2.execute("UPDATE CESAR SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput3,str(timeinput4),fnlz6))
-                                conn2.commit()
-                                conn2.close()
-                                st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente com uma flor.')
-                                
+                        if senha == '1400':
+                            if setorescolhido == 'FERRAMENTARIA':    
+                                fnl=st.button("FINALIZAR")
+                                if fnl:
+                                    cursor4.execute("UPDATE FERRAMENTARIA SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput,str(timeinput),fnlz2))
+                                    conn4.commit()
+                                    st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente como uma flor.')
+                            if setorescolhido == 'MECÂNICA':    
+                                fnl=st.button("FINALIZAR")
+                                if fnl:
+                                    cursor10.execute("UPDATE CESAR SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput,str(timeinput),fnlz2))
+                                    conn10.commit()
+                                    conn10.close()
+                                    st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente como uma flor.') 
+
+                            if setorescolhido == 'PRODUÇÃO':    
+                                fnl=st.button("FINALIZAR")
+                                if fnl:
+                                    cursor5.execute("UPDATE PRODUCAO SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput,str(timeinput),fnlz2))
+                                    conn5.commit()
+                                    st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente como uma flor.')
                             
-            with tab18:
-                st.metric(label="OS em aberto", value= whrlinhas8)
-                whrlinhas7 = pd.DataFrame(whlinhas6)
-                st.dataframe(whrlinhas7)
-                st.write(whrlinhas8)
+                            if setorescolhido == 'ADMINISTRATIVO':    
+                                fnl=st.button("FINALIZAR")
+                                if fnl:
+                                    cursor6.execute("UPDATE ADMINISTRATIVO SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput,str(timeinput),fnlz2))
+                                    conn6.commit()
+                                    st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente como uma flor.') 
+                            
+                            if setorescolhido == 'COMERCIAL':    
+                                fnl=st.button("FINALIZAR")
+                                if fnl:
+                                    cursor7.execute("UPDATE COMERCIAL SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput,str(timeinput),fnlz2))
+                                    conn7.commit()
+                                    st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente como uma flor.') 
+
+                            if setorescolhido == 'EXPEDIÇÃO':    
+                                fnl=st.button("FINALIZAR")
+                                if fnl:
+                                    cursor8.execute("UPDATE EXPEDICAO SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput,str(timeinput),fnlz2))
+                                    conn8.commit()
+                                    st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente como uma flor.')  
+
+                            if setorescolhido == 'SERRALHARIA':    
+                                fnl=st.button("FINALIZAR")
+                                if fnl:
+                                    cursor9.execute("UPDATE SERRALHARIA SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput,str(timeinput),fnlz2))
+                                    conn9.commit()
+                                    st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente como uma flor.') 
+
+            with tab8:
+                st.header('Manutenção', divider='rainbow')
+                with st.expander("Minhas OS"):
+                    numros2 = st.number_input("Selecione o numero da OS",min_value=whrlinhas2,max_value=whrlinhas2,value=whrlinhas2,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value= whrlinhas2)
+                    numros3 = numros2-1
+                    if whrlinhas2 == 0:
+                        st.success('Não há pendências')
+                    else:
+                        osespec = whrlinhas1.loc[numros3]
+                        def load_data():
+                            return pd.DataFrame(osespec)
+                        st.checkbox("Estender", value=True, key="use_container_width")
+                        df = load_data()
+                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
+
+                st.markdown('--------')
+                with st.expander("Ferramentaria"):
+                    numros4 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=rd3,value=rd3,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value=rd3)
+                    numros5 = numros4-1
+                    if rd3 == 0:
+                        st.success('Não há pendências')
+                    else:
+                        osespec = rd2.loc[numros5]
+                        def load_data():
+                            return pd.DataFrame(osespec)
+                        st.checkbox("Estender", value=True, key=" use_container_width" )
+                        lddt = load_data()
+
+                        st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
                 
+                st.markdown('--------')
+                with st.expander("Produção"):
+                    numros4 = st.number_input("Selecione o numero da      OS",min_value=0,max_value=rd7,value=rd7,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value=rd7)
+                    numros5 = numros4-1
+                    if rd7 == 0:
+                        st.success('Não há pendências')
+                    else:
+                        osespec = rd6.loc[numros5]
+                        def load_data():
+                            return pd.DataFrame(osespec)
+                        st.checkbox("Estender", value=True, key="use_container_width ")
+                        lddt = load_data()
+                        st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
 
-            with tab19:
-                st.metric(label="OS Finalizadas",value=whrlinhas11)
-                whrlinhas10 = pd.DataFrame(whrlinhas9)
-                st.dataframe(whrlinhas10)
-                st.write(whrlinhas11)
+                st.markdown('--------')
+                with st.expander("Administrativo"):
+                    numros4 = st.number_input("Selecione o numero  da      OS",min_value=0,max_value=rd11,value=rd11,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value=rd11)
+                    numros5 = numros4-1
+                    if rd11 == 0:
+                        st.success('Não há pendências')
+                    else:
+                        osespec = rd10.loc[numros5]
+                        def load_data():
+                            return pd.DataFrame(osespec)
+                        st.checkbox("Estender", value=True, key="use_container_width ")
+                        lddt = load_data()
+                        st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
 
-            with tab20:
+                st.markdown('--------')
+                with st.expander("Comercial"):
+                    numros4 = st.number_input("Selecione o numero  da      OS",min_value=0,max_value=rd15,value=rd15,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value=rd15)
+                    numros5 = numros4-1
+                    if rd15 == 0:
+                        st.success('Não há pendências')
+                    else:
+                        osespec = rd14.loc[numros5]
+                        def load_data():
+                            return pd.DataFrame(osespec)
+                        st.checkbox("Estender", value=True, key="use_container_width ")
+                        lddt = load_data()
+                        st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
+                
+                st.markdown('--------')
+                with st.expander("Expedição"):
+                    numros4 = st.number_input("Selecione o numero  da       OS",min_value=0,max_value=rd19,value=rd19,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value=rd19)
+                    numros5 = numros4-1
+                    if rd19 == 0:
+                        st.success('Não há pendências')
+                    else:
+                        osespec = rd18.loc[numros5]
+                        def load_data():
+                            return pd.DataFrame(osespec)
+                        st.checkbox("Estender", value=True, key="use_container_width          ")
+                        lddt = load_data()
+                        st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
+                
+                st.markdown('--------')
+                with st.expander("Serralharia"):
+                    numros4 = st.number_input("Selecione  o numero  da       OS",min_value=0,max_value=rd23,value=rd23,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value=rd23)
+                    numros5 = numros4-1
+                    if rd23 == 0:
+                        st.success('Não há pendências')
+                    else:
+                        osespec = rd22.loc[numros5]
+                        def load_data():
+                            return pd.DataFrame(osespec)
+                        st.checkbox("Estender", value=True, key="use_container_width                                                     ")
+                        lddt = load_data()
+                        st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
+                
+                
+            with tab9:
+                st.header('Manutenção', divider='rainbow')
+                with st.expander("Minhas OS"):
+                    numros6 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=whrlinhas4,value=whrlinhas4,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value= whrlinhas4)
+                    numros7 = numros6-1
+                    if whrlinhas4 == 0:
+                        st.success('Não há pendências')
+                    else:
+                        osespec = whrlinhas3.loc[numros7]
+                        def load_data():
+                            return pd.DataFrame(osespec)
+                        st.checkbox("Estender", value=True, key="use_container_width  ")
+                        df = load_data()
+                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                
+                st.markdown('--------')
+                with st.expander("Ferramentaria"):
+                    numros8 = st.number_input("Selecione o numero da    OS",min_value=0,max_value=rd1,value=rd1,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value= rd1)
+
+                    numros9 = numros8-1
+                    if rd1 == 0:
+                        st.success('Não há pendências')
+                    else:
+                        osespec = rd.loc[numros9]
+                        def load_data():
+                            return pd.DataFrame(osespec)
+                        st.checkbox("Estender", value=True, key="use_contaainer_widtth")
+                        df = load_data()
+                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                
+                st.markdown('--------')
+                with st.expander("Produção"):
+                    numros4 = st.number_input("Selecione o  numero da      OS",min_value=0,max_value=rd5,value=rd5,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value=rd5)
+                    numros5 = numros4-1
+                    if rd5 == 0:
+                        st.success('Não há pendências')
+                    else:
+                        osespec = rd4.loc[numros5]
+                        def load_data():
+                            return pd.DataFrame(osespec)
+                        st.checkbox("Estender", value=True, key="use_container_width    ")
+                        lddtt = load_data()
+                        st.dataframe(lddtt, use_container_width=st.session_state.use_container_width)
+                
+                st.markdown('--------')
+                with st.expander("Administrativo"):
+                    numros4 = st.number_input("Selecione o numero da               OS",min_value=0,max_value=rd9,value=rd9,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value=rd9)
+                    numros5 = numros4-1
+                    if rd9 == 0:
+                        st.success('Não há pendências')
+                    else:
+                        osespec = rd8.loc[numros5]
+                        def load_data():
+                            return pd.DataFrame(osespec)
+                        st.checkbox("Estender", value=True, key="use_container_width     ")
+                        lddt = load_data()
+                        st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
+
+                st.markdown('--------')
+                with st.expander("Comercial"):
+                    numros4 = st.number_input(" Selecione  o numero  da       OS",min_value=0,max_value=rd13,value=rd13,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value=rd13)
+                    numros5 = numros4-1
+                    if rd13 == 0:
+                        st.success('Não há pendências')
+                    else:
+                        osespec = rd12.loc[numros5]
+                        def load_data():
+                            return pd.DataFrame(osespec)
+                        st.checkbox("Estender", value=True, key="use_container_width      ")
+                        lddt = load_data()
+                        st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
+                
+                st.markdown('--------')
+                with st.expander("Expedição"):
+                    numros4 = st.number_input("Selecione  o  numero  da         OS",min_value=0,max_value=rd17,value=rd17,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value=rd17)
+                    numros5 = numros4-1
+                    if rd17 == 0:
+                        st.success('Não há pendências')
+                    else:
+                        osespec = rd16.loc[numros5]
+                        def load_data():
+                            return pd.DataFrame(osespec)
+                        st.checkbox("Estender", value=True, key="use_container_width               ")
+                        lddt = load_data()
+                        st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
+                
+                st.markdown('--------')
+                with st.expander("Serralharia"):
+                    numros4 = st.number_input("Selecione o numero   da       OS",min_value=0,max_value=rd21,value=rd21,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value=rd21)
+                    numros5 = numros4-1
+                    if rd21 == 0:
+                        st.success('Não há pendências')
+                    else:
+                        osespec = rd20.loc[numros5]
+                        def load_data():
+                            return pd.DataFrame(osespec)
+                        
+                        st.checkbox("Estender", value=True, key=" use_container_width                                                        ")
+                        lddt = load_data()
+                        st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
+
+            with tab10:
+                st.header('Manutenção', divider='rainbow')
                 statuses,sats,statuses1=st.columns([90,8,20])
-                with statuses:   
-                    numros10 = st.number_input("Selecione o numero da OS",min_value=1,max_value=allln8,value=1,placeholder="Selecione")
-                    st.metric(label="OS Existentes", value= allln8)
-                    numros11 = numros10-1
-                    osespec2 = allinhas1.loc[numros11]
-                    def load_data():
-                        return pd.DataFrame(osespec2)
-                    st.checkbox("Estender", value=True, key="use_container_width")
-                    df = load_data()
-                    st.dataframe(df, use_container_width=st.session_state.use_container_width)
-
-
-
-
+                with statuses:
+                    with st.expander("See explanation"):
+                        numros10 = st.number_input("Selecione o numero da    OS",min_value=0,max_value=allln1,value=allln1,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value= allln1)
+                        numros11 = numros10-1
+                        if allln1 == 0:
+                            st.success('Não há pendências')
+                        else:
+                            osespec = allinhas.loc[numros11]
+                            def load_data():
+                                return pd.DataFrame(osespec)
+                            st.checkbox("Estender", value=True, key="usee_container_width")
+                            df = load_data()
+                            st.dataframe(df, use_container_width=st.session_state.use_container_width)
+         
 allln13 = pd.read_sql_query("SELECT * FROM FERRAMENTARIA", conn4)
 allln14 = allln13.shape[0]
 consulta2 = "SELECT * FROM FERRAMENTARIA"
@@ -1197,6 +1443,11 @@ if fLIDERES == 'IVSON PAULINO':
                         if atd4:
                             Fuac = st.selectbox('Atualize o Tipo da ação', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
                             st.markdown("---")
+                        
+                        Fmnt = st.selectbox('Eletrica ou Mecânica', ('ELÉTRICA','MECÂNICA'),index=None,placeholder='Selecione')
+                        if atd4:
+                            Fmnt = st.selectbox('Eletrica ou Mecânica', ('ELÉTRICA','MECÂNICA'),index=None,placeholder='Selecione')
+                            st.markdown("---")
 
                         relatorio = st.text_input('Relatorio')
                         if atd4:
@@ -1247,7 +1498,7 @@ if fLIDERES == 'IVSON PAULINO':
 
                             if attt:
                                 st.balloons()
-                                cursor4.execute("INSERT INTO FERRAMENTARIA (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?)", (allln12 , str(Fs), str(Fstr), str(Fst),str(Fndo),Fdata,str(Ftemp),Fac,'Não',None,None))
+                                cursor4.execute("INSERT INTO FERRAMENTARIA (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF,MANUTENTOR) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?,?)", (allln12 , str(Fs), str(Fstr), str(Fst),str(Fndo),Fdata,str(Ftemp),Fac,'Não',None,None,Fmnt))
                                 conn4.commit()
                                 conn4.close()
                                         
@@ -1265,7 +1516,7 @@ if fLIDERES == 'IVSON PAULINO':
                             osespec5 = whrlinhas12.loc[numros23]
                             def load_data():
                                 return pd.DataFrame(osespec5)
-                            st.checkbox("Estender", value=True, key="usee_containner_widthh")
+                            st.checkbox("Estender", value=True, key="use_container_width")
                             df = load_data()
                             st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
@@ -1301,7 +1552,6 @@ if fLIDERES == 'IVSON PAULINO':
                         st.checkbox("Estender", value=True, key= "uuse_containner_width")
                         df = load_data()
                         st.dataframe(df, use_container_width=st.session_state.use_container_width)
-
 
 #PRODUCAO
 #GERAL PRODUCAO
@@ -1469,7 +1719,6 @@ if fLIDERES == 'MAURILIO SALES':
                         st.checkbox("Estender", value=True, key= "uuse_containner_width")
                         df = load_data()
                         st.dataframe(df, use_container_width=st.session_state.use_container_width)
-
 
 #ADMINISTRATIVO
 #GERAL ADMINISTRATIVO
@@ -1969,8 +2218,6 @@ if fLIDERES == 'ALEX SANTOS':
                         df = load_data()
                         st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
-
-
 #SERRALHARIA
 #GERAL SERRALHARIA
 allln23 = pd.read_sql_query("SELECT * FROM SERRALHARIA", conn9)
@@ -2135,4 +2382,4 @@ if fLIDERES == 'CESAR AUGUSTO':
                             return pd.DataFrame(osespec27)
                         st.checkbox("Estender", value=True, key= "uuse_containner_width")
                         df = load_data()
-                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                        st.dataframe(df, use_container_width=st.session_state.use_container_width)                  
