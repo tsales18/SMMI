@@ -1313,21 +1313,25 @@ if fLIDERES == 'IVSON PAULINO':
             with tab28:
                 st.markdown('----------')
                 st.header('Ferramentaria', divider='rainbow')
-                numros16 = st.number_input("Selecione o numero da   OS",min_value=1,max_value=rd1,value=1,placeholder="Selecione")
-                st.metric(label="OS Existentes", value= rd1)
-                numros17 = numros16-1
-                osespec6 = rd.loc[numros17]
-                def load_data():
-                    return pd.DataFrame(osespec6)
-                st.checkbox("Estender", value=True, key="use_container_width")
-                df = load_data()
-                st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                with st.expander("Minhas OS"):
+                    numros16 = st.number_input("Selecione o numero da   OS",min_value=0,max_value=rd1,value=rd1,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value= rd1)
+                    numros17 = numros16-1
+                    if rd1 == 0:
+                        st.success('Não há pendências')
+                    else:
+                        osespec6 = rd.loc[numros17]
+                        def load_data():
+                            return pd.DataFrame(osespec6)
+                        st.checkbox("Estender", value=True, key="use_container_width")
+                        df = load_data()
+                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
 
             with tab29:
-                with st.expander("Minhas OS"):
+                with st.expander("Geral"):
                     st.markdown('----------')
                     st.header('Ferramentaria', divider='rainbow')
-                    numros20 = st.number_input("Selecione o numero da    OS",min_value=1,max_value=allln14,value=1,placeholder="Selecione")
+                    numros20 = st.number_input("Selecione o numero da    OS",min_value=0,max_value=allln14,value=allln14,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= allln14)
                     numros21 = numros20-1
                     osespec7 = allln13.loc[numros21]
