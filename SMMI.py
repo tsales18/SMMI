@@ -11,7 +11,6 @@ from sqlalchemy import select
 from sqlalchemy import insert
 from sqlalchemy import Sequence
 import webbrowser
-import requests
 import sqlite3
 import openpyxl
 
@@ -746,7 +745,7 @@ if fLIDERES == 'ROSIVALDO':
                                                     allln3 = allln1 + 1
                                                 if insdds:
                                                     st.balloons()
-                                                    cursor1.execute("INSERT INTO ROSIVALDO (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF,MANUTENTOR) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?)", (allln3 , str(Rsolicitante), str(Rsetor), str(Rstatus),str(Rniveldaocorrencia),Rdata,str(Rtempoi),Racao,'Não',None,None))
+                                                    cursor1.execute("INSERT INTO ROSIVALDO (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?)", (allln3 , str(Rsolicitante), str(Rsetor), str(Rstatus),str(Rniveldaocorrencia),Rdata,str(Rtempoi),Racao,'Não',None,None))
                                                     conn1.commit()
                                                     conn1.close()
                            
@@ -820,10 +819,12 @@ if fLIDERES == 'ROSIVALDO':
                                     st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente como uma flor.') 
 
             with tab8:
-                st.header('Manutenção', divider='rainbow')
-                with st.expander("Filtros"):
-                    genre = st.radio(
-                       "Selecione",
+                jam,jam1 = st.columns([0.2,1])
+                with jam:
+                    st.header('Manutenção', divider='rainbow')
+                    with st.expander("Filtros"):
+                        genre = st.radio(
+                          "Selecione",
                         ["ELÉTRICA", "MECÂNICA"],
                         index=None,
                         )
@@ -841,7 +842,8 @@ if fLIDERES == 'ROSIVALDO':
                         st.checkbox("Estender", value=True, key="use_container_width")
                         df = load_data()
                         st.dataframe(df, use_container_width=st.session_state.use_container_width)
-                        
+
+                #FERRAMENTARIA   
                 st.markdown('--------')       
                 with st.expander("Ferramentaria"):
                     if genre == 'MECÂNICA':
@@ -868,13 +870,12 @@ if fLIDERES == 'ROSIVALDO':
                             osespec = rd27.loc[numros5]
                             def load_data():
                                 return pd.DataFrame(osespec)
-                            st.checkbox("Estender", value=True, key="use_container_width")
+                            st.checkbox("Estender", value=True, key ="usse_container_width")
                             lddt = load_data()
                             st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
                     
                     
                 #PRODUÇÃO
-                st.markdown('--------')
                 with st.expander("Produção"):
                     if genre == 'ELÉTRICA':
                         numros4 = st.number_input("Selecione o numero   da   OS",min_value=0,max_value=rd34,value=rd34,placeholder="Selecione")
@@ -995,7 +996,6 @@ if fLIDERES == 'ROSIVALDO':
                             st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
                 
                 #SERRALHARIA
-                st.markdown('--------')
                 with st.expander("Serralharia"):
                     if genre == 'ELÉTRICA':
                         numros4 = st.number_input("    Selecione   o   numero   da   OS",min_value=0,max_value=rd66,value=rd66,placeholder="Selecione")
@@ -1024,7 +1024,8 @@ if fLIDERES == 'ROSIVALDO':
                             st.checkbox("Estender", value=True, key="  use_container_width          ")
                             lddt = load_data()
                             st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
-                
+
+            #FINALIZADAS   
             with tab9:
                 st.header('Manutenção', divider='rainbow')
                 with st.expander("Minhas OS"): 
@@ -1041,6 +1042,7 @@ if fLIDERES == 'ROSIVALDO':
                         df = load_data()
                         st.dataframe(df, use_container_width=st.session_state.use_container_width)
                 
+                #FERRAMENTARIA
                 st.markdown('--------')
                 with st.expander("Ferramentaria"):
                     numros8 = st.number_input("Selecione o numero da    OS",min_value=0,max_value=rd1,value=rd1,placeholder="Selecione")
@@ -1057,7 +1059,7 @@ if fLIDERES == 'ROSIVALDO':
                         df = load_data()
                         st.dataframe(df, use_container_width=st.session_state.use_container_width)
                 
-                st.markdown('--------')
+                #PRODUÇÃO
                 with st.expander("Produção"):
                     numros4 = st.number_input("Selecione o  numero da      OS",min_value=0,max_value=rd5,value=rd5,placeholder="Selecione")
                     st.metric(label="OS Existentes", value=rd5)
@@ -1071,7 +1073,8 @@ if fLIDERES == 'ROSIVALDO':
                         st.checkbox("Estender", value=True, key="use_container_width    ")
                         lddtt = load_data()
                         st.dataframe(lddtt, use_container_width=st.session_state.use_container_width)
-                
+
+                #ADMINISTRATIVO
                 st.markdown('--------')
                 with st.expander("Administrativo"):
                     numros4 = st.number_input("Selecione o numero da               OS",min_value=0,max_value=rd9,value=rd9,placeholder="Selecione")
@@ -1087,7 +1090,7 @@ if fLIDERES == 'ROSIVALDO':
                         lddt = load_data()
                         st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
 
-                st.markdown('--------')
+                #COMERCIAL
                 with st.expander("Comercial"):
                     numros4 = st.number_input(" Selecione  o numero  da       OS",min_value=0,max_value=rd13,value=rd13,placeholder="Selecione")
                     st.metric(label="OS Existentes", value=rd13)
@@ -1101,7 +1104,8 @@ if fLIDERES == 'ROSIVALDO':
                         st.checkbox("Estender", value=True, key="use_container_width      ")
                         lddt = load_data()
                         st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
-                
+
+                #EXPEDIÇÃO
                 st.markdown('--------')
                 with st.expander("Expedição"):
                     numros4 = st.number_input("Selecione  o  numero  da         OS",min_value=0,max_value=rd17,value=rd17,placeholder="Selecione")
@@ -1117,7 +1121,7 @@ if fLIDERES == 'ROSIVALDO':
                         lddt = load_data()
                         st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
                 
-                st.markdown('--------')
+                #SERRALHARIA
                 with st.expander("Serralharia"):
                     numros4 = st.number_input("Selecione o numero   da       OS",min_value=0,max_value=rd21,value=rd21,placeholder="Selecione")
                     st.metric(label="OS Existentes", value=rd21)
