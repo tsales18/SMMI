@@ -1096,7 +1096,36 @@ if fLIDERES == 'EQUIPE DE ELÉTRICA':
                                 return pd.DataFrame(osespec)
                             st.checkbox("Estender", value=True, key="use_container_width17")
                             lddt = load_data()
+                            st.dataframe(lddt, use_container_width=st.session_state.use_container_width17)
+                
+                with st.expander("Ferramentaria"):
+                    if genre == 'ELÉTRICA':
+                        numros4 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=rd38,value=rd38,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value=rd38)
+                        numros5 = numros4-1
+                        if rd38 == 0:
+                            st.success('Não há pendências')
+                        else:
+                            osespec = rd37.loc[numros5]
+                            def load_data():
+                                return pd.DataFrame(osespec)
+                            st.checkbox("Estender", value=True, key ="use_container_width18")
+                            lddt = load_data()
                             st.dataframe(lddt, use_container_width=st.session_state.use_container_width18)
+
+                    if genre == 'MECÂNICA':
+                        numros4 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=rd40,value=rd40,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value=rd40)
+                        numros5 = numros4-1
+                        if rd40 == 0:
+                            st.success('Não há pendências')
+                        else:
+                            osespec = rd39.loc[numros5]
+                            def load_data():
+                                return pd.DataFrame(osespec)
+                            st.checkbox("Estender", value=True, key="use_container_width19")
+                            lddt = load_data()
+                            st.dataframe(lddt, use_container_width=st.session_state.use_container_width19)
 
                 
                 
