@@ -32,7 +32,7 @@ st.set_page_config(
 
 # --- Criar o dataframe
 df = pd.read_excel(
-    io = './Midia/system_extraction.xlsx',
+    io = './Datasets/system_extraction.xlsx',
     engine='openpyxl',
     sheet_name='salesreport',
     usecols='A:D',
