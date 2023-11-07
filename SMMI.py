@@ -843,7 +843,9 @@ if fLIDERES == 'EQUIPE DE ELÉTRICA':
                         ["ELÉTRICA", "MECÂNICA"],
                         index=0,
                         )
-                    
+                with jam1:
+                    st.button('↻')
+
                 with st.expander("Minhas OS"):
                     numros2 = st.number_input("Selecione o numero da OS",min_value=whrlinhas2,max_value=whrlinhas2,value=whrlinhas2,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= whrlinhas2)
