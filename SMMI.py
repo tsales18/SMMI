@@ -516,6 +516,21 @@ query = "SELECT * FROM PRODUCAO WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'MECÂ
 rd39 = pd.read_sql_query(query, conn5)
 rd40 = rd39.shape[0]
 
+allln15 = pd.read_sql_query("SELECT * FROM PRODUCAO", conn5)
+allln16 = allln15.shape[0]
+consulta2 = "SELECT * FROM PRODUCAO"
+allinhas16 = pd.read_sql_query(consulta2, conn5)
+
+#OS ABERTAS  NÃO FINALIZADAS
+consulta3 = "SELECT * FROM PRODUCAO WHERE FINALIZADA = 'Não'"
+whrlinhas18 = pd.read_sql_query(consulta3, conn5)
+whrlinhas19 = whrlinhas18.shape[0]
+
+#OS FINALIZADAS
+cursor5.execute("SELECT * FROM PRODUCAO WHERE FINALIZADA = ?;", ('Sim',))
+whrlinhas20 = cursor5.fetchall()
+whrlinhas21 = pd.DataFrame(whrlinhas20)
+whrlinhas22 = whrlinhas21.shape[0]
 
 #FEEDBACK ADMINISTRATIVO
 query = "SELECT * FROM ADMINISTRATIVO WHERE FINALIZADA = 'Não'"
@@ -754,7 +769,6 @@ if fLIDERES == 'EQUIPE DE ELÉTRICA':
                         finalizar = st.selectbox('OS finalizada?', ('Sim','Não'),index=None,placeholder='Selecione')
                         datainput = st.date_input("Data", value=None)
                         st.write(datainput)
-                        st.markdown("---")
                         timeinput = st.time_input('HORA', value=None)
                         st.write(timeinput)
                         st.form_submit_button('↻')
@@ -768,6 +782,7 @@ if fLIDERES == 'EQUIPE DE ELÉTRICA':
                                     cursor4.execute("UPDATE FERRAMENTARIA SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput,str(timeinput),fnlz2))
                                     conn4.commit()
                                     st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente como uma flor.')
+
                             if setorescolhido == 'ELÉTRICA':    
                                 fnl=st.button("FINALIZAR")
                                 if fnl:
@@ -809,7 +824,14 @@ if fLIDERES == 'EQUIPE DE ELÉTRICA':
                                 if fnl:
                                     cursor9.execute("UPDATE SERRALHARIA SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput,str(timeinput),fnlz2))
                                     conn9.commit()
-                                    st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente como uma flor.') 
+                                    st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente como uma flor.')
+
+                            if setorescolhido == 'TECNOLOGIA DA INFORMAÇÃO':    
+                                fnl=st.button("FINALIZAR")
+                                if fnl:
+                                    cursor9.execute("UPDATE ABERTURA SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput,str(timeinput),fnlz2))
+                                    conn9.commit()
+                                    st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente como uma flor.')         
 
             with tab8:
                 jam,jam1 = st.columns([0.2,1])
@@ -1302,8 +1324,8 @@ if fLIDERES == 'EQUIPE DE MECÂNICA':
                                     st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente como uma flor.') 
 
                             if setorescolhido == 'PRODUÇÃO':    
-                                fnl=st.button("FINALIZAR")
-                                if fnl:
+                                fnl1=st.button("FINALIZAR")
+                                if fnl1:
                                     cursor5.execute("UPDATE PRODUCAO SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datainput,str(timeinput),fnlz2))
                                     conn5.commit()
                                     st.caption('Dia muito lindo é mais que o infinito é puro e belo inocente como uma flor.')
@@ -1346,7 +1368,6 @@ if fLIDERES == 'EQUIPE DE MECÂNICA':
                         ["ELÉTRICA", "MECÂNICA"],
                         index=1,
                         )
-                    
                 with st.expander("Minhas OS"):
                     numros2 = st.number_input("Selecione o numero da OS",min_value=whrlinhas2,max_value=whrlinhas2,value=whrlinhas2,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= whrlinhas2)
@@ -1839,21 +1860,7 @@ if fLIDERES == 'IVSON PAULINO':
 
 #PRODUCAO
 #GERAL PRODUCAO
-allln15 = pd.read_sql_query("SELECT * FROM PRODUCAO", conn5)
-allln16 = allln15.shape[0]
-consulta2 = "SELECT * FROM PRODUCAO"
-allinhas16 = pd.read_sql_query(consulta2, conn5)
 
-#OS ABERTAS  NÃO FINALIZADAS
-consulta3 = "SELECT * FROM PRODUCAO WHERE FINALIZADA = 'Não'"
-whrlinhas18 = pd.read_sql_query(consulta3, conn5)
-whrlinhas19 = whrlinhas18.shape[0]
-
-#OS FINALIZADAS
-cursor5.execute("SELECT * FROM PRODUCAO WHERE FINALIZADA = ?;", ('Sim',))
-whrlinhas20 = cursor5.fetchall()
-whrlinhas21 = pd.DataFrame(whrlinhas20)
-whrlinhas22 = whrlinhas21.shape[0]
 
 if fLIDERES == 'MAURILIO SALES':
     if fSETOR == 'PRODUÇÃO':
