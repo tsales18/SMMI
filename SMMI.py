@@ -1052,7 +1052,7 @@ if fLIDERES == 'EQUIPE DE ELÉTRICA':
                           "Selecione",
                           ["ELÉTRICA", "MECÂNICA"],
                           index=0,
-                        )
+                          )
                
                     st.button('↻')
 
