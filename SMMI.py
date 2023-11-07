@@ -843,7 +843,7 @@ if fLIDERES == 'EQUIPE DE ELÉTRICA':
                         ["ELÉTRICA", "MECÂNICA"],
                         index=0,
                         )
-                with jam1:
+               
                     st.button('↻')
 
                 with st.expander("Minhas OS"):
