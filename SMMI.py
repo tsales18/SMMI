@@ -1214,10 +1214,9 @@ if fLIDERES == 'EQUIPE DE ELÉTRICA':
                             lddt = load_data()
                             st.dataframe(lddt, use_container_width=st.session_state.use_container_width25)
                 
-
                 with st.expander("Serralharia"):
                     if genre == 'ELÉTRICA':
-                        numros4 = st.number_input("Selecione o numero da  OS    ",min_value=0,max_value=rd70,value=rd70,placeholder="Selecione")
+                        numros4 = st.number_input("Selecione o numero da  OS     ",min_value=0,max_value=rd70,value=rd70,placeholder="Selecione")
                         st.metric(label="OS Existentes", value=rd70)
                         numros5 = numros4-1
                         if rd70 == 0:
@@ -1231,7 +1230,7 @@ if fLIDERES == 'EQUIPE DE ELÉTRICA':
                             st.dataframe(lddt, use_container_width=st.session_state.use_container_width26)
                     
                     if genre == 'MECÂNICA':
-                        numros4 = st.number_input("Selecione o numero da  OS      ",min_value=0,max_value=rd72,value=rd72,placeholder="Selecione")
+                        numros4 = st.number_input("Selecione o numero da  OS       ",min_value=0,max_value=rd72,value=rd72,placeholder="Selecione")
                         st.metric(label="OS Existentes", value=rd72)
                         numros5 = numros4-1
                         if rd72 == 0:
@@ -1243,12 +1242,7 @@ if fLIDERES == 'EQUIPE DE ELÉTRICA':
                             st.checkbox("Estender", value=True, key="use_container_width27")
                             lddt = load_data()
                             st.dataframe(lddt, use_container_width=st.session_state.use_container_width27)
-                
-
-                
-                
-                
-               
+            
             #GERAL
             with tab10:
                 st.header('Manutenção', divider='rainbow')
