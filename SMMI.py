@@ -1100,7 +1100,7 @@ if fLIDERES == 'EQUIPE DE ELÉTRICA':
                 
                 with st.expander("Ferramentaria"):
                     if genre == 'ELÉTRICA':
-                        numros4 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=rd38,value=rd38,placeholder="Selecione")
+                        numros4 = st.number_input("Selecione o numero da  OS ",min_value=0,max_value=rd38,value=rd38,placeholder="Selecione")
                         st.metric(label="OS Existentes", value=rd38)
                         numros5 = numros4-1
                         if rd38 == 0:
@@ -1114,7 +1114,7 @@ if fLIDERES == 'EQUIPE DE ELÉTRICA':
                             st.dataframe(lddt, use_container_width=st.session_state.use_container_width18)
 
                     if genre == 'MECÂNICA':
-                        numros4 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=rd40,value=rd40,placeholder="Selecione")
+                        numros4 = st.number_input("Selecione o numero da  OS  ",min_value=0,max_value=rd40,value=rd40,placeholder="Selecione")
                         st.metric(label="OS Existentes", value=rd40)
                         numros5 = numros4-1
                         if rd40 == 0:
