@@ -457,7 +457,25 @@ whrlinhas2 = whrlinhas1.shape[0]
 consulta5 = "SELECT * FROM ROSIVALDO WHERE FINALIZADA = 'Sim'"
 whrlinhas3 = pd.read_sql_query(consulta5, conn1)
 whrlinhas4 = whrlinhas3.shape[0]
+#
 
+#CERSAR
+allln = pd.read_sql_query("SELECT * FROM CESAR", conn10)
+allln1 = allln.shape[0]
+consulta1 = "SELECT * FROM CESAR"
+allinhas = pd.read_sql_query(consulta1, conn10)
+
+#OS ABERTAS  NÃO FINALIZADAS
+consulta4 = "SELECT * FROM CESAR WHERE FINALIZADA = 'Não'"
+whrlinhas1 = pd.read_sql_query(consulta4, conn10)
+whrlinhas2 = whrlinhas1.shape[0] 
+
+#OS FINALIZADAS
+consulta5 = "SELECT * FROM CESAR WHERE FINALIZADA = 'Sim'"
+whrlinhas3 = pd.read_sql_query(consulta5, conn10)
+whrlinhas4 = whrlinhas3.shape[0]
+
+ 
 #feedback ferramentaria
 query = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Não'"
 rd2 = pd.read_sql_query(query, conn4)
@@ -469,6 +487,22 @@ rd1 = rd.shape[0]
 
 allln13 = pd.read_sql_query("SELECT * FROM FERRAMENTARIA", conn4)
 allln14 = allln13.shape[0]
+
+allln13 = pd.read_sql_query("SELECT * FROM FERRAMENTARIA", conn4)
+allln14 = allln13.shape[0]
+consulta2 = "SELECT * FROM FERRAMENTARIA"
+allinhas15 = pd.read_sql_query(consulta2, conn4)
+
+#OS ABERTAS  NÃO FINALIZADAS
+consulta3 = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Não'"
+whrlinhas12 = pd.read_sql_query(consulta3, conn4)
+whrlinhas13 = whrlinhas12.shape[0]
+
+#OS FINALIZADAS
+cursor4.execute("SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = ?;", ('Sim',))
+whrlinhas15 = cursor4.fetchall()
+whrlinhas16 = pd.DataFrame(whrlinhas15)
+whrlinhas17 = whrlinhas16.shape[0]
 
 query = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'MECÂNICA'"
 rd25 = pd.read_sql_query(query, conn4)
@@ -652,6 +686,8 @@ if 'OS' not in st.session_state:
 if 'FIN' not in st.session_state:
     st.session_state.FIN = 0
 
+
+#ELÉTRICA
 if fLIDERES == 'EQUIPE DE ELÉTRICA':
     if fSETOR == 'ELÉTRICA':
         if senha == '1409':
@@ -1262,22 +1298,7 @@ if fLIDERES == 'EQUIPE DE ELÉTRICA':
                             df = load_data()
                             st.dataframe(df, use_container_width=st.session_state.use_container_width22)
 
-#leitura do banco CESAR
-allln = pd.read_sql_query("SELECT * FROM CESAR", conn10)
-allln1 = allln.shape[0]
-consulta1 = "SELECT * FROM CESAR"
-allinhas = pd.read_sql_query(consulta1, conn10)
-
-#OS ABERTAS  NÃO FINALIZADAS
-consulta4 = "SELECT * FROM CESAR WHERE FINALIZADA = 'Não'"
-whrlinhas1 = pd.read_sql_query(consulta4, conn10)
-whrlinhas2 = whrlinhas1.shape[0] 
-
-#OS FINALIZADAS
-consulta5 = "SELECT * FROM CESAR WHERE FINALIZADA = 'Sim'"
-whrlinhas3 = pd.read_sql_query(consulta5, conn10)
-whrlinhas4 = whrlinhas3.shape[0]
-#leitura do banco FERRAMENTARIA
+#MECÂNICA
 if fLIDERES == 'EQUIPE DE MECÂNICA':
     if fSETOR == 'MECÂNICA':
         if senha == '1400':
@@ -1664,7 +1685,7 @@ if fLIDERES == 'EQUIPE DE MECÂNICA':
                 with jam:
                     st.header('Manutenção', divider='rainbow')
                     with st.expander("Filtros"):
-                        genre = st.radio("Selecione ",["ELÉTRICA", "MECÂNICA"],index=0)
+                        genre = st.radio("Selecione ",["ELÉTRICA", "MECÂNICA"],index=1)
             
                     st.button('↻ ')
 
@@ -1877,22 +1898,7 @@ if fLIDERES == 'EQUIPE DE MECÂNICA':
                             df = load_data()
                             st.dataframe(df, use_container_width=st.session_state.use_container_width21)
          
-allln13 = pd.read_sql_query("SELECT * FROM FERRAMENTARIA", conn4)
-allln14 = allln13.shape[0]
-consulta2 = "SELECT * FROM FERRAMENTARIA"
-allinhas15 = pd.read_sql_query(consulta2, conn4)
-
-#OS ABERTAS  NÃO FINALIZADAS
-consulta3 = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Não'"
-whrlinhas12 = pd.read_sql_query(consulta3, conn4)
-whrlinhas13 = whrlinhas12.shape[0]
-
-#OS FINALIZADAS
-cursor4.execute("SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = ?;", ('Sim',))
-whrlinhas15 = cursor4.fetchall()
-whrlinhas16 = pd.DataFrame(whrlinhas15)
-whrlinhas17 = whrlinhas16.shape[0]
-
+#FERRAMENTARIA
 if fLIDERES == 'IVSON PAULINO':
     if fSETOR == 'FERRAMENTARIA':
         if senha == '70':
@@ -2046,9 +2052,6 @@ if fLIDERES == 'IVSON PAULINO':
                         st.dataframe(df, use_container_width=st.session_state.use_container_width3)
 
 #PRODUCAO
-#GERAL PRODUCAO
-
-
 if fLIDERES == 'MAURILIO SALES':
     if fSETOR == 'PRODUÇÃO':
         if senha == '1405':
