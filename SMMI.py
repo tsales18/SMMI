@@ -1050,7 +1050,7 @@ if fLIDERES == 'EQUIPE DE ELÉTRICA':
                     with st.expander("Filtros"):
                         genre = st.radio("Selecione ",["ELÉTRICA", "MECÂNICA"],index=0)
             
-                    st.button('↻')
+                    st.button('↻ ')
 
                 st.header('Manutenção', divider='rainbow')
                 with st.expander("Minhas OS"): 
