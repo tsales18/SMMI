@@ -1184,6 +1184,35 @@ if fLIDERES == 'EQUIPE DE ELÉTRICA':
                             st.checkbox("Estender", value=True, key="use_container_width23")
                             lddt = load_data()
                             st.dataframe(lddt, use_container_width=st.session_state.use_container_width23)
+
+                with st.expander("Expedição"):
+                    if genre == 'ELÉTRICA':
+                        numros4 = st.number_input("Selecione o numero da  OS    ",min_value=0,max_value=rd62,value=rd62,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value=rd62)
+                        numros5 = numros4-1
+                        if rd62 == 0:
+                            st.success('Não há pendências')
+                        else:
+                            osespec = rd61.loc[numros5]
+                            def load_data():
+                                return pd.DataFrame(osespec)
+                            st.checkbox("Estender", value=True, key ="use_container_width24")
+                            lddt = load_data()
+                            st.dataframe(lddt, use_container_width=st.session_state.use_container_width24)
+                    
+                    if genre == 'MECÂNICA':
+                        numros4 = st.number_input("Selecione o numero da  OS      ",min_value=0,max_value=rd64,value=rd64,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value=rd64)
+                        numros5 = numros4-1
+                        if rd64 == 0:
+                            st.success('Não há pendências')
+                        else:
+                            osespec = rd63.loc[numros5]
+                            def load_data():
+                                return pd.DataFrame(osespec)
+                            st.checkbox("Estender", value=True, key="use_container_width25")
+                            lddt = load_data()
+                            st.dataframe(lddt, use_container_width=st.session_state.use_container_width25)
                 
 
                 
