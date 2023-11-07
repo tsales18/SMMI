@@ -912,7 +912,7 @@ if fLIDERES == 'EQUIPE DE ELÉTRICA':
                                 return pd.DataFrame(osespec)
                             st.checkbox("Estender", value=True, key="use_container_width7")
                             lddt = load_data()
-                            st.dataframe(lddt, use_container_width=st.session_state.use_container_width)
+                            st.dataframe(lddt, use_container_width=st.session_state.use_container_width7)
             
                     if genre == 'MECÂNICA':
                             numros4 = st.number_input("Selecione  o numero  da    OS",min_value=0,max_value=rd44,value=rd44,placeholder="Selecione")
