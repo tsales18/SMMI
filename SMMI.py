@@ -1660,9 +1660,17 @@ if fLIDERES == 'EQUIPE DE MECÂNICA':
                 
                 
             with tab9:
+                jam,jam1 = st.columns([0.2,1])
+                with jam:
+                    st.header('Manutenção', divider='rainbow')
+                    with st.expander("Filtros"):
+                        genre = st.radio("Selecione ",["ELÉTRICA", "MECÂNICA"],index=0)
+            
+                    st.button('↻ ')
+
                 st.header('Manutenção', divider='rainbow')
-                with st.expander("Minhas OS"):
-                    numros6 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=whrlinhas4,value=whrlinhas4,placeholder="Selecione")
+                with st.expander("Minhas OS"): 
+                    numros6 = st.number_input(" Selecione  o numero da    OS",min_value=0,max_value=whrlinhas4,value=whrlinhas4,placeholder="Selecione")
                     st.metric(label="OS Existentes", value= whrlinhas4)
                     numros7 = numros6-1
                     if whrlinhas4 == 0:
@@ -1671,100 +1679,185 @@ if fLIDERES == 'EQUIPE DE MECÂNICA':
                         osespec = whrlinhas3.loc[numros7]
                         def load_data():
                             return pd.DataFrame(osespec)
-                        st.checkbox("Estender", value=True, key="use_container_width14")
-                        df = load_data()
-                        st.dataframe(df, use_container_width=st.session_state.use_container_width14)
-                
-                st.markdown('--------')
-                with st.expander("Ferramentaria"):
-                    numros8 = st.number_input("Selecione o numero da    OS",min_value=0,max_value=rd1,value=rd1,placeholder="Selecione")
-                    st.metric(label="OS Existentes", value= rd1)
-
-                    numros9 = numros8-1
-                    if rd1 == 0:
-                        st.success('Não há pendências')
-                    else:
-                        osespec = rd.loc[numros9]
-                        def load_data():
-                            return pd.DataFrame(osespec)
                         st.checkbox("Estender", value=True, key="use_container_width15")
                         df = load_data()
                         st.dataframe(df, use_container_width=st.session_state.use_container_width15)
                 
+                #FERRAMENTARIA
+                st.markdown('------')
+                with st.expander("Ferramentaria"):
+                    if genre == 'ELÉTRICA':
+                        numros4 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=rd30,value=rd30,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value=rd30)
+                        numros5 = numros4-1
+                        if rd30 == 0:
+                            st.success('Não há pendências')
+                        else:
+                            osespec = rd29.loc[numros5]
+                            def load_data():
+                                return pd.DataFrame(osespec)
+                            st.checkbox("Estender", value=True, key ="use_container_width16")
+                            lddt = load_data()
+                            st.dataframe(lddt, use_container_width=st.session_state.use_container_width16)
+                
+                    if genre == 'MECÂNICA':
+                        numros4 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=rd32,value=rd32,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value=rd32)
+                        numros5 = numros4-1
+                        if rd32 == 0:
+                            st.success('Não há pendências')
+                        else:
+                            osespec = rd31.loc[numros5]
+                            def load_data():
+                                return pd.DataFrame(osespec)
+                            st.checkbox("Estender", value=True, key="use_container_width17")
+                            lddt = load_data()
+                            st.dataframe(lddt, use_container_width=st.session_state.use_container_width17)
                 
                 with st.expander("Produção"):
-                    numros4 = st.number_input("Selecione o  numero da      OS",min_value=0,max_value=rd5,value=rd5,placeholder="Selecione")
-                    st.metric(label="OS Existentes", value=rd5)
-                    numros5 = numros4-1
-                    if rd5 == 0:
-                        st.success('Não há pendências')
-                    else:
-                        osespec = rd4.loc[numros5]
-                        def load_data():
-                            return pd.DataFrame(osespec)
-                        st.checkbox("Estender", value=True, key="use_container_width16")
-                        lddtt = load_data()
-                        st.dataframe(lddtt, use_container_width=st.session_state.use_container_width16)
-                
-               
+                    if genre == 'ELÉTRICA':
+                        numros4 = st.number_input("Selecione o numero da  OS ",min_value=0,max_value=rd38,value=rd38,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value=rd38)
+                        numros5 = numros4-1
+                        if rd38 == 0:
+                            st.success('Não há pendências')
+                        else:
+                            osespec = rd37.loc[numros5]
+                            def load_data():
+                                return pd.DataFrame(osespec)
+                            st.checkbox("Estender", value=True, key ="use_container_width18")
+                            lddt = load_data()
+                            st.dataframe(lddt, use_container_width=st.session_state.use_container_width18)
+
+                    if genre == 'MECÂNICA':
+                        numros4 = st.number_input("Selecione o numero da  OS  ",min_value=0,max_value=rd40,value=rd40,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value=rd40)
+                        numros5 = numros4-1
+                        if rd40 == 0:
+                            st.success('Não há pendências')
+                        else:
+                            osespec = rd39.loc[numros5]
+                            def load_data():
+                                return pd.DataFrame(osespec)
+                            st.checkbox("Estender", value=True, key="use_container_width19")
+                            lddt = load_data()
+                            st.dataframe(lddt, use_container_width=st.session_state.use_container_width19)
+                            
                 with st.expander("Administrativo"):
-                    numros4 = st.number_input("Selecione o numero da               OS",min_value=0,max_value=rd9,value=rd9,placeholder="Selecione")
-                    st.metric(label="OS Existentes", value=rd9)
-                    numros5 = numros4-1
-                    if rd9 == 0:
-                        st.success('Não há pendências')
-                    else:
-                        osespec = rd8.loc[numros5]
-                        def load_data():
-                            return pd.DataFrame(osespec)
-                        st.checkbox("Estender", value=True, key="use_container_width17")
-                        lddt = load_data()
-                        st.dataframe(lddt, use_container_width=st.session_state.use_container_width17)
+                    if genre == 'ELÉTRICA':
+                        numros4 = st.number_input("Selecione o numero da  OS  ",min_value=0,max_value=rd46,value=rd46,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value=rd46)
+                        numros5 = numros4-1
+                        if rd46 == 0:
+                            st.success('Não há pendências')
+                        else:
+                            osespec = rd45.loc[numros5]
+                            def load_data():
+                                return pd.DataFrame(osespec)
+                            st.checkbox("Estender", value=True, key ="use_container_width20")
+                            lddt = load_data()
+                            st.dataframe(lddt, use_container_width=st.session_state.use_container_width20)
+
+                    if genre == 'MECÂNICA':
+                        numros4 = st.number_input("Selecione o numero da  OS    ",min_value=0,max_value=rd48,value=rd48,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value=rd48)
+                        numros5 = numros4-1
+                        if rd48 == 0:
+                            st.success('Não há pendências')
+                        else:
+                            osespec = rd47.loc[numros5]
+                            def load_data():
+                                return pd.DataFrame(osespec)
+                            st.checkbox("Estender", value=True, key="use_container_width21")
+                            lddt = load_data()
+                            st.dataframe(lddt, use_container_width=st.session_state.use_container_width21)
 
                 with st.expander("Comercial"):
-                    numros4 = st.number_input(" Selecione  o numero  da       OS",min_value=0,max_value=rd13,value=rd13,placeholder="Selecione")
-                    st.metric(label="OS Existentes", value=rd13)
-                    numros5 = numros4-1
-                    if rd13 == 0:
-                        st.success('Não há pendências')
-                    else:
-                        osespec = rd12.loc[numros5]
-                        def load_data():
-                            return pd.DataFrame(osespec)
-                        st.checkbox("Estender", value=True, key="use_container_width18")
-                        lddt = load_data()
-                        st.dataframe(lddt, use_container_width=st.session_state.use_container_width18)
-                
-                
+                    if genre == 'ELÉTRICA':
+                        numros4 = st.number_input("Selecione o numero da  OS   ",min_value=0,max_value=rd54,value=rd54,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value=rd54)
+                        numros5 = numros4-1
+                        if rd54 == 0:
+                            st.success('Não há pendências')
+                        else:
+                            osespec = rd53.loc[numros5]
+                            def load_data():
+                                return pd.DataFrame(osespec)
+                            st.checkbox("Estender", value=True, key ="use_container_width22")
+                            lddt = load_data()
+                            st.dataframe(lddt, use_container_width=st.session_state.use_container_width22)
+                    
+                    if genre == 'MECÂNICA':
+                        numros4 = st.number_input("Selecione o numero da  OS     ",min_value=0,max_value=rd56,value=rd56,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value=rd56)
+                        numros5 = numros4-1
+                        if rd56 == 0:
+                            st.success('Não há pendências')
+                        else:
+                            osespec = rd55.loc[numros5]
+                            def load_data():
+                                return pd.DataFrame(osespec)
+                            st.checkbox("Estender", value=True, key="use_container_width23")
+                            lddt = load_data()
+                            st.dataframe(lddt, use_container_width=st.session_state.use_container_width23)
+
                 with st.expander("Expedição"):
-                    numros4 = st.number_input("Selecione  o  numero  da         OS",min_value=0,max_value=rd17,value=rd17,placeholder="Selecione")
-                    st.metric(label="OS Existentes", value=rd17)
-                    numros5 = numros4-1
-                    if rd17 == 0:
-                        st.success('Não há pendências')
-                    else:
-                        osespec = rd16.loc[numros5]
-                        def load_data():
-                            return pd.DataFrame(osespec)
-                        st.checkbox("Estender", value=True, key="use_container_width19")
-                        lddt = load_data()
-                        st.dataframe(lddt, use_container_width=st.session_state.use_container_width19)
-                
+                    if genre == 'ELÉTRICA':
+                        numros4 = st.number_input("Selecione o numero da  OS    ",min_value=0,max_value=rd62,value=rd62,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value=rd62)
+                        numros5 = numros4-1
+                        if rd62 == 0:
+                            st.success('Não há pendências')
+                        else:
+                            osespec = rd61.loc[numros5]
+                            def load_data():
+                                return pd.DataFrame(osespec)
+                            st.checkbox("Estender", value=True, key ="use_container_width24")
+                            lddt = load_data()
+                            st.dataframe(lddt, use_container_width=st.session_state.use_container_width24)
+                    
+                    if genre == 'MECÂNICA':
+                        numros4 = st.number_input("Selecione o numero da  OS      ",min_value=0,max_value=rd64,value=rd64,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value=rd64)
+                        numros5 = numros4-1
+                        if rd64 == 0:
+                            st.success('Não há pendências')
+                        else:
+                            osespec = rd63.loc[numros5]
+                            def load_data():
+                                return pd.DataFrame(osespec)
+                            st.checkbox("Estender", value=True, key="use_container_width25")
+                            lddt = load_data()
+                            st.dataframe(lddt, use_container_width=st.session_state.use_container_width25)
                 
                 with st.expander("Serralharia"):
-                    numros4 = st.number_input("Selecione o numero   da       OS",min_value=0,max_value=rd21,value=rd21,placeholder="Selecione")
-                    st.metric(label="OS Existentes", value=rd21)
-                    numros5 = numros4-1
-                    if rd21 == 0:
-                        st.success('Não há pendências')
-                    else:
-                        osespec = rd20.loc[numros5]
-                        def load_data():
-                            return pd.DataFrame(osespec)
-                        
-                        st.checkbox("Estender", value=True, key="use_container_width20")
-                        lddt = load_data()
-                        st.dataframe(lddt, use_container_width=st.session_state.use_container_width20)
+                    if genre == 'ELÉTRICA':
+                        numros4 = st.number_input("Selecione o numero da  OS     ",min_value=0,max_value=rd70,value=rd70,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value=rd70)
+                        numros5 = numros4-1
+                        if rd70 == 0:
+                            st.success('Não há pendências')
+                        else:
+                            osespec = rd69.loc[numros5]
+                            def load_data():
+                                return pd.DataFrame(osespec)
+                            st.checkbox("Estender", value=True, key ="use_container_width26")
+                            lddt = load_data()
+                            st.dataframe(lddt, use_container_width=st.session_state.use_container_width26)
+                    
+                    if genre == 'MECÂNICA':
+                        numros4 = st.number_input("Selecione o numero da  OS       ",min_value=0,max_value=rd72,value=rd72,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value=rd72)
+                        numros5 = numros4-1
+                        if rd72 == 0:
+                            st.success('Não há pendências')
+                        else:
+                            osespec = rd71.loc[numros5]
+                            def load_data():
+                                return pd.DataFrame(osespec)
+                            st.checkbox("Estender", value=True, key="use_container_width27")
+                            lddt = load_data()
+                            st.dataframe(lddt, use_container_width=st.session_state.use_container_width27)
 
             with tab10:
                 st.header('Manutenção', divider='rainbow')
