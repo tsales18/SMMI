@@ -1156,6 +1156,36 @@ if fLIDERES == 'EQUIPE DE ELÉTRICA':
                             lddt = load_data()
                             st.dataframe(lddt, use_container_width=st.session_state.use_container_width21)
 
+                with st.expander("Comercial"):
+                    if genre == 'ELÉTRICA':
+                        numros4 = st.number_input("Selecione o numero da  OS  ",min_value=0,max_value=rd54,value=rd54,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value=rd54)
+                        numros5 = numros4-1
+                        if rd54 == 0:
+                            st.success('Não há pendências')
+                        else:
+                            osespec = rd53.loc[numros5]
+                            def load_data():
+                                return pd.DataFrame(osespec)
+                            st.checkbox("Estender", value=True, key ="use_container_width22")
+                            lddt = load_data()
+                            st.dataframe(lddt, use_container_width=st.session_state.use_container_width22)
+                    
+                    if genre == 'MECÂNICA':
+                        numros4 = st.number_input("Selecione o numero da  OS    ",min_value=0,max_value=rd56,value=rd56,placeholder="Selecione")
+                        st.metric(label="OS Existentes", value=rd56)
+                        numros5 = numros4-1
+                        if rd56 == 0:
+                            st.success('Não há pendências')
+                        else:
+                            osespec = rd55.loc[numros5]
+                            def load_data():
+                                return pd.DataFrame(osespec)
+                            st.checkbox("Estender", value=True, key="use_container_width23")
+                            lddt = load_data()
+                            st.dataframe(lddt, use_container_width=st.session_state.use_container_width23)
+                
+
                 
                 
                 
