@@ -2419,18 +2419,11 @@ if fLIDERES == 'ADRIELY LEMOS':
                     with st.form('my form4'):
                         st.markdown("---")
                         Cs = st.selectbox('Solicitante', ('ADRIELY LEMOS',),index=None,placeholder='Selecione')
-                        if atd7:
-                            Cus = st.selectbox('Atualize o Solicitante', ('ADRIELY LEMOS'),index=None,placeholder='Atualize')
-                            st.markdown("---")
-
+                        Castr = st.selectbox('Setor', ('COMERCIAL',),index=None,placeholder='Selecione')
+                        
                         Cast = st.text_input('Tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
                         if atd7:
                             Cust = st.text_input('Atualize o tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
-                            st.markdown("---")
-
-                        Castr = st.selectbox('Setor', ('COMERCIAL',),index=None,placeholder='Selecione')
-                        if atd7:
-                            Custr = st.selectbox('Aualize o Setor', ('COMERCIAL'),index=None,placeholder='Atualize')
                             st.markdown("---")
 
                         Cando = st.selectbox('Nivel da ocorrência', ('EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE','URGÊNTE'),index=None,placeholder='Selecione')
@@ -2442,9 +2435,9 @@ if fLIDERES == 'ADRIELY LEMOS':
                             CUac = st.selectbox('Atualize o Tipo da ação', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
                             st.markdown("---")
                         
-                        Cmnt = st.selectbox('Eletrica ou Mecânica', ('ELÉTRICA','MECÂNICA'),index=None,placeholder='Selecione')
+                        Cmnt = st.selectbox('Tipo de manutenção', ('ELÉTRICA','MECÂNICA'),index=None,placeholder='Selecione')
                         if atd7:
-                            Cmnt = st.selectbox('Eletrica ou Mecânica', ('ELÉTRICA','MECÂNICA'),index=None,placeholder='Selecione')
+                            Cmnt = st.selectbox('Atualize o tipo de manutenção', ('ELÉTRICA','MECÂNICA'),index=None,placeholder='Selecione')
                             st.markdown("---")
                                                 
                         relatorio = st.text_input('Relatorio')
@@ -2476,7 +2469,7 @@ if fLIDERES == 'ADRIELY LEMOS':
                             osespec16 = allinhas18.loc[numros23]
                             def load_dataa():
                                 return pd.DataFrame(osespec16)
-                            st.checkbox("Estender", value=True, key="use_container_widthh")
+                            st.checkbox("Estender", value=True, key="use_container_width")
                             df = load_dataa()
                             st.dataframe(df, use_container_width=st.session_state.use_container_width)
                 
@@ -2489,11 +2482,19 @@ if fLIDERES == 'ADRIELY LEMOS':
                 if fLIDERES == 'ADRIELY LEMOS':
                     if fSETOR == 'COMERCIAL':
                         if senha == '1403':
-                            Inserts2 = st.button("INSERIR DADOS")
-                            if Inserts2:
-                                allln12 = allln120 + 1
-
-                            if Inserts2:
+                           if atd6: 
+                                atl1 = st.button('atualize')
+                                if atl1:
+                                    st.balloons()
+                                    cursor7.execute("UPDATE ADMINISTRATIVO SET OCORRENCIA = ?,GRAU = ?, DATA = ?, HORA = ?, AÇÃO = ? WHERE OS = ?",(Cust,Cundo,CUdata,str(CUtemp),CUac,numros12))
+                                    conn7.commit()
+                                    conn7.close()
+                                                                    
+                           else:
+                            insdds = st.button("INSERIR DADOS")
+                            if insdds:
+                                allln12 = allln18 + 1
+                            if insdds:
                                 st.balloons()
                                 cursor7.execute("INSERT INTO COMERCIAL (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF,MANUTENTOR) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?,?)", (allln12 , str(Cs), str(Castr), str(Cast),str(Cando),Cdata,str(Ctemp),Cac,'Não',None,None,Cmnt))
                                 conn7.commit()
@@ -2513,9 +2514,9 @@ if fLIDERES == 'ADRIELY LEMOS':
                             osespec17 = whrlinhas28.loc[numros23]
                             def load_data():
                                 return pd.DataFrame(osespec17)
-                            st.checkbox("Estender", value=True, key="use_container_width")
+                            st.checkbox("Estender", value=True, key="use_container_width1")
                             df = load_data()
-                            st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                            st.dataframe(df, use_container_width=st.session_state.use_container_width1)
 
             with tab40:
                 st.header('PRODUÇÃO', divider='rainbow')
@@ -2530,9 +2531,9 @@ if fLIDERES == 'ADRIELY LEMOS':
                         osespec18 = rd12.loc[numros23]
                         def load_data():
                             return pd.DataFrame(osespec18)
-                        st.checkbox("Estender", value=True, key="use_container_width      ")
+                        st.checkbox("Estender", value=True, key="use_container_width2")
                         df = load_data()
-                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                        st.dataframe(df, use_container_width=st.session_state.use_container_width2)
 
             with tab41:
                 st.header('PRODUÇÃO', divider='rainbow')
@@ -2546,9 +2547,9 @@ if fLIDERES == 'ADRIELY LEMOS':
                         osespec19 = allln19.loc[numros23]
                         def load_data():
                             return pd.DataFrame(osespec19)
-                        st.checkbox("Estender", value=True, key= "uuse_containner_width")
+                        st.checkbox("Estender", value=True, key= "use_container_width3")
                         df = load_data()
-                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                        st.dataframe(df, use_container_width=st.session_state.use_container_width3)
 
 #EXPEDICAO
 #GERAL EXPEDICAO
@@ -2569,7 +2570,6 @@ whrlinhas36 = pd.DataFrame(whrlinhas35)
 whrlinhas37 = whrlinhas36.shape[0]
 
 if fLIDERES == 'ALEX SANTOS':
-
     if fSETOR == 'EXPEDIÇÃO':
         if senha == '1402':
             image = Image.open('./Midia/ssmm.jpg')
