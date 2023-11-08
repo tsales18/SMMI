@@ -1107,7 +1107,7 @@ if fLIDERES == 'EQUIPE DE ELÉTRICA':
                 st.markdown('------')
                 with st.expander("Ferramentaria"):
                     if genre == 'ELÉTRICA':
-                        numros4 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=rd30,value=rd30,placeholder="Selecione")
+                        numros4 = st.number_input("Selecione  o  numero  da  OS ",min_value=0,max_value=rd30,value=rd30,placeholder="Selecione")
                         st.metric(label="OS Existentes", value=rd30)
                         numros5 = numros4-1
                         if rd30 == 0:
