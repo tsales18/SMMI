@@ -287,8 +287,6 @@ cursor1.execute('''
         FINALIZADA TEXT,
         DATAF,
         HORAF
-       
-                   
     )
 ''')
 
@@ -459,22 +457,6 @@ whrlinhas3 = pd.read_sql_query(consulta3, conn1)
 whrlinhas4 = whrlinhas3.shape[0]
 #
 
-#CERSAR
-allln = pd.read_sql_query("SELECT * FROM CESAR", conn10)
-allln1 = allln.shape[0]
-consulta4 = "SELECT * FROM CESAR"
-allinhas = pd.read_sql_query(consulta4, conn10)
-
-#OS ABERTAS  NÃO FINALIZADAS
-consulta5 = "SELECT * FROM CESAR WHERE FINALIZADA = 'Não'"
-whrlinhas1 = pd.read_sql_query(consulta5, conn10)
-whrlinhas2 = whrlinhas1.shape[0] 
-
-#OS FINALIZADAS
-consulta6 = "SELECT * FROM CESAR WHERE FINALIZADA = 'Sim'"
-whrlinhas3 = pd.read_sql_query(consulta6, conn10)
-whrlinhas4 = whrlinhas3.shape[0]
-
  
 #feedback ferramentaria
 query = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Não'"
@@ -519,8 +501,6 @@ rd30 = rd29.shape[0]
 query1 = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'ELÉTRICA'"
 rd31 = pd.read_sql_query(query1, conn4)
 rd32 = rd31.shape[0]
-
-
 
 #FEEDBACK PRODUÇÃO
 query = "SELECT * FROM PRODUCAO WHERE FINALIZADA = 'Não'"
@@ -1298,6 +1278,21 @@ if fLIDERES == 'EQUIPE DE ELÉTRICA':
                             st.dataframe(df, use_container_width=st.session_state.use_container_width22)
 
 #MECÂNICA
+
+allln = pd.read_sql_query("SELECT * FROM CESAR", conn10)
+allln1 = allln.shape[0]
+consulta4 = "SELECT * FROM CESAR"
+allinhas = pd.read_sql_query(consulta4, conn10)
+
+#OS ABERTAS  NÃO FINALIZADAS
+consulta5 = "SELECT * FROM CESAR WHERE FINALIZADA = 'Não'"
+whrlinhas1 = pd.read_sql_query(consulta5, conn10)
+whrlinhas2 = whrlinhas1.shape[0] 
+
+#OS FINALIZADAS
+consulta6 = "SELECT * FROM CESAR WHERE FINALIZADA = 'Sim'"
+whrlinhas3 = pd.read_sql_query(consulta6, conn10)
+whrlinhas4 = whrlinhas3.shape[0]
 if fLIDERES == 'EQUIPE DE MECÂNICA':
     if fSETOR == 'MECÂNICA':
         if senha == '1400':
