@@ -791,7 +791,7 @@ if fLIDERES == 'EQUIPE DE ELÉTRICA':
                                                 if insdds:
                                                     st.balloons()
                                                     cursor1.execute("INSERT INTO ROSIVALDO (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?)", (allln3 , str(Rsolicitante), str(Rsetor), str(Rstatus),str(Rniveldaocorrencia),Rdata,str(Rtempoi),Racao,'Não',None,None))
-                                                    conn1.commit()s
+                                                    conn1.commit()
                                                     conn1.close()
                            
             with tab7:
