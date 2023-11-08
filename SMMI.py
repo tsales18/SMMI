@@ -727,9 +727,9 @@ if fLIDERES == 'EQUIPE DE ELÉTRICA':
                         if atd1:
                             RUniveldaocorrencia = st.selectbox('Atualize o Nivel da ocorrência',('EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE','URGÊNTE'),index=None, placeholder='Atualize')
                             st.markdown("---")
-                        Racao = st.selectbox('Tipo da ação', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
+                        Racao = st.selectbox('Tipo da ação', ('Corretiva','Preventiva','Preditiva','Instalação'),index=None,placeholder='Selecione')
                         if atd1:
-                            RUacao = st.selectbox('Atualize o Tipo da ação', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
+                            RUacao = st.selectbox('Atualize o Tipo da ação', ('Corretiva','Preventiva','Preditiva','Instalação'),index=None,placeholder='Selecione')
                             st.markdown("---")
 
                         relatorio = st.text_input('Relatorio')
