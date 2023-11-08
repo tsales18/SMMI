@@ -781,7 +781,7 @@ if fLIDERES == 'EQUIPE DE ELÉTRICA':
                                                     st.balloons()
                                                     cursor1.execute("UPDATE ROSIVALDO SET SOLICITANTE = ?, SETOR = ?,OCORRENCIA = ?,GRAU = ?, DATA = ?, HORA = ?, AÇÃO = ? WHERE OS = ?",(RUsolicitante, RUsetor, RUstatus,RUniveldaocorrencia,RUdata,str(RUtempoi),RUacao,numros))
                                                     conn1.commit()
-                                                    conn1.close()
+                                            
                                                                                            
                                             else:
                                                 insdds = st.button("INSERIR DADOS")
