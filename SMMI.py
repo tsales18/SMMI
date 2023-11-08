@@ -790,7 +790,7 @@ if fLIDERES == 'EQUIPE DE ELÉTRICA':
                                                     allln3 = allln1 + 1
                                                 if insdds:
                                                     st.balloons()
-                                                    cursor1.execute("INSERT INTO ROSIVALDO (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?)", (allln3 , str(Rsolicitante), str(Rsetor), str(Rstatus),str(Rniveldaocorrencia),Rdata,str(Rtempoi),Racao,'Não',None,None))
+                                                    cursor1.execute("INSERT INTO ROSIVALDO (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?)", (allln3 , Rsolicitante, Rsetor,Rstatus,Rniveldaocorrencia,Rdata,str(Rtempoi),Racao,'Não',None,None))
                                                     conn1.commit()
                                                     conn1.close()
                            
