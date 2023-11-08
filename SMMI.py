@@ -1721,7 +1721,7 @@ if fLIDERES == 'EQUIPE DE MECÂNICA':
                             st.dataframe(lddt, use_container_width=st.session_state.use_container_width16)
                 
                     if genre == 'MECÂNICA':
-                        numros4 = st.number_input("Selecione o numero da  OS",min_value=0,max_value=rd32,value=rd32,placeholder="Selecione")
+                        numros4 = st.number_input(" Selecione  o  numero  da   OS ",min_value=0,max_value=rd32,value=rd32,placeholder="Selecione")
                         st.metric(label="OS Existentes", value=rd32)
                         numros5 = numros4-1
                         if rd32 == 0:
