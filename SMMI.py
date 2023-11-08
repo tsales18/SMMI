@@ -1679,7 +1679,6 @@ if fLIDERES == 'EQUIPE DE MECÂNICA':
                             lddt = load_data()
                             st.dataframe(lddt, use_container_width=st.session_state.use_container_width13)
                 
-                
             with tab9:
                 jam,jam1 = st.columns([0.2,1])
                 with jam:
