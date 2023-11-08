@@ -2384,7 +2384,7 @@ if fLIDERES == 'GILSON FREITAS':
 #COMERCIAL
 #GERAL COMERCIAL
 allln19 = pd.read_sql_query("SELECT * FROM COMERCIAL", conn7)
-allln120 = allln19.shape[0]
+allln20 = allln19.shape[0]
 consulta2 = "SELECT * FROM COMERCIAL"
 allinhas18 = pd.read_sql_query(consulta2, conn7)
 
@@ -2488,14 +2488,14 @@ if fLIDERES == 'ADRIELY LEMOS':
                                 atl1 = st.button('atualize')
                                 if atl1:
                                     st.balloons()
-                                    cursor7.execute("UPDATE ADMINISTRATIVO SET OCORRENCIA = ?,GRAU = ?, DATA = ?, HORA = ?, AÇÃO = ? WHERE OS = ?",(Cust,Cundo,CUdata,str(CUtemp),CUac,numros12))
+                                    cursor7.execute("UPDATE COMERCIAL SET OCORRENCIA = ?,GRAU = ?, DATA = ?, HORA = ?, AÇÃO = ? WHERE OS = ?",(Cust,Cundo,CUdata,str(CUtemp),CUac,numros12))
                                     conn7.commit()
                                     conn7.close()
                                                                     
                            else:
                             insdds = st.button("INSERIR DADOS")
                             if insdds:
-                                allln12 = allln18 + 1
+                                allln12 = allln20 + 1
                             if insdds:
                                 st.balloons()
                                 cursor7.execute("INSERT INTO COMERCIAL (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF,MANUTENTOR) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?,?)", (allln12 , str(Cs), str(Castr), str(Cast),str(Cando),Cdata,str(Ctemp),Cac,'Não',None,None,Cmnt))
@@ -2593,18 +2593,12 @@ if fLIDERES == 'ALEX SANTOS':
                     with st.form('my form4'):
                         st.markdown("---")
                         Ec = st.selectbox('Solicitante', ('ALEX SANTOS',),index=None,placeholder='Selecione')
-                        if atd8:
-                            Eus = st.selectbox('Atualize o Solicitante', ('ALEX SANTOS'),index=None,placeholder='Atualize')
-                            st.markdown("---")
 
+                        Eastr = st.selectbox('Setor', ('EXPEDICAO',),index=None,placeholder='Selecione')
+                      
                         East = st.text_input('Tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
                         if atd8:
                             Eust = st.text_input('Atualize o tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
-                            st.markdown("---")
-
-                        Eastr = st.selectbox('Setor', ('EXPEDICAO',),index=None,placeholder='Selecione')
-                        if atd8:
-                            EUstr = st.selectbox('Aualize o Setor', ('EXPEDICAO'),index=None,placeholder='Atualize')
                             st.markdown("---")
 
                         Endo = st.selectbox('Nivel da ocorrência', ('EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE','URGÊNTE'),index=None,placeholder='Selecione')
@@ -2650,7 +2644,7 @@ if fLIDERES == 'ALEX SANTOS':
                             osespec20 = allinhas19.loc[numros25]
                             def load_dataa():
                                 return pd.DataFrame(osespec20)
-                            st.checkbox("Estender", value=True, key="use_container_widthh")
+                            st.checkbox("Estender", value=True, key="use_container_width")
                             df = load_dataa()
                             st.dataframe(df, use_container_width=st.session_state.use_container_width)
                 
@@ -2662,16 +2656,24 @@ if fLIDERES == 'ALEX SANTOS':
                         
                 if fLIDERES == 'ALEX SANTOS':
                     if fSETOR == 'EXPEDIÇÃO':
-                        if senha == '1402':
-                            Inserts3 = st.button("INSERIR DADOS")
-                            if Inserts3:
-                                allln12 = allln22 + 1
-
-                            if Inserts3:
-                                st.balloons()
-                                cursor8.execute("INSERT INTO EXPEDICAO (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF,MANUTENTOR) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?,?)", (allln12 , str(Ec), str(Eastr), str(East),str(Endo),Edata,str(Etemp),Eac,'Não',None,None,Emnt))
-                                conn8.commit()
-                                conn8.close()
+                        if senha == '1402':  
+                            if atd6: 
+                                atl1 = st.button('atualize')
+                                if atl1:
+                                    st.balloons()
+                                    cursor8.execute("UPDATE EXPEDICAO SET OCORRENCIA = ?,GRAU = ?, DATA = ?, HORA = ?, AÇÃO = ? WHERE OS = ?",(Eust,EUndo,EUdata,str(EUtemp),EUac,numros12))
+                                    conn8.commit()
+                                    conn8.close()
+                                                                    
+                            else:
+                                insdds = st.button("INSERIR DADOS")
+                                if insdds:
+                                    allln12 = allln22 + 1
+                                if insdds:
+                                    st.balloons()
+                                    cursor8.execute("INSERT INTO EXPEDICAO (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF,MANUTENTOR) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?,?)", (allln12 , str(Ec), str(Eastr), str(East),str(Endo),Edata,str(Etemp),Eac,'Não',None,None,Emnt))
+                                    conn8.commit()
+                                    conn8.close()
                                         
             with tab43:
                 statuses,sats,statuses1=st.columns([80,0.1,0.1])
@@ -2687,9 +2689,9 @@ if fLIDERES == 'ALEX SANTOS':
                             osespec21 = whrlinhas33.loc[numros25]
                             def load_data():
                                 return pd.DataFrame(osespec21)
-                            st.checkbox("Estender", value=True, key="use_container_width")
+                            st.checkbox("Estender", value=True, key="use_container_width1")
                             df = load_data()
-                            st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                            st.dataframe(df, use_container_width=st.session_state.use_container_width1)
 
             with tab44:
                 st.header('EXPEDIÇÃO', divider='rainbow')
@@ -2704,9 +2706,9 @@ if fLIDERES == 'ALEX SANTOS':
                         osespec22 = rd16.loc[numros25]
                         def load_data():
                             return pd.DataFrame(osespec22)
-                        st.checkbox("Estender", value=True, key="use_container_widthh                                 ")
+                        st.checkbox("Estender", value=True, key="use_container_width2")
                         df = load_data()
-                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                        st.dataframe(df, use_container_width=st.session_state.use_container_width2)
 
             with tab45:
                 st.header('EXPEDIÇÃO', divider='rainbow')
@@ -2720,9 +2722,9 @@ if fLIDERES == 'ALEX SANTOS':
                         osespec23 = allln21.loc[numros25]
                         def load_data():
                             return pd.DataFrame(osespec23)
-                        st.checkbox("Estender", value=True, key= "use_container_width                     ")
+                        st.checkbox("Estender", value=True, key= "use_container_width3")
                         df = load_data()
-                        st.dataframe(df, use_container_width=st.session_state.use_container_width)
+                        st.dataframe(df, use_container_width=st.session_state.use_container_width3)
 
 #SERRALHARIA
 #GERAL SERRALHARIA
@@ -2764,18 +2766,12 @@ if fLIDERES == 'CESAR AUGUSTO':
                     with st.form('my form4'):
                         st.markdown("---")
                         Sc = st.selectbox('Solicitante', ('CESAR AUGUSTO',),index=None,placeholder='Selecione')
-                        if atd9:
-                            SUs = st.selectbox('Atualize o Solicitante', ('CESAR AUGUSTO'),index=None,placeholder='Atualize')
-                            st.markdown("---")
 
+                        Sstr = st.selectbox('Setor', ('SERRALHARIA',),index=None,placeholder='Selecione')
+                       
                         Sst = st.text_input('Tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
                         if atd9:
                             Sust = st.text_input('Atualize o tipo de Ocorrência',value=None,placeholder='Insira sua ocôrrencia')
-                            st.markdown("---")
-
-                        Sstr = st.selectbox('Setor', ('SERRALHARIA',),index=None,placeholder='Selecione')
-                        if atd9:
-                            SUstr = st.selectbox('Aualize o Setor', ('SERRALHARIA'),index=None,placeholder='Atualize')
                             st.markdown("---")
 
                         Sndo = st.selectbox('Nivel da ocorrência', ('EMERGÊNCIA','MUITO URGÊNTE','POUCO URGÊNTE','URGÊNTE'),index=None,placeholder='Selecione')
@@ -2784,7 +2780,7 @@ if fLIDERES == 'CESAR AUGUSTO':
                             st.markdown("---")
                         Sac = st.selectbox('Tipo da ação', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
                         if atd9:
-                            EUac = st.selectbox('Atualize o Tipo da ação', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
+                            SUac = st.selectbox('Atualize o Tipo da ação', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
                             st.markdown("---")
                         
                         Smnt = st.selectbox('Eletrica ou Mecânica', ('ELÉTRICA','MECÂNICA'),index=None,placeholder='Selecione')
@@ -2821,7 +2817,7 @@ if fLIDERES == 'CESAR AUGUSTO':
                             osespec24 = allinhas20.loc[numros27]
                             def load_dataa():
                                 return pd.DataFrame(osespec24)
-                            st.checkbox("Estender", value=True, key="use_container_widthh")
+                            st.checkbox("Estender", value=True, key="use_container_width")
                             df = load_dataa()
                             st.dataframe(df, use_container_width=st.session_state.use_container_width)
                 
@@ -2834,15 +2830,23 @@ if fLIDERES == 'CESAR AUGUSTO':
                 if fLIDERES == 'CESAR AUGUSTO':
                     if fSETOR == 'SERRALHARIA':
                         if senha == '1401':
-                            Inserts4 = st.button("INSERIR DADOS")
-                            if Inserts4:
-                                allln12 = allln24 + 1
-
-                            if Inserts4:
-                                st.balloons()
-                                cursor9.execute("INSERT INTO SERRALHARIA (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF,MANUTENTOR) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?,?)", (allln12 , str(Sc), str(Sstr), str(Sst),str(Sndo),Sdata,str(Stemp),Sac,'Não',None,None,Smnt))
-                                conn9.commit()
-                                conn9.close()
+                            if atd6: 
+                                atl1 = st.button('atualize')
+                                if atl1:
+                                    st.balloons()
+                                    cursor9.execute("UPDATE SERRALHARIA SET OCORRENCIA = ?,GRAU = ?, DATA = ?, HORA = ?, AÇÃO = ? WHERE OS = ?",(Sust,SUndo,SUdata,str(SUtemp),SUac,numros12))
+                                    conn9.commit()
+                                    conn9.close()
+                                                                    
+                            else:
+                                insdds = st.button("INSERIR DADOS")
+                                if insdds:
+                                    allln12 = allln24 + 1
+                                if insdds:
+                                    st.balloons()
+                                    cursor9.execute("INSERT INTO SERRALHARIA (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF,MANUTENTOR) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?,?)", (allln12 , str(Sc), str(Sstr), str(Sst),str(Sndo),Sdata,str(Stemp),Sac,'Não',None,None,Smnt))
+                                    conn9.commit()
+                                    conn9.close()
                                         
             with tab47:
                 statuses,sats,statuses1=st.columns([80,0.1,0.1])
