@@ -882,13 +882,13 @@ if fLIDERES == 'EQUIPE DE ELÉTRICA':
                     st.button('↻')
 
                 with st.expander("Minhas OS"):
-                    numros2 = st.number_input("Selecione o numero da OS",min_value=0,max_value=allln1,value=allln1,placeholder="Selecione")
-                    st.metric(label="OS Existentes", value= allln1)
+                    numros2 = st.number_input("Selecione o numero da OS",min_value=whrlinhas2,max_value=whrlinhas2,value=whrlinhas2,placeholder="Selecione")
+                    st.metric(label="OS Existentes", value= whrlinhas2)
                     numros3 = numros2-1
-                    if allln1 == 0:
+                    if whrlinhas2 == 0:
                         st.success('Não há pendências')
                     else:
-                        osespec = allinhas.loc[numros3]
+                        osespec = whrlinhas1.loc[numros3]
                         def load_data():
                             return pd.DataFrame(osespec)
                         st.checkbox("Estender", value=True, key="use_container_width2")
