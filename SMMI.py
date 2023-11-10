@@ -13,9 +13,6 @@ from sqlalchemy import Sequence
 import webbrowser
 import sqlite3
 import openpyxl
-import numpy as np
-import altair as alt
-from vega_datasets import data
 
 
 # CONFIGURAÇÃO DA PÁGINA
@@ -47,24 +44,20 @@ with st.sidebar:
     logo_teste = Image.open('./Midia/sales.jpeg')
     st.image(logo_teste, width=300)
     st.subheader('MANUTENÇÃO SSM SOLAR DO BRASIL')
-    with st.form('Logon'):
-        fLIDERES = st.selectbox(
+    fLIDERES = st.selectbox(
         "LIDER:",
         options=df['LIDERES'].unique()
-        )
-        fSETOR = st.selectbox(
+    )
+    fSETOR = st.selectbox(
         "SETOR:",
         options=df['SETOR'].unique()
-        )
-        senha = st.text_input('Ensira sua senha')
-        st.form_submit_button('Entrar')
+    )
+    senha = st.text_input('Ensira sua senha')
     
     with st.spinner("Carregando..."):
                 time.sleep(2)
                 st.success("Pronto!")
     st.write("Bem Vindo")
-    
-   
     
     st.write('✅')
     tab1_qtde_produto = df.loc[(
@@ -73,6 +66,7 @@ with st.sidebar:
     with st.expander('#$#$'):
         st.success('Nada além de um homem comum,com pensamentos comuns')
      
+
 #cl = st.button("DELETAR TABELAS")
 #if cl:
    #cursor.execute("DROP TABLE ABERTURA")
@@ -84,7 +78,7 @@ if 'OS' not in st.session_state:
 if 'FIN' not in st.session_state:
     st.session_state.FIN = 0
 
-if 'BANCOS' == 'BANCOS':
+if 0 == 0:
     conn1 = sqlite3.connect('ROSIVALDO')
     cursor1 = conn1.cursor()
     cursor1.execute('''
@@ -287,195 +281,190 @@ consulta3 = "SELECT * FROM ROSIVALDO WHERE FINALIZADA = 'Sim'"
 whrlinhas3 = pd.read_sql_query(consulta3, conn1)
 whrlinhas4 = whrlinhas3.shape[0]
 #
-if 'FERRAMENTARIA' == 'FERRAMENTARIA':
-    #feedback ferramentaria
-    allln13 = pd.read_sql_query("SELECT * FROM FERRAMENTARIA", conn4)
-    allln14 = allln13.shape[0]
 
-    query = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Não'"
-    rd2 = pd.read_sql_query(query, conn4)
-    rd3 = rd2.shape[0]
+ 
+#feedback ferramentaria
+query = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Não'"
+rd2 = pd.read_sql_query(query, conn4)
+rd3 = rd2.shape[0]
 
-    query1 = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Sim'"
-    rd = pd.read_sql_query(query1, conn4)
-    rd1 = rd.shape[0]
+query1 = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Sim'"
+rd = pd.read_sql_query(query1, conn4)
+rd1 = rd.shape[0]
 
-    query = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'MECÂNICA'"
-    rd25 = pd.read_sql_query(query, conn4)
-    rd26 = rd25.shape[0]
+query = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'MECÂNICA'"
+rd25 = pd.read_sql_query(query, conn4)
+rd26 = rd25.shape[0]
 
-    query1 = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'ELÉTRICA'"
-    rd27 = pd.read_sql_query(query1, conn4)
-    rd28 = rd27.shape[0]
+query1 = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'ELÉTRICA'"
+rd27 = pd.read_sql_query(query1, conn4)
+rd28 = rd27.shape[0]
 
-    query = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'MECÂNICA'"
-    rd29 = pd.read_sql_query(query, conn4)
-    rd30 = rd29.shape[0]
+query = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'MECÂNICA'"
+rd29 = pd.read_sql_query(query, conn4)
+rd30 = rd29.shape[0]
 
-    query1 = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'ELÉTRICA'"
-    rd31 = pd.read_sql_query(query1, conn4)
-    rd32 = rd31.shape[0]
+query1 = "SELECT * FROM FERRAMENTARIA WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'ELÉTRICA'"
+rd31 = pd.read_sql_query(query1, conn4)
+rd32 = rd31.shape[0]
 
-if 'PRODUÇÃO'=='PRODUÇÃO':
-    #FEEDBACK PRODUÇÃO
-    query = "SELECT * FROM PRODUCAO WHERE FINALIZADA = 'Não'"
-    rd6 = pd.read_sql_query(query, conn5)
-    rd7 = rd6.shape[0]
+#FEEDBACK PRODUÇÃO
+query = "SELECT * FROM PRODUCAO WHERE FINALIZADA = 'Não'"
+rd6 = pd.read_sql_query(query, conn5)
+rd7 = rd6.shape[0]
 
-    query1 = "SELECT * FROM PRODUCAO WHERE FINALIZADA = 'Sim'"
-    rd4 = pd.read_sql_query(query1, conn5)
-    rd5 = rd4.shape[0]
+query1 = "SELECT * FROM PRODUCAO WHERE FINALIZADA = 'Sim'"
+rd4 = pd.read_sql_query(query1, conn5)
+rd5 = rd4.shape[0]
 
-    allln15 = pd.read_sql_query("SELECT * FROM PRODUCAO", conn5)
-    allln16 = allln15.shape[0]
+allln15 = pd.read_sql_query("SELECT * FROM PRODUCAO", conn5)
+allln16 = allln15.shape[0]
 
-    query = "SELECT * FROM PRODUCAO WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'ELÉTRICA'"
-    rd33 = pd.read_sql_query(query, conn5)
-    rd34 = rd33.shape[0]
+query = "SELECT * FROM PRODUCAO WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'ELÉTRICA'"
+rd33 = pd.read_sql_query(query, conn5)
+rd34 = rd33.shape[0]
 
-    query = "SELECT * FROM PRODUCAO WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'MECÂNICA'"
-    rd35 = pd.read_sql_query(query, conn5)
-    rd36 = rd35.shape[0]
+query = "SELECT * FROM PRODUCAO WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'MECÂNICA'"
+rd35 = pd.read_sql_query(query, conn5)
+rd36 = rd35.shape[0]
 
-    query = "SELECT * FROM PRODUCAO WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'ELÉTRICA'"
-    rd37 = pd.read_sql_query(query, conn5)
-    rd38 = rd37.shape[0]
+query = "SELECT * FROM PRODUCAO WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'ELÉTRICA'"
+rd37 = pd.read_sql_query(query, conn5)
+rd38 = rd37.shape[0]
 
-    query = "SELECT * FROM PRODUCAO WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'MECÂNICA'"
-    rd39 = pd.read_sql_query(query, conn5)
-    rd40 = rd39.shape[0]
+query = "SELECT * FROM PRODUCAO WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'MECÂNICA'"
+rd39 = pd.read_sql_query(query, conn5)
+rd40 = rd39.shape[0]
 
-    allln15 = pd.read_sql_query("SELECT * FROM PRODUCAO", conn5)
-    allln16 = allln15.shape[0]
-    consulta9 = "SELECT * FROM PRODUCAO"
-    allinhas16 = pd.read_sql_query(consulta9, conn5)
+allln15 = pd.read_sql_query("SELECT * FROM PRODUCAO", conn5)
+allln16 = allln15.shape[0]
+consulta9 = "SELECT * FROM PRODUCAO"
+allinhas16 = pd.read_sql_query(consulta9, conn5)
 
-    #OS ABERTAS  NÃO FINALIZADAS
-    consulta10 = "SELECT * FROM PRODUCAO WHERE FINALIZADA = 'Não'"
-    whrlinhas18 = pd.read_sql_query(consulta10, conn5)
-    whrlinhas19 = whrlinhas18.shape[0]
+#OS ABERTAS  NÃO FINALIZADAS
+consulta10 = "SELECT * FROM PRODUCAO WHERE FINALIZADA = 'Não'"
+whrlinhas18 = pd.read_sql_query(consulta10, conn5)
+whrlinhas19 = whrlinhas18.shape[0]
 
-    #OS FINALIZADAS
-    cursor5.execute("SELECT * FROM PRODUCAO WHERE FINALIZADA = ?;", ('Sim',))
-    whrlinhas20 = cursor5.fetchall()
-    whrlinhas21 = pd.DataFrame(whrlinhas20)
-    whrlinhas22 = whrlinhas21.shape[0]
+#OS FINALIZADAS
+cursor5.execute("SELECT * FROM PRODUCAO WHERE FINALIZADA = ?;", ('Sim',))
+whrlinhas20 = cursor5.fetchall()
+whrlinhas21 = pd.DataFrame(whrlinhas20)
+whrlinhas22 = whrlinhas21.shape[0]
 
-if 'administrativo' == 'administrativo':
-    #FEEDBACK ADMINISTRATIVO
-    query = "SELECT * FROM ADMINISTRATIVO WHERE FINALIZADA = 'Não'"
-    rd10 = pd.read_sql_query(query, conn6)
-    rd11 = rd10.shape[0]
+#FEEDBACK ADMINISTRATIVO
+query = "SELECT * FROM ADMINISTRATIVO WHERE FINALIZADA = 'Não'"
+rd10 = pd.read_sql_query(query, conn6)
+rd11 = rd10.shape[0]
 
-    query1 = "SELECT * FROM ADMINISTRATIVO WHERE FINALIZADA = 'Sim'"
-    rd8 = pd.read_sql_query(query1, conn6)
-    rd9 = rd8.shape[0]
+query1 = "SELECT * FROM ADMINISTRATIVO WHERE FINALIZADA = 'Sim'"
+rd8 = pd.read_sql_query(query1, conn6)
+rd9 = rd8.shape[0]
 
-    allln17 = pd.read_sql_query("SELECT * FROM ADMINISTRATIVO", conn6)
-    allln18 = allln17.shape[0]
+allln17 = pd.read_sql_query("SELECT * FROM ADMINISTRATIVO", conn6)
+allln18 = allln17.shape[0]
 
-    query = "SELECT * FROM ADMINISTRATIVO WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'ELÉTRICA'"
-    rd41 = pd.read_sql_query(query, conn6)
-    rd42 = rd41.shape[0]
+query = "SELECT * FROM ADMINISTRATIVO WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'ELÉTRICA'"
+rd41 = pd.read_sql_query(query, conn6)
+rd42 = rd41.shape[0]
 
-    query = "SELECT * FROM ADMINISTRATIVO WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'MECÂNICA'"
-    rd43 = pd.read_sql_query(query, conn6)
-    rd44 = rd43.shape[0]
+query = "SELECT * FROM ADMINISTRATIVO WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'MECÂNICA'"
+rd43 = pd.read_sql_query(query, conn6)
+rd44 = rd43.shape[0]
 
-    query = "SELECT * FROM ADMINISTRATIVO WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'ELÉTRICA'"
-    rd45 = pd.read_sql_query(query, conn6)
-    rd46 = rd45.shape[0]
+query = "SELECT * FROM ADMINISTRATIVO WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'ELÉTRICA'"
+rd45 = pd.read_sql_query(query, conn6)
+rd46 = rd45.shape[0]
 
-    query = "SELECT * FROM ADMINISTRATIVO WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'MECÂNICA'"
-    rd47 = pd.read_sql_query(query, conn6)
-    rd48 = rd47.shape[0]
+query = "SELECT * FROM ADMINISTRATIVO WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'MECÂNICA'"
+rd47 = pd.read_sql_query(query, conn6)
+rd48 = rd47.shape[0]
 
-if 'comercial' == 'comercial':
-    #FEEDBACK COMERCIAL
-    query = "SELECT * FROM COMERCIAL WHERE FINALIZADA = 'Não'"
-    rd14 = pd.read_sql_query(query, conn7)
-    rd15 = rd14.shape[0]
+#FEEDBACK COMERCIAL
+query = "SELECT * FROM COMERCIAL WHERE FINALIZADA = 'Não'"
+rd14 = pd.read_sql_query(query, conn7)
+rd15 = rd14.shape[0]
 
-    query1 = "SELECT * FROM COMERCIAL WHERE FINALIZADA = 'Sim'"
-    rd12 = pd.read_sql_query(query1, conn7)
-    rd13 = rd12.shape[0]
+query1 = "SELECT * FROM COMERCIAL WHERE FINALIZADA = 'Sim'"
+rd12 = pd.read_sql_query(query1, conn7)
+rd13 = rd12.shape[0]
 
-    allln19 = pd.read_sql_query("SELECT * FROM COMERCIAL", conn7)
-    allln20 = allln19.shape[0]
+allln19 = pd.read_sql_query("SELECT * FROM COMERCIAL", conn7)
+allln120 = allln19.shape[0]
 
-    query = "SELECT * FROM COMERCIAL WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'ELÉTRICA'"
-    rd49 = pd.read_sql_query(query, conn7)
-    rd50 = rd49.shape[0]
+query = "SELECT * FROM COMERCIAL WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'ELÉTRICA'"
+rd49 = pd.read_sql_query(query, conn7)
+rd50 = rd49.shape[0]
 
-    query = "SELECT * FROM COMERCIAL WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'MECÂNICA'"
-    rd51 = pd.read_sql_query(query, conn7)
-    rd52 = rd51.shape[0]
+query = "SELECT * FROM COMERCIAL WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'MECÂNICA'"
+rd51 = pd.read_sql_query(query, conn7)
+rd52 = rd51.shape[0]
 
-    query = "SELECT * FROM COMERCIAL WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'ELÉTRICA'"
-    rd53 = pd.read_sql_query(query, conn7)
-    rd54 = rd53.shape[0]
+query = "SELECT * FROM COMERCIAL WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'ELÉTRICA'"
+rd53 = pd.read_sql_query(query, conn7)
+rd54 = rd53.shape[0]
 
-    query = "SELECT * FROM COMERCIAL WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'MECÂNICA'"
-    rd55 = pd.read_sql_query(query, conn7)
-    rd56 = rd55.shape[0]
+query = "SELECT * FROM COMERCIAL WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'MECÂNICA'"
+rd55 = pd.read_sql_query(query, conn7)
+rd56 = rd55.shape[0]
 
-if 'EXPEDIÇÃO' == 'EXPEDIÇÃO':
-    query = "SELECT * FROM EXPEDICAO WHERE FINALIZADA = 'Não'"
-    rd18 = pd.read_sql_query(query, conn8)
-    rd19 = rd18.shape[0]
+#FEEDBACK EXPEDIÇÃO
+query = "SELECT * FROM EXPEDICAO WHERE FINALIZADA = 'Não'"
+rd18 = pd.read_sql_query(query, conn8)
+rd19 = rd18.shape[0]
 
-    query1 = "SELECT * FROM EXPEDICAO WHERE FINALIZADA = 'Sim'"
-    rd16 = pd.read_sql_query(query1, conn8)
-    rd17 = rd16.shape[0]
+query1 = "SELECT * FROM EXPEDICAO WHERE FINALIZADA = 'Sim'"
+rd16 = pd.read_sql_query(query1, conn8)
+rd17 = rd16.shape[0]
 
-    allln21 = pd.read_sql_query("SELECT * FROM EXPEDICAO", conn8)
-    allln22 = allln21.shape[0]
+allln21 = pd.read_sql_query("SELECT * FROM EXPEDICAO", conn8)
+allln22 = allln21.shape[0]
 
-    query = "SELECT * FROM EXPEDICAO WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'ELÉTRICA'"
-    rd57 = pd.read_sql_query(query, conn8)
-    rd58 = rd57.shape[0]
+query = "SELECT * FROM EXPEDICAO WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'ELÉTRICA'"
+rd57 = pd.read_sql_query(query, conn8)
+rd58 = rd57.shape[0]
 
-    query = "SELECT * FROM EXPEDICAO WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'MECÂNICA'"
-    rd59 = pd.read_sql_query(query, conn8)
-    rd60 = rd59.shape[0]
+query = "SELECT * FROM EXPEDICAO WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'MECÂNICA'"
+rd59 = pd.read_sql_query(query, conn8)
+rd60 = rd59.shape[0]
 
-    query = "SELECT * FROM EXPEDICAO WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'ELÉTRICA'"
-    rd61 = pd.read_sql_query(query, conn8)
-    rd62 = rd61.shape[0]
+query = "SELECT * FROM EXPEDICAO WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'ELÉTRICA'"
+rd61 = pd.read_sql_query(query, conn8)
+rd62 = rd61.shape[0]
 
-    query = "SELECT * FROM EXPEDICAO WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'MECÂNICA'"
-    rd63 = pd.read_sql_query(query, conn8)
-    rd64 = rd63.shape[0]
+query = "SELECT * FROM EXPEDICAO WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'MECÂNICA'"
+rd63 = pd.read_sql_query(query, conn8)
+rd64 = rd63.shape[0]
 
-if 'SERRALHARIA' == 'SERRALHARIA':
-    #FEEDBACK SERRALHARIA
-    query = "SELECT * FROM SERRALHARIA WHERE FINALIZADA = 'Não'"
-    rd22 = pd.read_sql_query(query, conn9)
-    rd23 = rd22.shape[0]
 
-    query1 = "SELECT * FROM SERRALHARIA WHERE FINALIZADA = 'Sim'"
-    rd20 = pd.read_sql_query(query1, conn9)
-    rd21 = rd20.shape[0]
 
-    allln23 = pd.read_sql_query("SELECT * FROM SERRALHARIA", conn9)
-    allln24 = allln23.shape[0]
+#FEEDBACK SERRALHARIA
+query = "SELECT * FROM SERRALHARIA WHERE FINALIZADA = 'Não'"
+rd22 = pd.read_sql_query(query, conn9)
+rd23 = rd22.shape[0]
 
-    query = "SELECT * FROM SERRALHARIA WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'ELÉTRICA'"
-    rd65 = pd.read_sql_query(query, conn9)
-    rd66 = rd65.shape[0]
+query1 = "SELECT * FROM SERRALHARIA WHERE FINALIZADA = 'Sim'"
+rd20 = pd.read_sql_query(query1, conn9)
+rd21 = rd20.shape[0]
 
-    query = "SELECT * FROM SERRALHARIA WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'MECÂNICA'"
-    rd67 = pd.read_sql_query(query, conn9)
-    rd68 = rd67.shape[0]
+allln23 = pd.read_sql_query("SELECT * FROM SERRALHARIA", conn9)
+allln24 = allln23.shape[0]
 
-    query = "SELECT * FROM SERRALHARIA WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'ELÉTRICA'"
-    rd69 = pd.read_sql_query(query, conn9)
-    rd70 = rd69.shape[0]
+query = "SELECT * FROM SERRALHARIA WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'ELÉTRICA'"
+rd65 = pd.read_sql_query(query, conn9)
+rd66 = rd65.shape[0]
 
-    query = "SELECT * FROM SERRALHARIA WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'MECÂNICA'"
-    rd71 = pd.read_sql_query(query, conn9)
-    rd72 = rd71.shape[0]
+query = "SELECT * FROM SERRALHARIA WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'MECÂNICA'"
+rd67 = pd.read_sql_query(query, conn9)
+rd68 = rd67.shape[0]
 
+query = "SELECT * FROM SERRALHARIA WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'ELÉTRICA'"
+rd69 = pd.read_sql_query(query, conn9)
+rd70 = rd69.shape[0]
+
+query = "SELECT * FROM SERRALHARIA WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'MECÂNICA'"
+rd71 = pd.read_sql_query(query, conn9)
+rd72 = rd71.shape[0]
 
 if 'OS' not in st.session_state:
     st.session_state.OS = 0
@@ -500,18 +489,9 @@ query = "SELECT * FROM TI WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'MECÂNICA'
 rd80 = pd.read_sql_query(query, conn11)
 rd81 = rd80.shape[0]
 
+chart_data = pd.DataFrame(np.random.randn(20, 3), columns=["a", "b", "c"])
 
-source = pd.DataFrame({
-    'Setores': ['PRODUÇÃO', 'FERRAMENTARIA', 'ADMINISTRATIVO', 'COMERCIAL', 'SERRALHARIA', 'ELÉTRICA', 'MECÂNICA','EXPEDIÇÃO'],
-    'Valores': [allln16, allln14, allln18, allln20, allln24, allln1, 19,allln22]
-})
-
-c3 = alt.Chart(source).mark_bar().encode(
-    x='Setores',
-    y='Valores'
-)
-
-st.altair_chart(c3, use_container_width=True)
+st.bar_chart(chart_data)
 
 #ELÉTRICA
 if fLIDERES == 'EQUIPE DE ELÉTRICA':
