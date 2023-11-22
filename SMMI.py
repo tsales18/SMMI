@@ -75,6 +75,11 @@ with st.sidebar:
    #cursor.execute("DROP TABLE ABERTURA")
    #conn.commit()
 
+
+
+#atsat
+
+
 if 'OS' not in st.session_state:
     st.session_state.OS = 0
         
