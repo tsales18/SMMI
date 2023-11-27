@@ -15,8 +15,7 @@ import sqlite3
 import openpyxl
 import altair as alt
 
-
-# CONFIGURAÇÃO DA PÁGINA
+#CONFIGURAÇÃO DA PÁGINA
 st.set_page_config(
     page_title=('MANUTENÇÃO SSM SOLAR DO BRASIL'),
     page_icon='SMMI',
