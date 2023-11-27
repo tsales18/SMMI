@@ -15,7 +15,8 @@ import sqlite3
 import openpyxl
 import altair as alt
 
-#CONFIGURAÇÃO DA PÁGINA
+
+# CONFIGURAÇÃO DA PÁGINA
 st.set_page_config(
     page_title=('MANUTENÇÃO SSM SOLAR DO BRASIL'),
     page_icon='SMMI',
@@ -73,12 +74,6 @@ with st.sidebar:
 #if cl:
    #cursor.execute("DROP TABLE ABERTURA")
    #conn.commit()
-
-
-
-
-#atsat
-
 
 if 'OS' not in st.session_state:
     st.session_state.OS = 0
@@ -288,7 +283,7 @@ whrlinhas2 = whrlinhas1.shape[0]
 consulta3 = "SELECT * FROM ROSIVALDO WHERE FINALIZADA = 'Sim'"
 whrlinhas3 = pd.read_sql_query(consulta3, conn1)
 whrlinhas4 = whrlinhas3.shape[0]
-#
+
 if 'FERRAMENTARIA' == 'FERRAMENTARIA':
     #feedback ferramentaria
     allln13 = pd.read_sql_query("SELECT * FROM FERRAMENTARIA", conn4)
@@ -483,7 +478,6 @@ if 'OS' not in st.session_state:
         
 if 'FIN' not in st.session_state:
     st.session_state.FIN = 0
-
 
 query = "SELECT * FROM TI WHERE FINALIZADA = 'Sim' AND MANUTENTOR = 'ELÉTRICA'"
 rd74 = pd.read_sql_query(query, conn11)
