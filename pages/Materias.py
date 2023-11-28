@@ -14,6 +14,7 @@ import webbrowser
 import sqlite3
 import openpyxl
 import altair as alt
+from pydub import AudioSegment
 
 if 'banco_de_dados' == 'banco_de_dados':
     conn12 = sqlite3.connect('MATERIAS')
@@ -79,7 +80,7 @@ else:
     consulta3 = f"SELECT * FROM MATERIAS WHERE DESCRIÇÃO = '{busca}'"
     numero1 = pd.read_sql_query(consulta3, conn12)
     numero2 = numero1.shape[0]
-    
+
 def load_dataa():
     return pd.DataFrame(numero1)
 st.checkbox("Estender", value=True, key="use_container_width1")
@@ -88,8 +89,7 @@ st.dataframe(df, use_container_width =st.session_state.use_container_width1)
 
 
 col1,col2,col4,col5,col8,col9,col11 = st.columns([2,2,2,2,2,2,2,])
-
-incluir = st.toggle('Incluir Materiás')
+incluir = st.toggle('Incluir Materias')
 if incluir:
     atd = st.toggle('Atualizar os dados')
     with col1:
@@ -162,7 +162,7 @@ if incluir:
 
 
 
-    jmp,jmp1 = st.columns([1,11])
+    jmp,jmp1 = st.columns([1,13])
     with jmp:
         if atd:
             atl = st.button('Enviar 📤')
