@@ -3351,3 +3351,63 @@ if numero_de_dias == 30:
             st.write(datas_geradas[19][29])
         with tab8:
             st.write(datas_geradas[20][29])
+
+consulta3 = f"SELECT * FROM ROSIVALDO ORDER BY DATA"
+umero491 = pd.read_sql_query(consulta3, conn1)
+numero492 = umero491.shape[0]
+
+teste = umero491.drop(columns=['SOLICITANTE','SETOR','OCORRENCIA','OS','DATA','GRAU','FINALIZADA','DATAF','HORAF','AÇÃO'])
+teste
+test1 = teste.loc[3]
+test2 = np.array(test1)
+test3 = str(test2)
+test4 = test3[2:-2]
+st.write(test4)
+
+teste5 = umero491.drop(columns=['SOLICITANTE','SETOR','OCORRENCIA','OS','GRAU','HORA','DATA','FINALIZADA','DATAF','AÇÃO'])
+teste5
+test6 = teste5.loc[3]
+test7 = np.array(test6)
+test8 = str(test7)
+test9 = test8[2:-2]
+st.write(test9)
+
+# Criar objetos de tempo
+hora1 = datetime.strptime(str(test4), '%H:%M:%S')
+
+hora3 = datetime.strptime(str(test9), '%H:%M:%S')
+
+delta_tempo1 = timedelta(hours=hora1.hour, minutes=hora1.minute, seconds=hora1.second)
+
+delta_tempo3 = timedelta(hours=hora3.hour, minutes=hora3.minute, seconds=hora3.second)
+
+novo_tempo = (datetime.min - (delta_tempo1 - delta_tempo3)).time()
+
+novo_tempo1 = (datetime.min - (delta_tempo1 - delta_tempo3)).time()
+
+horass = [1,1,1,1,1,1,1,1,1,1,1]
+testee = [1,1,1,1,1,1,1,1,1,1,1]
+
+soma_horas = hora1 + timedelta(minutes=30)
+subtrai_horas = hora1 - timedelta(minutes=30)
+diferenca_entre_horas = hora1 - hora3
+
+st.write(soma_horas)
+subtrai_horas
+diferenca_entre_horas
+
+chart_data = pd.DataFrame(
+   {
+       "col1": horass,
+       "col2": testee,
+       "col3": np.random.choice(["A", "B"], 11),
+   }
+)
+
+st.line_chart(chart_data, x="col1", y="col2", color="col3")
+
+if oimaioa == "Horas de manuteção":
+    st.write('puta que pariuo')
+
+james = np.random.randn(20, 3)
+st.write(james)
