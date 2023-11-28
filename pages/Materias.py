@@ -79,7 +79,7 @@ else:
     consulta3 = f"SELECT * FROM MATERIAS WHERE DESCRIÇÃO = '{busca}'"
     numero1 = pd.read_sql_query(consulta3, conn12)
     numero2 = numero1.shape[0]
-    )
+    
 def load_dataa():
     return pd.DataFrame(numero1)
 st.checkbox("Estender", value=True, key="use_container_width1")
