@@ -14,7 +14,6 @@ import webbrowser
 import sqlite3
 import openpyxl
 import altair as alt
-from pydub import AudioSegment
 
 if 'banco_de_dados' == 'banco_de_dados':
     conn12 = sqlite3.connect('MATERIAS')
