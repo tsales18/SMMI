@@ -165,7 +165,7 @@ if incluir:
 
 
 
-    jmp,jmp1 = st.columns([1,13])
+    jmp,jmp1 = st.columns([1,11])
     with jmp:
         if atd:
             atl = st.button('Enviar 📤')
