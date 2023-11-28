@@ -89,7 +89,7 @@ st.dataframe(df, use_container_width =st.session_state.use_container_width1)
 
 col1,col2,col4,col5,col8,col9,col11 = st.columns([2,2,2,2,2,2,2,])
 
-incluir = st.toggle('Incluir Materias')
+incluir = st.toggle('Incluir Materiás')
 if incluir:
     atd = st.toggle('Atualizar os dados')
     with col1:
