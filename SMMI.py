@@ -982,7 +982,7 @@ if fLIDERES == 'EQUIPE DE ELÉTRICA':
                 
                 with st.expander("Tecnologia da informação"):
                     if 'ELÉTRICA' == 'ELÉTRICA':
-                        numros4 = st.number_input("Selecione o numero da  OS          ",min_value=0,max_value=rd75,value=rd75,placeholder="Selecione")
+                        numros4 = st.number_input("  Selecione o numero da  OS          ",min_value=0,max_value=rd75,value=rd75,placeholder="Selecione")
                         st.metric(label="OS Existentes", value=rd75)
                         numros5 = numros4-1
                         if rd75 == 0:
