@@ -63,7 +63,6 @@ with st.sidebar:
         st.form_submit_button('Entrar')
         
     with st.spinner("Carregando..."):
-                time.sleep(2)
                 st.success("Pronto!")
     st.write("Bem Vindo")
 
