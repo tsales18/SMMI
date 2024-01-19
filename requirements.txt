@@ -7,8 +7,8 @@ requests
 pyodbc
 openpyxl
 reportlab
-PyPDF2
+PyPDF2==1.26.0
 io
 tkinter
 qrcode
-cv2
+cv2s
