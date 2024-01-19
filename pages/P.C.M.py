@@ -543,9 +543,9 @@ with tab1:
                     data_hora_objeto = datetime.strptime(alou , "%Y-%m-%d %H:%M:%S")
                     horario_formatado = data_hora_objeto.strftime("%H:%M:%S")
         
-            horas, minutos, segundos = map(int,horario_formatado.split(':'))
-            hrs = horas + minutos/60 + segundos/3600
-            dsp = 100-hrs/10.48*100
+                    horas, minutos, segundos = map(int,horario_formatado.split(':'))
+                    hrs = horas + minutos/60 + segundos/3600
+                    dsp = 100-hrs/10.48*100
 
         consulta3 = f"SELECT * FROM DSP WHERE MAQUINA = '{maquina}'"
         result  = pd.read_sql_query(consulta3, conn)
