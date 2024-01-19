@@ -432,7 +432,6 @@ with tab1:
         else:
             grupo_setores = ['Mecânica','Produção','P.C.M','Ferramentaria','T.I','Comercial','Administrativo','Serralharia','Expedição']        
 
-                
         setor = st.selectbox('Setor:', (grupo_setores),index=0,placeholder='Selecione')
         if setor == 'Elétrica':
             setor = 'ELETRICA'
@@ -544,11 +543,6 @@ with tab1:
                     data_hora_objeto = datetime.strptime(alou , "%Y-%m-%d %H:%M:%S")
                     horario_formatado = data_hora_objeto.strftime("%H:%M:%S")
         
-        if bools[0] == False and bools[1] == False and bools[2] == False and bools[3] == False and bools[4] == False and bools[5] == False and bools[6] == False and bools[7] == False and bools[8] == False:
-            horario_formatado = 0
-            stry = 0
-            dsp = 100-0/10.48*100
-        else:
             horas, minutos, segundos = map(int,horario_formatado.split(':'))
             hrs = horas + minutos/60 + segundos/3600
             dsp = 100-hrs/10.48*100
