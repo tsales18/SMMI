@@ -546,6 +546,8 @@ with tab1:
                     horas, minutos, segundos = map(int,horario_formatado.split(':'))
                     hrs = horas + minutos/60 + segundos/3600
                     dsp = 100-hrs/10.48*100
+                    cursor.execute("INSERT INTO DSP (DATA,HORA,MÊS,MAQUINA) VALUES (?,?,?,?)", (datenow,dsp,monthnow,maquina))
+                    conn.commit()
 
         consulta3 = f"SELECT * FROM DSP WHERE MAQUINA = '{maquina}'"
         result  = pd.read_sql_query(consulta3, conn)
@@ -561,8 +563,7 @@ with tab1:
             st.header('Disponibilidade de :red[Maquina]',divider='red')
             get_chart_2006546()
             st.form_submit_button('🔄   ')
-        cursor.execute("INSERT INTO DSP (DATA,HORA,MÊS,MAQUINA) VALUES (?,?,?,?)", (datenow,dsp,monthnow,maquina))
-        conn.commit()
+        
     col,col1,col2 = st.columns([4,0.001,4])
     with col:
         consulta3 = f"SELECT * FROM MTBF"
