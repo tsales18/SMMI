@@ -10,3 +10,4 @@ reportlab
 PyPDF2==1.26.0
 qrcode==7.3
 opencv-python==4.5.1.48
+streamlit-extras
