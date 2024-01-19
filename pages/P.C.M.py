@@ -232,9 +232,9 @@ with tab:
             Racao = ''
 
         if not atd1:
-            especialidades = container.selectbox('Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos'),index=None,placeholder='Selecione')
+            especialidades = container.selectbox('Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Selecione')
         if atd1:
-            especialidades = container.selectbox('Atualize á Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos'),index=None,placeholder='Atualize')
+            especialidades = container.selectbox('Atualize á Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Atualize')
 
         if not atd1:
             manutentor = container.selectbox('Tipo de mautenção:',('Elétrica','Mecânica'),index=None,placeholder='Defina')
@@ -419,7 +419,7 @@ with tab1:
     
     especialidades_eletricas = ['Falhas Elétricas','Elétrônica','Rede Industrial','Erro de Logica','Falhas na Automação','Problemas de Software','Impactos externos']
     with st.expander('💡'):
-        especialidadesx = st.selectbox('Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos'),index=0)        
+        especialidadesx = st.selectbox('Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=0)        
         Trues = []
         for s in especialidades_eletricas:
             if s in especialidadesx:
