@@ -8,7 +8,6 @@ import sqlite3
 import openpyxl
 import altair as alt
 from datetime import datetime
-import cv2
 from io import BytesIO
 from streamlit_extras.metric_cards import style_metric_cards
 from streamlit_extras.colored_header import colored_header
