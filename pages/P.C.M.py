@@ -559,7 +559,6 @@ with tab1:
         
         def get_chart_2006546():
             import plotly.express as px
-            df = px.data.tips()
             fig = px.histogram(result, x="DATA", y="HORA", histfunc= "avg", nbins=100, text_auto=True)
             oi = st.plotly_chart(fig, theme="streamlit")
             return oi
