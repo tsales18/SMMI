@@ -584,7 +584,8 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                     atd1 = st.toggle('Atualizar os dados')
                     if atd1:
                         if allln1 == 0:
-                            ''
+                           numros = 0
+                           numros1 = 0
                         else:
                             numros = st.number_input("Navegue por suas O.S para atualizar-las",min_value=1,max_value=allln1,value=allln1,placeholder="Selecione")
                             numros1 = numros-1
