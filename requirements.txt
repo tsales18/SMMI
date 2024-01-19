@@ -8,7 +8,6 @@ pyodbc
 openpyxl
 reportlab
 PyPDF2
-streamlit_extras
 io
 tkinter
 qrcode
