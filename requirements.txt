@@ -8,6 +8,5 @@ pyodbc
 openpyxl
 reportlab
 PyPDF2==1.26.0
-tkinter
-qrcode
-cv2s
+qrcode==7.3
+cv2=4.5.1.48
