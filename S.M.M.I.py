@@ -676,7 +676,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                             st.checkbox("Estender", value=True, key="use_container_width1")
                             df = load_dataa()
                             st.dataframe(df, use_container_width=st.session_state.use_container_width1)
-                            numero_da_os = st.number_input("Selecione o numero da O.S que deseja DELETAR",min_value=allln1,max_value=allln1,value=int(preenchimento[0]),placeholder="Selecione")
+                            numero_da_os = st.number_input("Selecione o numero da O.S que deseja DELETAR",min_value=1,max_value=int(preenchimento[0]),value=int(preenchimento[0]),placeholder="Selecione")
                             dell = st.button('Excluir 🗑')
                             if dell:
                                 st.toast(f'Deletando O.S!')
