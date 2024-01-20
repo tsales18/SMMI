@@ -1197,7 +1197,7 @@ def hello(c,pmg):
             t11,t12 = 90,642
 
             texto = f'{pmg[1]}'
-            text = f'{pmg[4]}'
+            text = f'{pmg[5]}'
             textox = 'Grau de ocorrência :'
             textoxx = 'Especialidade :'
             textos = ''
@@ -1216,8 +1216,8 @@ def hello(c,pmg):
             t9,t10 = 500,210
             t11,t12 = 90,563
 
-            texto = f'{pmg[5]}'
-            text = f'{pmg[7]}'
+            texto = f'{pmg[6]}'
+            text = f'{pmg[8]}'
             textox = 'Ação :'
             textoxx = 'Data de finalização :'
             textos = ''
@@ -1235,8 +1235,8 @@ def hello(c,pmg):
             t9,t10 = 500,210
             t11,t12 = 90,493
 
-            texto = f'{pmg[6]}'
-            text = f'{pmg[8]}'
+            texto = f'{pmg[7]}'
+            text = f'{pmg[9]}'
             textox = 'Finalizada? :'
             textoxx = 'Horario de finalização :'
             textos = ''
@@ -1255,7 +1255,7 @@ def hello(c,pmg):
             t11,t12 = 430,642
 
             texto = f'{pmg[2]}'
-            text = f'{pmg[11]}'
+            text = f'{pmg[12]}'
             textox = 'Ocorrência :'
             textos = 'Bruno Kappaun'
             
@@ -1273,7 +1273,7 @@ def hello(c,pmg):
             t11,t12 = 430,563
 
             texto = f'N° 00{pmg[0]}'
-            text = f'{pmg[9]}'
+            text = f'{pmg[10]}'
             textox = 'Visualização do problema:'
             x1, y1 = 448, 728
             x2, y2 = 475, 728
@@ -1284,8 +1284,8 @@ def hello(c,pmg):
             t1,t2 = 430,705
             t3,t4 = 468,705
             t11,t12 = 430,493
-            texto =f'{pmg[12]}'
-            text = f'{pmg[10]}'
+            texto =f'{pmg[13]}'
+            text = f'{pmg[11]}'
             x1, y1 = 468, 703
             x2, y2 = 510, 703
             #r,r1 = 18,270  
@@ -1384,7 +1384,7 @@ def hello(c,pmg):
     x, y = 0,750
     c.drawInlineImage(img, x,y, width=600,height=100)
 
-    x, y = 25,240
+    x, y = 25,200
     if not pmes_leve.empty:
         cursor.execute(f'SELECT * FROM imagens WHERE id = {dt[0]}')
         if cursor.fetchall():
@@ -1392,7 +1392,7 @@ def hello(c,pmg):
             imagens = cursor.fetchall()
             oe = imagens[0][1]
             imagem = Image.open(BytesIO(oe))
-            c.drawInlineImage(imagem, x,y, width=400,height=100)
+            c.drawInlineImage(imagem, x,y, width=400,height=145)
     #x1,y1 = 50,400
     #c.drawInlineImage(img1, x1,y1, width=500,height=150)
 c = canvas.Canvas("./Data/hello.pdf")
