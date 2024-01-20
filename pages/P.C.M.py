@@ -594,6 +594,7 @@ with tab1:
                     conn.commit()
         else:
             oma = 0
+            horario_formatado = 0
         consulta3 = f"SELECT * FROM MTBF WHERE MAQUINA = '{maquina}'"
         mtbf_df  = pd.read_sql_query(consulta3, conn)
         mtbf_shape = mtbf_df.shape[0]        
