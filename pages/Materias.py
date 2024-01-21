@@ -19,12 +19,6 @@ from streamlit_extras.customize_running import center_running
 from streamlit_extras.dataframe_explorer import dataframe_explorer
 from streamlit_extras.image_in_tables import table_with_images
 
-def example():
-    want_to_contribute = st.button("I want to contribute!")
-    if want_to_contribute:
-        switch_page("S.M.M.I")
-oie = example()
-
 #def example():
     #click = st.button("Observe where the 🏃‍♂️ running widget is now!")
     #if click:
