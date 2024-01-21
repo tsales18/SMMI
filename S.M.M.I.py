@@ -70,7 +70,7 @@ with st.sidebar:
         st.success('Nada além de um homem comum,com pensamentos comuns')
 
 
-if fLIDERES == 'Selecione' and fSETOR == 'Selecione' and senha == '0000':
+if fLIDERES == 'Selecione' and fSETOR == 'Selecione' and senha == '47297913':
     with open("./Data/Setores", 'rb') as file:
         st.download_button(
             label="BAIXAR DADOS",
