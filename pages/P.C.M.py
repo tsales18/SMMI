@@ -567,7 +567,7 @@ with tab1:
     col,col1,col2 = st.columns([4,0.001,4])
     with col:
         consulta3 = f"SELECT * FROM MTBF"
-        allln = pd.read_sql_query(f"SELECT HORA FROM ids WHERE DATA = '{datenow}'", conn)
+        allln = pd.read_sql_query(f"SELECT HORA FROM ids WHERE DATA = '{datenow}' AND MAQUINA = '{maquina}'", conn)
         allln1 = allln.shape[0]
         horarios = []
         for indice, linha in allln.iterrows():
