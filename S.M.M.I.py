@@ -87,11 +87,11 @@ if fLIDERES == 'Selecione' and fSETOR == 'Selecione' and senha == '47297913':
         with col1:
             st.write('Dados da tabela de materiais:')
             st.download_button(
-                label="BAIXAR DADOS",
+                label="BAIXAR DADOS ",
                 key= "download_button ",
                 data= file,
-                file_name="Setores",
-                mime='application/octet-stream'
+                file_name="Setores ",
+                mime='application/octet-stream '
                 )
      
 if 'OS' not in st.session_state:
