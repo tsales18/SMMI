@@ -587,6 +587,9 @@ query = "SELECT * FROM TI WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'MECÂNICA'
 rd80 = pd.read_sql_query(query, conn)
 rd81 = rd80.shape[0]
 
+caminho_imagem = './Midia/empty.png'
+with open(caminho_imagem, 'rb') as arquivo_imagem:
+    bytes_imagem = arquivo_imagem.read()
 #ELÉTRICA
 if fLIDERES == 'Equipe de ELÉTRICA':
     if fSETOR == 'Elétrica':
@@ -685,9 +688,14 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                         for uploaded_file in uploaded_files:
                             bytes_data = uploaded_file.read()
                     if not atd1:   
-                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True)
-                        for uploaded_file in uploaded_files:
-                            bytes_data = uploaded_file.read()
+                        agree = container.checkbox('Selecione á caixa para enviar a imagem em outro momento:')
+                        if agree:
+                            uploaded_files = bytes_imagem
+                            bytes_data = bytes_imagem
+                        else:
+                             uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True)
+                             for uploaded_file in uploaded_files:
+                                 bytes_data = uploaded_file.read()
             
                 with neymar:
                     if atd1:
@@ -1323,9 +1331,14 @@ if fLIDERES == 'Equipe de MECÂNICA':
                         for uploaded_file in uploaded_files:
                             bytes_data = uploaded_file.read()
                     if not atd1:   
-                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True)
-                        for uploaded_file in uploaded_files:
-                            bytes_data = uploaded_file.read()
+                        agree = container.checkbox('Selecione á caixa para enviar a imagem em outro momento:')
+                        if agree:
+                            uploaded_files = bytes_imagem
+                            bytes_data = bytes_imagem
+                        else:
+                             uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True)
+                             for uploaded_file in uploaded_files:
+                                 bytes_data = uploaded_file.read()
 
                 with neymar:
                     if atd1:
