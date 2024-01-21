@@ -71,14 +71,28 @@ with st.sidebar:
 
 
 if fLIDERES == 'Selecione' and fSETOR == 'Selecione' and senha == '47297913':
+col,col1,col2,col3 = st.columns([1,1,1,1])
     with open("./Data/Setores", 'rb') as file:
-        st.download_button(
-            label="BAIXAR DADOS",
-            key= "download_button",
-            data= file,
-            file_name="Setores",
-            mime='application/octet-stream'
-            )
+        with col:
+            st.write('Dados de O.S de todos setores:')
+            st.download_button(
+                label="BAIXAR DADOS",
+                key= "download_button",
+                data= file,
+                file_name="Setores",
+                mime='application/octet-stream'
+                )
+    
+    with open("./Data/Materiais", 'rb') as file:
+        with col1:
+            st.write('Dados da tabela de materiais:')
+            st.download_button(
+                label="BAIXAR DADOS",
+                key= "download_button ",
+                data= file,
+                file_name="Setores",
+                mime='application/octet-stream'
+                )
      
 if 'OS' not in st.session_state:
     st.session_state.OS = 0
