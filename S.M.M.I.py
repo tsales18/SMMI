@@ -71,7 +71,7 @@ with st.sidebar:
 
 
 if fLIDERES == 'Selecione' and fSETOR == 'Selecione' and senha == '47297913':
-col,col1,col2,col3 = st.columns([1,1,1,1])
+    col,col1,col2,col3 = st.columns([1,1,1,1])
     with open("./Data/Setores", 'rb') as file:
         with col:
             st.write('Dados de O.S de todos setores:')
