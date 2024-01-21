@@ -68,6 +68,17 @@ with st.sidebar:
 
     with st.expander('#$#$'):
         st.success('Nada além de um homem comum,com pensamentos comuns')
+
+
+if fLIDERES == 'Selecione' and fSETOR == 'Selecione' and senha == '0000':
+    with open("./Data/Setores", 'rb') as file:
+        st.download_button(
+            label="BAIXAR DADOS",
+            key= "download_button",
+            data= file,
+            file_name="Setores",
+            mime='application/octet-stream'
+            )
      
 if 'OS' not in st.session_state:
     st.session_state.OS = 0
@@ -3278,20 +3289,4 @@ if fLIDERES == 'Filipe Leite':
                         st.checkbox("Estender", value=True, key= "use_container_width3")
                         df = load_data()
                         st.dataframe(df, use_container_width=st.session_state.use_container_width3)
-
-
-if fLIDERES == 'Selecione' and fSETOR == 'Selecione' and senha == '0000':
-    with open("./Data/Setores", 'rb') as file:
-        st.download_button(
-            label="BAIXAR DADOS",
-            key= "download_button",
-            data= file,
-            file_name="Setores",
-            mime='application/octet-stream'
-            )
-
-
-
-
-
 
