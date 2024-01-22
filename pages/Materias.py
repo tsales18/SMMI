@@ -152,10 +152,10 @@ with tab6:
         with col2:
 
             if  atd:
-                Quantidade_update = st.number_input("Quantidade",min_value=0,max_value=5,placeholder="Atualize o valor")
+                Quantidade_update = st.number_input("Quantidade",min_value=0,max_value=1000,placeholder="Atualize o valor")
 
             else:
-                Quantidade = st.number_input("Quantidade",min_value=0,max_value=5,value=0,placeholder="Insira o valor")
+                Quantidade = st.number_input("Quantidade",min_value=0,max_value=1000,value=0,placeholder="Insira o valor")
 
             if  atd:
                 Unidade_update = st.selectbox('Unidade',('UN','CM','MT','KG','G','L','M2','M3'),placeholder='Atualize a Unidade')
