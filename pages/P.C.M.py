@@ -105,7 +105,7 @@ monthnumbernow = datetime.now().month
 
 novo_fuso_horario = pytz.timezone('America/Sao_Paulo')
 
-hora_atual = datetime.datetime.now()
+hora_atual = datetime.now().replace(microsecond=0).time()
 
 hora_atual_no_novo_fuso = hora_atual.astimezone(novo_fuso_horario)
 
