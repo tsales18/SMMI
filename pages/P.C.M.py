@@ -103,12 +103,19 @@ datenow = datetime.now().date()
 monthnow = datetime.now().strftime('%B')
 monthnumbernow = datetime.now().month
 
+from datetime import datetime
+import pytz
+
+# Defina o fuso horário desejado
 novo_fuso_horario = pytz.timezone('America/Sao_Paulo')
 
-hora_atual = datetime.datetime.now()
+# Obtenha a hora atual com o fuso horário padrão
+hora_atual = datetime.now()
 
+# Converta a hora atual para o novo fuso horário
 hora_atual_no_novo_fuso = hora_atual.astimezone(novo_fuso_horario)
 
+# Agora, hora_atual_no_novo_fuso contém a hora local em 'America/Sao_Paulo'
 hora_atual_no_novo_fuso
 
 senha = ()
