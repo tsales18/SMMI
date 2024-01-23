@@ -107,7 +107,6 @@ horas = data_hora_obj.strftime("%H")
 minutos = data_hora_obj.strftime("%M")
 segundos = data_hora_obj.strftime("%S")
 timenow = (f"{horas}:{minutos}:{segundos}")
-timenow
 
 #timenow = datetime.now().replace(microsecond=0).time()
 datenow = datetime.now().date()
