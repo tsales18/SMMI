@@ -108,7 +108,6 @@ import pytz
 novo_fuso_horario = pytz.timezone('America/Sao_Paulo')
 hora_atual = datetime.now().replace(microsecond=0)
 hora_atual_no_novo_fuso = hora_atual.astimezone(novo_fuso_horario)
-hora_atual_no_novo_fuso
 
 senha = ()
 with st.sidebar:
