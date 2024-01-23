@@ -101,17 +101,15 @@ if 'bancos'=='bancos':
 novo_fuso_horario = pytz.timezone('America/Sao_Paulo')
 hora_atual = datetime.now().replace(microsecond=0)
 hora_atual_no_novo_fuso = hora_atual.astimezone(novo_fuso_horario)
-hora_atual_no_novo_fuso
 data_hora_com_fuso = str(hora_atual_no_novo_fuso)
 data_hora_obj = datetime.strptime(data_hora_com_fuso, "%Y-%m-%d %H:%M:%S%z")
 horas = data_hora_obj.strftime("%H")
 minutos = data_hora_obj.strftime("%M")
 segundos = data_hora_obj.strftime("%S")
+timenow = (f"{horas}:{minutos}:{segundos}")
+timenow
 
-horaa = (f"{horas}:{minutos}:{segundos}")
-horaa
-
-timenow = datetime.now().replace(microsecond=0).time()
+#timenow = datetime.now().replace(microsecond=0).time()
 datenow = datetime.now().date()
 monthnow = datetime.now().strftime('%B')
 monthnumbernow = datetime.now().month
