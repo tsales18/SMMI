@@ -7,6 +7,7 @@ import time
 import calendar
 from PIL import Image
 from datetime import datetime
+import pytz
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -101,6 +102,18 @@ timenow = datetime.now().replace(microsecond=0).time()
 datenow = datetime.now().date()
 monthnow = datetime.now().strftime('%B')
 monthnumbernow = datetime.now().month
+
+novo_fuso_horario = pytz.timezone('America/Sao_Paulo')
+
+hora_atual = datetime.datetime.now()
+
+hora_atual_no_novo_fuso = hora_atual.astimezone(novo_fuso_horario)
+
+hora_atual_no_novo_fuso
+
+
+
+
 
 senha = ()
 with st.sidebar:
