@@ -138,8 +138,8 @@ with tab6:
             if atd:
                 ids_update  = st.number_input("ID",min_value=0,max_value=10000,value=0,placeholder="Insira um valor")
             else:
-                ids_update = st.number_input("ID",min_value=numero2,max_value=numero2,value=numero2,placeholder="Atualize o valor")
-               
+                ids = st.number_input("ID",min_value=numero2,max_value=numero2,value=numero2,placeholder="Atualize o valor")
+               ids_update = 0
 
             consulta1 = "SELECT * FROM Materiais"
             ros_oc = pd.read_sql_query(consulta1, conn12)
