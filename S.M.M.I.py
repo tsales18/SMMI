@@ -660,7 +660,7 @@ query = "SELECT * FROM TI WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'MECÂNICA'
 rd80 = pd.read_sql_query(query, conn)
 rd81 = rd80.shape[0]
 
-caminho_imagem = './Mídia/empty.png'
+caminho_imagem = './Midia/empty.jpeg'
 with open(caminho_imagem, 'rb') as arquivo_imagem:
     bytes_imagem = arquivo_imagem.read()
 #ELÉTRICA
