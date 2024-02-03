@@ -39,7 +39,7 @@ st.set_page_config(
     page_title=('MANUTENÇÃO SSM SOLAR DO BRASIL'),
     page_icon='🦾',
     layout='wide',
-    initial_sidebar_state='collapsed',
+    initial_sidebar_state='expanded',
     menu_items={""
         'Get Help': 'http://www.meusite.com.br',
         'Report a bug': "http://www.meuoutrosite.com.br",
