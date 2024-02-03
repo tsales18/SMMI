@@ -84,9 +84,6 @@ with st.sidebar:
     with st.expander('#$#$'):
         st.success('Nada além de um homem comum,com pensamentos comuns!')
 
-
-
-
 if fLIDERES == 'Selecione!' and fSETOR == 'Selecione!' and senha == '47297913':
     col,col1,col2,col3 = st.columns([1,1,1,1])
     with open("./Data/Setores", 'rb') as file:
