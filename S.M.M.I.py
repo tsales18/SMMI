@@ -6,6 +6,11 @@ import datetime as datetime
 import webbrowser
 import sqlite3
 import openpyxl
+from reportlab.pdfgen import canvas
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfgen import canvas
+import PyPDF2
 import altair as alt
 from datetime import datetime
 import pytz
@@ -31,10 +36,9 @@ monthnumbernow = datetime.now().month
 # CONFIGURAÇÃO DA PÁGINA
 st.set_page_config(
     page_title=('MANUTENÇÃO SSM SOLAR DO BRASIL'),
-    page_icon='S.M.M.I',
+    page_icon='🦾',
     layout='wide',
-    
-    initial_sidebar_state='expanded',
+    initial_sidebar_state='collapsed',
     menu_items={""
         'Get Help': 'http://www.meusite.com.br',
         'Report a bug': "http://www.meuoutrosite.com.br",
@@ -60,28 +64,29 @@ with st.sidebar:
     with st.form('Logon'):
         st.image(img,width=100)
         fLIDERES = st.selectbox(
-        "LIDER:",
+        "Lideres:",
         options=df['LIDERES'].unique()
         )
         fSETOR = st.selectbox(
-        "SETOR:",
+        "Setores:",
         options=df['SETOR'].unique()
         )
         if senha == '1409':
            st.write('ok')
         else:
-            senha = st.text_input('Ensira sua senha',type="password")
+            senha = st.text_input('Ensira sua senha:',type="password")
         st.form_submit_button('Entrar')
         
     with st.spinner("Carregando..."):
-                st.success("Pronto!")
-    st.write("Bem Vindo")
+        st.write("Bem Vindo!")
 
     with st.expander('#$#$'):
-        st.success('Nada além de um homem comum,com pensamentos comuns')
+        st.success('Nada além de um homem comum,com pensamentos comuns!')
 
 
-if fLIDERES == 'Selecione' and fSETOR == 'Selecione' and senha == '47297913':
+
+
+if fLIDERES == 'Selecione!' and fSETOR == 'Selecione!' and senha == '47297913':
     col,col1,col2,col3 = st.columns([1,1,1,1])
     with open("./Data/Setores", 'rb') as file:
         with col:
@@ -286,7 +291,6 @@ if 'BANCOS' == 'BANCOS':
         MÊS,
         FOREIGN KEY (OS) REFERENCES ids (ID_UNIC)   
        
-                   
     )
 ''')
     cursor.execute('''
@@ -315,7 +319,8 @@ if 'BANCOS' == 'BANCOS':
         ID_UNIC INTEGER PRIMARY KEY,
         HORA TIME,
         HORAF TIME,
-        DATA DATE
+        DATA DATE,
+        MAQUINA
                 
     )
 ''')
@@ -324,13 +329,36 @@ if 'BANCOS' == 'BANCOS':
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS imagens (
         id INTEGER PRIMARY KEY,
-        imagem BLOB,
+        imagem_abertura BLOB,
+        imagem_finalizada BLOB,
         mes TEXT,
         FOREIGN KEY (id) REFERENCES ids (ID_UNIC)
         
     )
 ''')
     
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS corretiva (
+        OS INTEGER PRIMARY KEY,
+        SOLICITANTE TEXT,
+        SETOR TEXT,
+        OCORRENCIA TEXT,
+        PARADA TEXT,
+        GRAU TEXT,
+        DATA DATE,
+        HORA TIME,
+        AÇÃO TEXT,
+        FINALIZADA TEXT,
+        DATAF,
+        HORAF,
+        ESPECIALIDADE,
+        Local,
+        MÊS,           
+        FOREIGN KEY (OS) REFERENCES ids (ID_UNIC)
+        
+    )
+''')
+
     conn14 = sqlite3.connect('./Data/Meses')
     cursor14 = conn14.cursor()
 
@@ -356,7 +384,6 @@ consulta1 = "SELECT * FROM ELETRICA"
 allinhas = pd.read_sql_query(consulta1, conn)
 
 #O.S ABERTAS  NÃO FINALIZADAS
-
 consulta2 = "SELECT * FROM ELETRICA WHERE FINALIZADA = 'Não'"
 whrlinhas1 = pd.read_sql_query(consulta2, conn)
 whrlinhas2 = whrlinhas1.shape[0] 
@@ -572,6 +599,40 @@ if 'PCM' == 'PCM':
    pcm3 = pd.read_sql_query(consulta3, conn)
    pcm_id3 = pcm3.shape[0]
 
+if 'strs' == 'strs':
+    help_solicitante = 'Nesta caixa de seleção: você precisa selecionar o responsavel por setor que fez a solicitação de O.S '
+    help_ocorrência = 'Nesta caixa de seleção: você precisa inserir a ocorrênica que irá realizar '
+    help_setor = 'Nesta caixa de seleção: você precisa selecionar o setor do lider que fez a solicitação de 0.S '
+    help_nivel_ocorrencia = 'Nesta caixa de seleção: você precida selecionar o grau de necessidade da ocorrência '
+    helpe_acao = 'Nesta caixa de seleção: você precisa selecionar o tipo de açaõ da ocorrência solicitada'
+    help_parada = 'Nesta caixa de seleção: você precisa informar se ouve uma interrupção no funcionamento do equipamento'
+    help_especialidade = 'Nesta caixa de seleção: você precisa selecionar o tipo de atividade que irá ser aplicada com base na ocorrência'
+    help_local = 'Nesta caixa de seleção: você preicsa selecionar o equipamento/local que irá realizar a manutenção'
+    help_imagem = 'Nesta caixa de seleção: você precisa anexar uma imagem referente a ocorrência'
+    help_imagem_fnlzd = 'Nesta caixa de seleção: você precisa anexar uma imagem após finalizar a ocorrencia'
+    help_manutentor = 'Nesta caixa de seleção: você precisa selecionar o tipo de manutenção referente a sua ocorrência'
+    help_numero_os = 'Nesta caixa de seleção: você precisa selecionar o numero da O.S que deseja ABRIR ou FINALIZAR'
+    help_finalizar_os = 'Nesta caixa de seleção: você precisa selecionar entre SIM ou Não,SIM,para O.S finalizada,Não,para O.S aberta'
+    solicitante_list = ['Filipe leite','Jameson Sales','Maurilio Sales/Alex Santos','Bruno Kappaun','Adriely Lemos','Gilson Freitas','Willian Oliveira','Cesar Augusto']
+    setor_list = ['Tecnologia da Informação','Comercial','Administrativo','Ferramentaria','Serralharia','Utilidades','Estampo,embalagem,corte e furo','Extrusão']
+    ocorrencia_list = ['Emergência','Muito urgênte','Pouco urgênte','Urgênte']
+    acao_list = ['Corretiva','Preventiva','Preditiva','Confecção','Montagem']
+    especialidade_list = ['Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem']
+    extrusão_list = ['Prensa - P8','Puller - 01','Puller - 02','Quench','Esticadeira - HEAD','Esticadeira - TAIL','Forno de Tarugo','Serra Fria','Forno de Envelhecimento','T1 - Belts','T2 - Belts','T3 - Belts','T4 - Belts']
+    estampo_etc_list = ['Prensa Excentrica - 01','Prensa Excentrica - 02','Serra Automatica','Serra Manual','Serra fita - FRANHO','Rosqueadeira - MACHO 01','Rosqueadeira - COSSINETE 01','Rosqueadeira - COSSINETE 02','Embaladora Automatica','Seladora manual - KT001','Seladora manual - KT002']
+    utilidades_list = ['Elétrica Predial','Casa de Bombas','Caixa D.Agua','Subestação - 01','Subestação - 02','Portão de automoveis','Portão de pedestres','Interfone']
+    all = ['Elétrica Predial','Artífice','Casa de Bombas','Caixa D.Agua','Portão de automoveis','Portão de pedestres','Interfone']
+    serralharia_list = ['Elétrica Predial','Artífice','Rosqueadeira - COSSINETE 01','Rosqueadeira - COSSINETE 02','Serra fita - FRANHO']
+    ferramentaria_list = ['Elétrica Predial','Artífice','Maquina de jatear','Talha Elétrica','Recuperação de ferramentas']
+    geral_list = ['Prensa - P8 - Puller - 1 - Puller - 2 - Esticadeira - HEAD - Esticadeira - TAIL - Forno de Tarugo - Serra Fria - Forno de Envelhecimento - Prensa Excentrica - 1 - Prensa Excentrica - 2 - Serra Automatica - Serra Manual - Serra fita - FRANHO - Rosqueadeira - MACHO 01 - Rosqueadeira - COSSINETE 01 - Rosqueadeira - COSSINETE 2 - Maquina de jatear - Talha Elétrica - Embaladora Automatica - Elétrica Predial - Artífice - Recuperação de ferramentas - Casa de Bombas - Caixa D.Agua - Subestação - 1 - Subestação - 2 -  Seladora manual - KT001 - Seladora manual - KT002 - Portão de automoveis - Portão de pedestres - Interfone']
+    tabs_list = ["📝 Cadastro de O.S", " 🔚 Finalizar O.S","📖 O.S Em aberto","✅ O.S Finalizadas","👁 Geral"]
+    tabs_list_sol = ["📝 Cadastro de O.S","📖 O.S Em aberto ","✅ O.S Finalizadas","👁 Geral"]
+    title_list  = 'Status e informações de :blue[O.S]'
+    header_list = '📝 Cadastro de :blue[O.S]'
+    aviso_list = '👁 :blue[Geral]'
+    abertas_list = '📖 O.S em aberto'
+    finalizadas_list = "✅ O.S Finalizadas"
+
 if 'OI' == 'OI':
    consulta3 = "SELECT * FROM ids"
    ids = pd.read_sql_query(consulta3, conn)
@@ -598,7 +659,7 @@ query = "SELECT * FROM TI WHERE FINALIZADA = 'Não' AND MANUTENTOR = 'MECÂNICA'
 rd80 = pd.read_sql_query(query, conn)
 rd81 = rd80.shape[0]
 
-caminho_imagem = './Midia/empty.jpeg'
+caminho_imagem = './Midia/empty.png'
 with open(caminho_imagem, 'rb') as arquivo_imagem:
     bytes_imagem = arquivo_imagem.read()
 #ELÉTRICA
@@ -612,12 +673,10 @@ if fLIDERES == 'Equipe de ELÉTRICA':
             #image = Image.open('./Midia/ssmm.jpg')
             col1,col2 = st.columns([10,1])
             with col1:
-            
-                st.title('Status e informações de O.S')
-            tab6, tab7,tab8,tab9,tab10= st.tabs(["| Cadastro |", "| Finalizar |","| O.S Em aberto |","| O.S Finalizadas |","| Geral |"])
+                st.title(title_list)
+            tab6, tab7,tab8,tab9,tab10= st.tabs(tabs_list)
             with tab6:
-                st.header("Cadastro de ocorrência")
-        
+                st.header(header_list,divider='blue')
                 colibrim,neymar= st.columns([5,5])  
                 with colibrim:
                     atd1 = st.toggle('Atualizar os dados')
@@ -626,7 +685,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                            numros = 0
                            numros1 = 0
                         else:
-                            numros = st.number_input("Navegue por suas O.S para atualizar-las",min_value=1,max_value=allln1,value=allln1,placeholder="Selecione")
+                            numros = st.number_input("Navegue por suas O.S para atualizar-las",min_value=1,max_value=allln1,value=allln1,placeholder="Selecione!")
                             numros1 = numros-1
                             consulta1 = "SELECT * FROM ELETRICA"
                         ros_oc = pd.read_sql_query(consulta1, conn)
@@ -635,67 +694,67 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                             preenchimento = ros_oc.loc[numros1]
                             preenchimento = preenchimento.tolist()
                         else:
-                            preenchimento = 'NONE'
+                            [None,None,None,None,None,None,None,None,None,None,None,None,None,None]
             
                     container = st.container(border=True)
                     if not atd1:
-                        Rsolicitante = container.selectbox('Solicitante:', ('Filipe leite','Jameson Sales','Maurilio Sales','Bruno Kappaun','Adriely Lemos','Gilson Freitas','Willian Oliveira','Cesar Augusto'),index=None,placeholder='Selecione')
+                        Rsolicitante = container.selectbox('Solicitante:', (solicitante_list),index=None,placeholder='Selecione!',help=help_solicitante)
                     if atd1:
-                        RUsolicitante = container.selectbox('Atualize o Solicitante:', ('Filipe leite','Jameson Sales','Maurilio Sales','Bruno Kappaun','Adriely Lemos','Gilson Freitas','Willian Oliveira','Cesar Augusto'),index=None,placeholder='Atualize')
+                        RUsolicitante = container.selectbox('Atualize o Solicitante:', (solicitante_list),index=None,placeholder='Atualize!',help=help_solicitante)
                         
                     if not atd1:
-                        Rstatus = container.text_area('Atualize o tipo de Ocorrência:',value=None,placeholder='Insira sua ocôrrencia')
+                        Rstatus = container.text_area('Insira a acorrência:',value=None,placeholder='Insira sua ocôrrencia!',help=help_ocorrência)
                     if atd1:
-                        RUstatus = container.text_area('Tipo de Ocorrência:',value=preenchimento[3],placeholder='Insira sua ocôrrencia')
+                        RUstatus = container.text_area('Atualize a ocorrência:',value=preenchimento[3],placeholder='Insira sua ocôrrencia!',help=help_ocorrência)
                     
                     if not atd1:
-                        Rsetor = container.selectbox('Setor solicitante:', ('Tecnologia da Informação','Comercial','Administrativo','Expedição','Ferramentaria','Serralharia','Utilidades','Estampo,corte e furo','Extrusão'),index=None,placeholder='Selecione')
+                        Rsetor = container.selectbox('Setor solicitante:', (setor_list),index=None,placeholder='Selecione!',help=help_setor)
                         RUsetor = ''
                     if atd1:
-                        RUsetor = container.selectbox('Aualize o Setor:', ('Tecnologia da Informação','Comercial','Administrativo','Expedição','Ferramentaria','Serralharia','Utilidades','Estampo,corte e furo','Extrusão'),index=None,placeholder='Atualize')
+                        RUsetor = container.selectbox('Aualize o Setor:', (setor_list),index=None,placeholder='Atualize!',help=help_setor)
                         Rsetor = ''
                     
                     if not atd1:
-                        Rniveldaocorrencia = container.selectbox('Nivel da ocorrência:', ('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None,placeholder='Selecione')
+                        Rniveldaocorrencia = container.selectbox('Nivel da ocorrência:', (ocorrencia_list),index=None,placeholder='Selecione!',help=help_nivel_ocorrencia)
                     if atd1:
-                        RUniveldaocorrencia = container.selectbox('Atualize o Nivel da ocorrência:',('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None, placeholder='Atualize')
+                        RUniveldaocorrencia = container.selectbox('Atualize o Nivel da ocorrência:',(ocorrencia_list),index=None, placeholder='Atualize!',help=help_nivel_ocorrencia)
 
                     if not atd1:
-                        Racao = container.selectbox('Tipo da ação:', ('Corretiva','Preventiva','Preditiva','Confecção'),index=None,placeholder='Selecione')
+                        Racao = container.selectbox('Tipo da ação:', (acao_list),index=None,placeholder='Selecione!',help=helpe_acao)
                     if atd1:
-                        RUacao = container.selectbox('Atualize o Tipo da ação:', ('Corretiva','Preventiva','Preditiva','Confecção'),index=None,placeholder='Atualize')
+                        RUacao = container.selectbox('Atualize o Tipo da ação:', (acao_list),index=None,placeholder='Atualize!',help=helpe_acao)
 
                     if not atd1:
-                        parada = container.selectbox('Gerou parada de maquina?:', ('Sim','Não'),index=None,placeholder='Selecione')
+                        parada = container.selectbox('Gerou interrupção no funcionamento?:', ('Sim','Não'),index=None,placeholder='Selecione!',help=help_parada)
                     if atd1:
-                        parada = container.selectbox('Gerou parada de maquina?: ', ('Sim','Não'),index=None,placeholder='Selecione')
+                        parada = container.selectbox('Gerou interrupção no funcionamento?: ', ('Sim','Não'),index=None,placeholder='Selecione!',help=help_parada)
                     
                     if not atd1: 
-                        especialidades = container.selectbox('Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Selecione')
+                        especialidades = container.selectbox('Especifique o tipo de ocorrência:', (especialidade_list),index=None,placeholder='Selecione!',help=help_especialidade)
                     
                     if atd1:
-                        especialidades = container.selectbox('Atualize á Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Atualize')
+                        especialidades = container.selectbox('Atualize o tipo de ocorrência:', (especialidade_list),index=None,placeholder='Atualize!',help=help_especialidade)
                     
                     if Rsetor == 'Extrusão' or RUsetor == 'Extrusão':
-                        Local = container.selectbox('Local:',('Prensa - P8','Puller - 01','Puller - 02','Quench','Esticadeira - HEAD','Esticadeira - TAIL','Forno de Tarugo','Serra Fria','Forno de Envelhecimento','T1 - Belts','T2 - Belts','T3 - Belts','T4 - Belts'),index=None,placeholder= 'Selecione')
+                        Local = container.selectbox('Local:',(extrusão_list),index=None,placeholder= 'Selecione!',help=help_local)
                         
-                    if Rsetor == 'Estampo,corte e furo' or RUsetor == 'Estampo,corte e furo':
-                        Local = container.selectbox('Local:',('Prensa Excentrica - 01','Prensa Excentrica - 02','Serra Automatica','Serra Manual','Serra fita - FRANHO','Rosqueadeira - MACHO 01','Rosqueadeira - COSSINETE 01','Rosqueadeira - COSSINETE 02','Embaladora Automatica','Seladora manual - KT001','Seladora manual - KT002'),index=None,placeholder= 'Selecione')
+                    if Rsetor == 'Estampo,embalagem,corte e furo' or RUsetor == 'Estampo,embalagem,corte e furo':
+                        Local = container.selectbox('Local:',(estampo_etc_list),index=None,placeholder= 'Selecione!',help=help_local)
                         
                     if Rsetor == 'Utilidades' or RUsetor == 'Utilidades':
-                        Local = container.selectbox('Local:',('Elétrica Predial','Casa de Bombas','Caixa D.Agua','Subestação - 01','Subestação - 02','Portão de automoveis','Portão de pedestres','Interfone'),index=None,placeholder= 'Selecione')
+                        Local = container.selectbox('Local:',(utilidades_list),index=None,placeholder= 'Selecione!',help=help_local)
                             
-                    if Rsetor != 'Extrusão' and Rsetor != 'Estampo,corte e furo' and Rsetor != 'Utilidades' and RUsetor != 'Extrusão' and RUsetor != 'Estampo,corte e furo' and RUsetor != 'Utilidades' and Rsetor != 'Serralharia' and RUsetor != 'Serralharia' and Rsetor != 'Ferramentaria' and RUsetor != 'Ferramentaria'  and Rsetor != 'Geral' and RUsetor != 'Geral':
-                        Local = container.selectbox('Local:',('Elétrica Predial','Artífice','Casa de Bombas','Caixa D.Agua','Subestação - 01','Subestação - 02','Portão de automoveis','Portão de pedestres','Interfone'),index=None,placeholder= 'Selecione')
+                    if Rsetor != 'Extrusão' and Rsetor != 'Estampo,embalagem,corte e furo' and Rsetor != 'Utilidades' and RUsetor != 'Extrusão' and RUsetor != 'Estampo,embalagem,corte e furo' and RUsetor != 'Utilidades' and Rsetor != 'Serralharia' and RUsetor != 'Serralharia' and Rsetor != 'Ferramentaria' and RUsetor != 'Ferramentaria'  and Rsetor != 'Geral' and RUsetor != 'Geral':
+                        Local = container.selectbox('Local:',(all),index=None,placeholder= 'Selecione!',help=help_local)
                     elif Rsetor == 'Serralharia' or RUsetor == 'Serralharia':
-                        Local = container.selectbox('Local:',('Elétrica Predial','Artífice','Rosqueadeira - COSSINETE 01','Rosqueadeira - COSSINETE 02','Serra fita - FRANHO'),index=None,placeholder= 'Selecione')
+                        Local = container.selectbox('Local:',(serralharia_list),index=None,placeholder= 'Selecione!',help=help_local)
                     elif Rsetor == 'Ferramentaria' or RUsetor == 'Ferramentaria':
-                        Local = container.selectbox('Local:',('Elétrica Predial','Artífice','Maquina de jatear','Talha Elétrica','Recuperação de ferramentas'),index=None,placeholder= 'Selecione')
+                        Local = container.selectbox('Local:',(ferramentaria_list),index=None,placeholder= 'Selecione!',help=help_local)
                     elif Rsetor == 'Geral' or RUsetor == 'Geral':
-                        Local = container.selectbox('Local:',('Prensa - P8 - Puller - 1 - Puller - 2 - Esticadeira - HEAD - Esticadeira - TAIL - Forno de Tarugo - Serra Fria - Forno de Envelhecimento - Prensa Excentrica - 1 - Prensa Excentrica - 2 - Serra Automatica - Serra Manual - Serra fita - FRANHO - Rosqueadeira - MACHO 01 - Rosqueadeira - COSSINETE 01 - Rosqueadeira - COSSINETE 2 - Maquina de jatear - Talha Elétrica - Embaladora Automatica - Elétrica Predial - Artífice - Recuperação de ferramentas - Casa de Bombas - Caixa D.Agua - Subestação - 1 - Subestação - 2 -  Seladora manual - KT001 - Seladora manual - KT002 - Portão de automoveis - Portão de pedestres - Interfone',), placeholder='Selecione')
+                        Local = container.selectbox('Local:',(geral_list), placeholder='Selecione!',help=help_local)
     
                     if atd1:
-                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True)
+                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True,help=help_imagem)
                         for uploaded_file in uploaded_files:
                             bytes_data = uploaded_file.read()
                     if not atd1:   
@@ -704,10 +763,10 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                             uploaded_files = bytes_imagem
                             bytes_data = bytes_imagem
                         else:
-                             uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True)
+                             uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True,help=help_imagem)
                              for uploaded_file in uploaded_files:
                                  bytes_data = uploaded_file.read()
-            
+        
                 with neymar:
                     if atd1:
                         st.metric(label="O.S Existentes", value= allln1)
@@ -720,7 +779,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                             st.checkbox("Estender", value=True, key="use_container_width1")
                             df = load_dataa()
                             st.dataframe(df, use_container_width=st.session_state.use_container_width1)
-                            numero_da_os = st.number_input("Selecione o numero da O.S que deseja DELETAR",min_value=1,max_value=int(preenchimento[0]),value=int(preenchimento[0]),placeholder="Selecione")
+                            numero_da_os = st.number_input("Selecione o numero da O.S que deseja DELETAR",min_value=1,max_value=int(preenchimento[0]),value=int(preenchimento[0]),placeholder="Selecione!")
                             dell = st.button('Excluir 🗑')
                             if dell:
                                 st.toast(f'Deletando O.S!')
@@ -730,10 +789,9 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                                 conn.commit()
 
                 if fLIDERES == 'Equipe de ELÉTRICA':
-
                     if fSETOR == 'Elétrica':
                         if senha == '1409':
-                            if atd1: 
+                            if atd1:
                                 atl = st.button('Atualize ↻')
                                 if atl:
                                     st.balloons()
@@ -764,26 +822,29 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                                         cursor.execute('PRAGMA foreign_keys = ON;')
                                         cursor.execute("INSERT INTO ids (ID_UNIC,HORA,DATA) VALUES (?,?,?)", (ids_shape_elétrica,str(timenow),datenow))
                                         cursor.execute("INSERT INTO ELETRICA (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF,ESPECIALIDADE,LOCAL,MÊS,PARADA) VALUES (?,?,?,?, ?, ?, ?, ?, ?,?,?,?,?,?,?)", (ids_shape_elétrica , Rsolicitante, Rsetor,Rstatus,Rniveldaocorrencia,datenow,str(timenow),Racao,'Não',None,None,especialidades,Local,monthnow,parada))
-                                        cursor.execute("INSERT INTO imagens (id,imagem,mes) VALUES (?,?,?)", (ids_shape_elétrica,bytes_data,monthnow))
+                                        cursor.execute("INSERT INTO imagens (id,imagem_abertura,mes) VALUES (?,?,?)", (ids_shape_elétrica,bytes_data,monthnow))
                                         conn.commit()
-                                                               
+                                              
             with tab7:
-                st.header('Finalizar O.S ✔')
+                st.header('Finalizar O.S ✔',divider='blue')
                 jefferson,lourdes=st.columns(2)
                 with jefferson:
                     containerx = st.container(border=True)
-                    setorescolhido = containerx.selectbox('Setor', ('PCM','Tecnologia da Informação','Comercial','Administrativo','Expedição','Produção','Ferramentaria','Serralharia','Elétrica'),index=None,placeholder='Selecione')
-                    fnlz2 = containerx.number_input("Selecione o numero da OS que deseja Finalizar",min_value=1,max_value=1000,value=1,placeholder="Selecione")
+                    setorescolhido = containerx.selectbox('Setor', ('PCM','Tecnologia da Informação','Comercial','Administrativo','Expedição','Produção','Ferramentaria','Serralharia','Elétrica'),index=None,placeholder='Selecione!',help=help_solicitante)
+                    fnlz2 = containerx.number_input("Selecione o numero da O.S que deseja Finalizar",min_value=1,max_value=1000,value=1,placeholder="Selecione!",help=help_numero_os)
                     fnlz3 = fnlz2-1
-                    finalizar = containerx.selectbox('O.S finalizada?', ('Sim','Não'),index=None,placeholder='Selecione')
+                    finalizar = containerx.selectbox('O.S finalizada?', ('Sim','Não'),index=None,placeholder='Selecione!',help=help_finalizar_os)
+                    imagem_finalzida = containerx.file_uploader("Envie uma imagem da ocorrência finalizada:", accept_multiple_files=True)
+                    for uploaded_file in imagem_finalzida:
+                        imagem_finalzida_bytes = uploaded_file.read()
                     #datainput = containerx.date_input("Data", value=None)
                     #containerx.write(datainput)
                     #timeinput = containerx.time_input('HORA', value=None)
                     #containerx.write(timeinput)
-                   
+    
                 if fLIDERES == 'Equipe de ELÉTRICA':
                     if fSETOR == 'Elétrica':
-                        if senha == '1409':
+                        if imagem_finalzida:
                             if setorescolhido == 'Ferramentaria':    
                                 fnl=st.button("Finalizar O.S ✔")
                                 if fnl:
@@ -791,6 +852,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                                     time.sleep(0.5)
                                     st.toast(f'O.S [{fnlz2}] Finalizada!')
                                     cursor.execute("UPDATE Ferramentaria SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datenow,str(timenow),fnlz2))
+                                    cursor.execute("UPDATE imagens SET imagem_finalizada = ? WHERE id = ?",(imagem_finalzida_bytes,fnlz2))
                                     conn.commit()
 
                             if setorescolhido == 'Elétrica':    
@@ -800,6 +862,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                                     time.sleep(0.5)
                                     st.toast(f'O.S [{fnlz2}] Finalizada!')
                                     cursor.execute("UPDATE ELETRICA SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datenow,str(timenow),fnlz2))
+                                    cursor.execute("UPDATE imagens SET imagem_finalizada = ? WHERE id = ?",(imagem_finalzida_bytes,fnlz2))
                                     conn.commit() 
 
                             if setorescolhido == 'Produção':    
@@ -809,6 +872,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                                     time.sleep(0.5)
                                     st.toast(f'O.S [{fnlz2}] Finalizada!')
                                     cursor.execute("UPDATE PRODUCAO SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datenow,str(timenow),fnlz2))
+                                    cursor.execute("UPDATE imagens SET imagem_finalizada = ? WHERE id = ?",(imagem_finalzida_bytes,fnlz2))
                                     conn.commit()
                             
                             if setorescolhido == 'Administrativo':    
@@ -818,6 +882,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                                     time.sleep(0.5)
                                     st.toast(f'O.S [{fnlz2}] Finalizada!')
                                     cursor.execute("UPDATE Administrativo SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datenow,str(timenow),fnlz2))
+                                    cursor.execute("UPDATE imagens SET imagem_finalizada = ? WHERE id = ?",(imagem_finalzida_bytes,fnlz2))
                                     conn.commit() 
                             
                             if setorescolhido == 'Comercial':    
@@ -827,6 +892,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                                     time.sleep(0.5)
                                     st.toast(f'O.S [{fnlz2}] Finalizada!')
                                     cursor.execute("UPDATE Comercial SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datenow,str(timenow),fnlz2))
+                                    cursor.execute("UPDATE imagens SET imagem_finalizada = ? WHERE id = ?",(imagem_finalzida_bytes,fnlz2))
                                     conn.commit() 
 
                             if setorescolhido == 'Expedição':    
@@ -836,6 +902,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                                     time.sleep(0.5)
                                     st.toast(f'O.S [{fnlz2}] Finalizada!')
                                     cursor.execute("UPDATE EXPEDICAO SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datenow,str(timenow),fnlz2))
+                                    cursor.execute("UPDATE imagens SET imagem_finalizada = ? WHERE id = ?",(imagem_finalzida_bytes,fnlz2))
                                     conn.commit()  
 
                             if setorescolhido == 'Serralharia':    
@@ -845,6 +912,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                                     time.sleep(0.5)
                                     st.toast(f'O.S [{fnlz2}] Finalizada!')
                                     cursor.execute("UPDATE Serralharia SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datenow,str(timenow),fnlz2))
+                                    cursor.execute("UPDATE imagens SET imagem_finalizada = ? WHERE id = ?",(imagem_finalzida_bytes,fnlz2))
                                     conn.commit()
 
                             if setorescolhido == 'Tecnologia da Informação':    
@@ -854,6 +922,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                                     time.sleep(0.5)
                                     st.toast(f'O.S [{fnlz2}] Finalizada!')
                                     cursor.execute("UPDATE TI SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datenow,str(timenow),fnlz2))
+                                    cursor.execute("UPDATE imagens SET imagem_finalizada = ? WHERE id = ?",(imagem_finalzida_bytes,fnlz2))
                                     conn.commit()
 
                             if setorescolhido == 'PCM':    
@@ -863,14 +932,15 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                                     time.sleep(0.5)
                                     st.toast(f'O.S [{fnlz2}] Finalizada!')
                                     cursor14.execute("UPDATE PCM SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datenow,str(timenow),fnlz2))
+                                    cursor.execute("UPDATE imagens SET imagem_finalizada = ? WHERE id = ?",(imagem_finalzida_bytes,fnlz2))
                                     conn.commit()   
             with tab8:
+                st.header('📝 O.S em Aberto', divider='blue')
                 jam,jam1 = st.columns([0.2,1])
                 with jam:
-                    st.header('Manutenção', divider='rainbow')
                     with st.expander("Filtros"):
                         genre = st.radio(
-                          "Selecione",
+                          "Selecione!",
                         ["ELÉTRICA","Por Data"],
                         index=0,
                         )
@@ -887,7 +957,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                         if whrlinhas91 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros2 = st.number_input("Selecione o numero da OS",min_value=1,max_value=whrlinhas91,value=whrlinhas91,placeholder="Selecione")
+                            numros2 = st.number_input("Selecione o numero da O.S",min_value=1,max_value=whrlinhas91,value=whrlinhas91,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value= whrlinhas2)
                             numros3 = numros2-1
                             osespec = whrlinhas90.loc[numros3]
@@ -901,7 +971,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                     
                     else:
                         if not whrlinhas2 == 0:
-                            numros2 = st.number_input("Selecione o numero da OS",min_value=1,max_value=whrlinhas2,value=whrlinhas2,placeholder="Selecione")
+                            numros2 = st.number_input("Selecione o numero da O.S",min_value=1,max_value=whrlinhas2,value=whrlinhas2,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value= whrlinhas2)
                             numros3 = numros2-1
                         if whrlinhas2 == 0:
@@ -919,7 +989,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                         if pcm_id == 0:
                             st.success('Não há pendências')
                         else:
-                            numros4 = st.number_input("Selecione o numero da k OS",min_value=1,max_value=pcm_id,value=pcm_id,placeholder="Selecione")
+                            numros4 = st.number_input("Selecione o numero da k OS",min_value=1,max_value=pcm_id,value=pcm_id,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value=pcm_id)
                             numros5 = numros4-1
                             osespec = pcm.loc[numros5]
@@ -936,7 +1006,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                         if rd28 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros4 = st.number_input("Selecione o numero da  OS",min_value=1,max_value=rd28,value=rd28,placeholder="Selecione")
+                            numros4 = st.number_input("Selecione o numero da  OS",min_value=1,max_value=rd28,value=rd28,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value=rd28)
                             numros5 = numros4-1
                             osespec = rd27.loc[numros5]
@@ -952,7 +1022,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                         if rd34 == 0:
                            st.success('Não há pendências')
                         else:
-                            numros4 = st.number_input("Selecione o numero   da   OS",min_value=1,max_value=rd34,value=rd34,placeholder="Selecione")
+                            numros4 = st.number_input("Selecione o numero   da   OS",min_value=1,max_value=rd34,value=rd34,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value=rd34)
                             numros5 = numros4-1
                             osespec = rd33.loc[numros5]
@@ -968,7 +1038,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                         if rd42 == 0:
                            st.success('Não há pendências')
                         else:
-                            numros4 = st.number_input("Selecione   o  numero   da   OS",min_value=1,max_value=rd42,value=rd42,placeholder="Selecione")
+                            numros4 = st.number_input("Selecione   o  numero   da   OS",min_value=1,max_value=rd42,value=rd42,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value=rd42)
                             numros5 = numros4-1
                             osespec = rd41.loc[numros5]
@@ -983,7 +1053,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                         if rd50 == 0:
                            st.success('Não há pendências')
                         else:
-                            numros4 = st.number_input(" Selecione   o  numero   da   OS",min_value=1,max_value=rd50,value=rd50,placeholder="Selecione")
+                            numros4 = st.number_input(" Selecione   o  numero   da   OS",min_value=1,max_value=rd50,value=rd50,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value=rd50)
                             numros5 = numros4-1
                             osespec = rd49.loc[numros5]
@@ -999,7 +1069,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                         if rd58 == 0:
                            st.success('Não há pendências')
                         else:
-                            numros4 = st.number_input("  Selecione   o  numero   da   OS",min_value=1,max_value=rd58,value=rd58,placeholder="Selecione")
+                            numros4 = st.number_input("  Selecione   o  numero   da   OS",min_value=1,max_value=rd58,value=rd58,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value=rd58)
                             numros5 = numros4-1
                             osespec = rd57.loc[numros5]
@@ -1015,7 +1085,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                         if rd66 == 0:
                            st.success('Não há pendências')
                         else:
-                            numros4 = st.number_input("Selecione o numero da OS                                ",min_value=1,max_value=rd66,value=rd66,placeholder="Selecione")
+                            numros4 = st.number_input("Selecione o numero da O.S                                ",min_value=1,max_value=rd66,value=rd66,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value=rd66)
                             numros5 = numros4-1
                             osespec = rd65.loc[numros5]
@@ -1031,7 +1101,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                         if rd79 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros4 = st.number_input("Selecione o numero da  OS          ",min_value=1,max_value=rd79,value=rd79,placeholder="Selecione")
+                            numros4 = st.number_input("Selecione o numero da  OS          ",min_value=1,max_value=rd79,value=rd79,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value=rd79)
                             numros5 = numros4-1
                             osespec = rd78.loc[numros5]
@@ -1042,9 +1112,9 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                             st.dataframe(lddt, use_container_width=st.session_state.use_container_width15)       
             #FINALIZADAS   
             with tab9:
+                st.header('✅ O.S Finalizadas', divider='blue')
                 jam,jam1 = st.columns([0.2,1])
                 with jam:
-                    st.header('Manutenção', divider='rainbow')
                     with st.expander("Filtros"):
                         genre = st.radio("Selecione ",["ELÉTRICA", "Por Data"],index=0)
 
@@ -1061,7 +1131,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                         if whrlinhas4 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros2 = st.number_input("Selecione o numero da OS",min_value=1,max_value=whrlinhas4,value=whrlinhas4,placeholder="Selecione")
+                            numros2 = st.number_input("Selecione o numero da O.S",min_value=1,max_value=whrlinhas4,value=whrlinhas4,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value= whrlinhas4)
                             numros3 = numros2-1
                             osespec = whrlinhas3.loc[numros3]
@@ -1077,7 +1147,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                         if whrlinhas4 == 0:
                            st.success('Não há pendências')
                         else:
-                            numros2 = st.number_input("Selecione o numero da            OS",min_value=1,max_value=whrlinhas4,value=whrlinhas4,placeholder="Selecione")
+                            numros2 = st.number_input("Selecione o numero da            OS",min_value=1,max_value=whrlinhas4,value=whrlinhas4,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value= whrlinhas4)
                             numros3 = numros2-1
                             osespec = whrlinhas3.loc[numros3]
@@ -1094,7 +1164,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                         if pcm_id1 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros4 = st.number_input(" Selecione  o numero da    OS",min_value=1,max_value=pcm_id1,value=pcm_id1,placeholder="Selecione")
+                            numros4 = st.number_input(" Selecione  o numero da    OS",min_value=1,max_value=pcm_id1,value=pcm_id1,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value=pcm_id1)
                             numros5 = numros4-1
                             osespec = pcm1.loc[numros5]
@@ -1112,7 +1182,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                         if rd32 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros4 = st.number_input("Selecione  o  numero  da  OS ",min_value=1,max_value=rd32,value=rd32,placeholder="Selecione")
+                            numros4 = st.number_input("Selecione  o  numero  da  OS ",min_value=1,max_value=rd32,value=rd32,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value=rd32)
                             numros5 = numros4-1
                             osespec = rd31.loc[numros5]
@@ -1127,7 +1197,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                         if rd38 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros4 = st.number_input("Selecione o numero da  OS  ",min_value=1,max_value=rd38,value=rd38,placeholder="Selecione")
+                            numros4 = st.number_input("Selecione o numero da  OS  ",min_value=1,max_value=rd38,value=rd38,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value=rd38)
                             numros5 = numros4-1
                             osespec = rd37.loc[numros5]
@@ -1142,7 +1212,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                         if rd46 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros4 = st.number_input("Selecione o numero da  OS    ",min_value=1,max_value=rd46,value=rd46,placeholder="Selecione")
+                            numros4 = st.number_input("Selecione o numero da  OS    ",min_value=1,max_value=rd46,value=rd46,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value=rd46)
                             numros5 = numros4-1
                             osespec = rd45.loc[numros5]
@@ -1157,7 +1227,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                         if rd54 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros4 = st.number_input("Selecione o numero da  OS     ",min_value=1,max_value=rd54,value=rd54,placeholder="Selecione")
+                            numros4 = st.number_input("Selecione o numero da  OS     ",min_value=1,max_value=rd54,value=rd54,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value=rd54)
                             numros5 = numros4-1
                             osespec = rd53.loc[numros5]
@@ -1172,7 +1242,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                         if rd62 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros4 = st.number_input("Selecione o numero da  OS        ",min_value=1,max_value=rd62,value=rd62,placeholder="Selecione")
+                            numros4 = st.number_input("Selecione o numero da  OS        ",min_value=1,max_value=rd62,value=rd62,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value=rd62)
                             numros5 = numros4-1
                             osespec = rd61.loc[numros5]
@@ -1187,7 +1257,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                         if rd70 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros4 = st.number_input("Selecione o numero da  OS         ",min_value=1,max_value=rd70,value=rd70,placeholder="Selecione")
+                            numros4 = st.number_input("Selecione o numero da  OS         ",min_value=1,max_value=rd70,value=rd70,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value=rd70)
                             numros5 = numros4-1
                             osespec = rd69.loc[numros5]
@@ -1202,7 +1272,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                         if rd75 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros4 = st.number_input("Selecione o numero da  OS            ",min_value=1,max_value=rd75,value=rd75,placeholder="Selecione")
+                            numros4 = st.number_input("Selecione o numero da  OS            ",min_value=1,max_value=rd75,value=rd75,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value=rd75)
                             numros5 = numros4-1
                             osespec = rd74.loc[numros5]
@@ -1213,22 +1283,277 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                             st.dataframe(lddt, use_container_width=st.session_state.use_container_width28)
             #GERAL
             with tab10:
-                st.header('Manutenção', divider='rainbow')
-                statuses,sats,statuses1=st.columns([90,8,20])
-                with statuses:
-                    with st.expander("Geral"):
-                        if allln1 == 0:
-                            st.success('Não há pendências')
-                        else:
-                            numros10 = st.number_input(" Selecione o  numero da     OS",min_value=1,max_value=allln1,value=allln1,placeholder="Selecione")
-                            st.metric(label="O.S Existentes", value= allln1)
-                            numros11 = numros10-1
-                            osespec = allinhas.loc[numros11]
-                            def load_data():
-                                return pd.DataFrame(osespec)
-                            st.checkbox("Estender", value=True, key="use_container_width29")
-                            df = load_data()
-                            st.dataframe(df, use_container_width=st.session_state.use_container_width29)
+                st.header (aviso_list,divider='blue')
+                omaga = st.multiselect('Selecione:',acao_list,max_selections=1)
+                if not omaga == []:
+                    corretivas = pd.read_sql_query(f"SELECT * FROM ELETRICA WHERE AÇÃO = '{omaga[0]}'", conn)
+                    corretivas_shape = corretivas.shape[0]
+                if omaga == []:
+                    st.success('Escolha um tipo de ação')
+                else:
+                    st.metric(label="O.S Existentes", value=corretivas_shape)
+                    numros2 = st.number_input("Selecione o numero da O.S",min_value=1,max_value=corretivas_shape,value=corretivas_shape,placeholder="Selecione!")
+                    numros3 = numros2-1
+                    serie_pdf = corretivas.loc[numros3]
+                    def load_data():
+                        return pd.DataFrame(serie_pdf)
+                    st.checkbox("Estender", value=True, key="use_container_width17")
+                    df = load_data()
+                    st.dataframe(df, use_container_width=st.session_state.use_container_width17)
+                    dt = corretivas.loc[numros3]
+                    dt = dt.tolist()
+    
+                    with open(f"./Data/geral_Elétrica.pdf", 'rb') as file:
+                        pdf_reader = PyPDF2.PdfReader(file)
+                        bttn = st.download_button(
+                        label="Exportar O.S 🖨",
+                        key= "download_button",
+                        data= file,
+                        file_name=f"O.S {dt[0]}.pdf",
+                        mime='application/octet-stream'
+                    )
+                    usuario = 'Elétrica'
+                    cursor.execute(f'SELECT * FROM imagens WHERE id = {dt[0]}')
+                    if cursor.fetchall():
+                        cursor.execute(f'SELECT * FROM imagens WHERE id = {dt[0]}')
+                        imagens = cursor.fetchall()
+                        oe = imagens[0][1]
+                        imagem = Image.open(BytesIO(oe))
+
+                    localx = corretivas.loc[numros3]
+                    pmg = localx.tolist()
+
+                    Solicitante = 'Solicitante:'
+                    Data = 'Data:'
+                    Hora = 'Horario:'
+                    Setor = 'Setor:'
+                    Os = 'O.S:'
+                    maqx = 'Local:'
+                    dados = [Solicitante,Data,Hora,Setor,Os,maqx,'']
+                    img = Image.open('./Midia/ssmm.jpg')
+                    img1 = Image.open('./Midia/sales.jpeg')
+
+                    def hello(c,pmg):
+                        o = 0
+                        b = []
+                        for s in str(pmg[1]):
+                            if s.isalpha():
+                                o += 1
+                                tmh = 4 * o + 58 
+                                b.append(tmh)
+
+                        ct = []
+                        for s in str(pmg[2]):
+                            if not pmg[2] =='Estampo,embalagem,corte e furo':
+                                if s.isalpha():
+                                    o += 1
+                                    tmh = 4 * o + 268
+                                    ct.append(tmh)
+                                else:
+                                    ''
+                        idx = 0             
+                        for james in dados:
+                            idx = idx + 1
+                            largura_da_linha = 0.1
+                            width, height = 580, 50
+                            raio = 10
+                            if idx == 1:
+                            #SOLICITANTE
+                                t1,t2 = 15,730
+                                t3,t4 = 58,730
+                                t5,t6 = 20,662
+                                t7,t8 = 380,662
+                                t9,t10 = 500,210
+                                t11,t12 = 90,642
+
+                                texto = f'{pmg[1]}'
+                                text = f'{pmg[5]}'
+                                textox = 'Grau de ocorrência :'
+                                textoxx = 'Especialidade :'
+                                textos = ''
+                                x1, y1 = b[9], 728
+                                x2, y2 = 58, 728
+                                widt, heigh = 200, 30
+                                r,r1 = 18,630
+                                r2,r3 = 380,630
+                                k1,k2,k3,k4 = 250,680,250,420
+                            if idx == 2:
+                             #DAT
+                                t1,t2 = 15,705
+                                t3,t4 = 38,705
+                                t5,t6 = 18,583
+                                t7,t8 = 380,583
+                                t9,t10 = 500,210
+                                t11,t12 = 90,563
+
+                                texto = f'{pmg[6]}'
+                                text = f'{pmg[8]}'
+                                textox = 'Ação :'
+                                textoxx = 'Data de finalização :'
+                                textos = ''
+                                x1, y1 = 75, 703
+                                x2, y2 = 37, 703
+                                r,r1 = 18,550
+                                r2,r3 = 380,550
+                                k1,k2,k3,k4 = 350,680,350,420
+                            if idx == 3:
+                                #HORA
+                                t1,t2 = 250,730
+                                t3,t4 = 283,730
+                                t5,t6 = 18,513
+                                t7,t8 = 380,513
+                                t9,t10 = 500,210
+                                t11,t12 = 90,493
+
+                                texto = f'{pmg[7]}'
+                                text = f'{pmg[9]}'
+                                textox = 'Finalizada? :'
+                                textoxx = 'Horario de finalização :'
+                                textos = ''
+
+                                x1, y1 = 283, 728
+                                x2, y2 = 310, 728
+                                r,r1 = 18,480
+                                r2,r3 = 380,480
+                                k1,k2,k3,k4 = 500,10,580,10
+                            if idx == 4:
+                            #SETOR
+                                t1,t2 = 250,705
+                                t3,t4 = 275,705
+                                t5,t6 = 18,422
+                                t9,t10 = 510,15
+                                t11,t12 = 430,642
+
+                                texto = f'{pmg[2]}'
+                                text = f'{pmg[12]}'
+                                textox = 'Ocorrência :'
+                                textos = 'Bruno Kappaun'
+    
+                                x1, y1 = 275, 703
+                                x2, y2 = ct[0], 703
+                                widt, heigh = 560, 60
+                                r,r1 = 18,360
+                            if idx == 5:
+                                 #OS
+                                t1,t2 = 430,730
+                                t3,t4 = 448,730
+                                t5,t6 = 25,345
+                                t11,t12 = 430,563
+
+                                texto = f'N° 00{pmg[0]}'
+                                text = f'{pmg[10]}'
+                                textox = 'Visualização do problema:'
+                                x1, y1 = 448, 728
+                                x2, y2 = 475, 728
+                            if idx == 6:
+                            #maquina
+                                t1,t2 = 430,705
+                                t3,t4 = 455,705
+                                t5,t6 = 30,170
+                                t11,t12 = 430,493
+                                texto =f'{pmg[13]}'
+                                textox = 'Visualização pós problema:'
+                                text = f'{pmg[11]}'
+                                x1, y1 = 455, 703
+                                x2, y2 = 510, 703
+                            if idx == 7:
+                                t11,t12 = 25,410
+                                text = f'{pmg[3]}'
+            
+                            pdfmetrics.registerFont(TTFont('font', './Fontes/ASENINE_.ttf'))
+                            cor_do_texto = (0,0,0)
+                            font_name = 'font' 
+
+                            pdfmetrics.registerFont(TTFont('ASS', './Fontes/ASSINATURA.ttf'))
+                            cor_do_texto = (0,0,0)
+                            font_namex = 'ASS' 
+        
+                            textobject = c.beginText(t1, t2)
+                            textobject.setFont(font_name , 13)
+                            textobject.setTextOrigin(t1, t2)
+                            textobject.textLine(f"{james}")
+                            c.setFillColor(cor_do_texto)
+                            c.drawText(textobject)
+                            c.setLineWidth(largura_da_linha)
+                            c.line(x1,y1,x2,y2)
+    
+                            cor_do_texto = (0,0,1)
+                            textobjectx = c.beginText(t3, t4)
+                            textobjectx.setFont(font_name, 10)
+                            textobjectx.setTextOrigin(t3, t4)
+                            textobjectx.textLine(f"{texto}")
+                            c.setFillColor(cor_do_texto)
+                            c.drawText(textobjectx)
+
+                            cor_do_texto = (0,0,0)
+                            textobjectx = c.beginText(t5, t6)
+                            textobjectx.setFont(font_name, 10)
+                            textobjectx.setTextOrigin(t5, t6)
+                            textobjectx.textLine(f"{textox}")
+                            c.setFillColor(cor_do_texto)
+                            c.drawText(textobjectx)
+
+                            cor_do_texto = (0,0,0)
+                            textobjectx = c.beginText(t7, t8)
+                            textobjectx.setFont(font_name, 10)
+                            textobjectx.setTextOrigin(t7, t8)
+                            textobjectx.textLine(f"{textoxx}")
+                            c.setFillColor(cor_do_texto)
+                            c.drawText(textobjectx)
+
+                            cor_do_texto = (0,0,0)
+                            textobjectx = c.beginText(t9, t10)
+                            textobjectx.setFont(font_namex, 10)
+                            textobjectx.setTextOrigin(t9, t10)
+                            textobjectx.textLine(f"{textos}")
+                            c.setFillColor(cor_do_texto)
+                            c.drawText(textobjectx)
+
+                            cor_do_texto = (0,0,1)
+                            textobjectx = c.beginText(t11, t12)
+                            textobjectx.setFont(font_name, 10)
+                            textobjectx.setTextOrigin(t11, t12)
+                            textobjectx.textLine(f"{text}")
+                            c.setFillColor(cor_do_texto)
+                            c.drawText(textobjectx)
+
+                            raio = 5
+                            c.roundRect(r, r1, widt, heigh, raio, stroke=1, fill=0)
+
+                            width, height = 200, 30
+                            raio = 5
+                            c.roundRect(r2, r3, width, height, raio, stroke=1, fill=0)
+                            c.line(k1,k2,k3,k4)
+                        width, height = 700, 50
+                        raio = 10
+                        r,r1 = 8,800
+                        c.roundRect(r, r1, width, height, raio, stroke=1, fill=0)
+
+                        width, height = 580, 680
+                        raio = 10
+                        r,r1 = 8,0
+                        c.roundRect(r, r1, width, height, raio, stroke=1, fill=0)
+  
+                        x, y = 0,750
+                        c.drawInlineImage(img, x,y, width=600,height=100)
+                        x, y = 10,180
+                        x1,y1 = 10, 20
+                        if not corretivas.empty:
+                            cursor.execute(f'SELECT * FROM imagens WHERE id = {dt[0]}')
+                            if cursor.fetchall():
+                                cursor.execute(f'SELECT * FROM imagens WHERE id = {dt[0]}')
+                                imagens = cursor.fetchall()
+                                oe = imagens[0][1]
+                                oie = imagens[0][2]
+                                imagem = Image.open(BytesIO(oe))
+                                imagem2 = Image.open(BytesIO(oie))
+                                c.drawInlineImage(imagem2, x1,y1, width=400,height=145)
+                                c.drawInlineImage(imagem, x,y, width=400,height=145)   
+                
+                    c = canvas.Canvas(f"./Data/geral_{usuario}.pdf")
+                    hh = hello(c,pmg)
+                    c.save()
+
 #MECÂNICA
 allln = pd.read_sql_query("SELECT * FROM MECANICA", conn)
 allln1 = allln.shape[0]
@@ -1255,11 +1580,11 @@ if fLIDERES == 'Equipe de MECÂNICA':
             image = Image.open('./Midia/ssmm.jpg')
             col1,col2 = st.columns([5,5])
             with col1:
-                st.title('Status e informações de O.S')
+                st.title(title_list)
            
-            tab6, tab7,tab8,tab9,tab10= st.tabs(["| Cadastro |", "| Finalizar |","| O.S Em aberto |","| O.S Finalizadas |","| Geral |"])
+            tab6, tab7,tab8,tab9,tab10= st.tabs(tabs_list)
             with tab6:
-                st.header("Cadastro de ocorrência")
+                st.header(header_list)
                 colibrim,neymar= st.columns([2,3])  
                 with colibrim:
                     atd1 = st.toggle('Atualizar os dados')
@@ -1268,11 +1593,10 @@ if fLIDERES == 'Equipe de MECÂNICA':
                            numros = 0
                            numros1 = 0
                         else:
-                            numros = st.number_input("Navegue por suas O.S para atualizar-las",min_value=1,max_value=allln1,value=allln1,placeholder="Selecione")
+                            numros = st.number_input("Navegue por suas O.S para atualizar-las",min_value=1,max_value=allln1,value=allln1,placeholder="Selecione!")
                             numros1 = numros-1
                             consulta1 = "SELECT * FROM MECANICA"
                         ros_oc = pd.read_sql_query(consulta1, conn)
-
                         if not ros_oc.empty:
                             preenchimento = ros_oc.loc[numros1]
                             preenchimento = preenchimento.tolist()
@@ -1281,61 +1605,59 @@ if fLIDERES == 'Equipe de MECÂNICA':
 
                     container = st.container(border=True)
                     if not atd1:
-                        Rsolicitante = container.selectbox('Solicitante:', ('Filipe leite','Jameson Sales','Cesar Filho','Ivson Paulino','Maurilio Sales','Bruno Kappaun','Adriely Lemos','Gilson Freitas','Willian Oliveira','Cesar Augusto'),index=None,placeholder='Selecione')
+                        Rsolicitante = container.selectbox('Solicitante:', (solicitante_list),index=None,placeholder='Selecione!',help=help_solicitante)
                     if atd1:
-                        RUsolicitante = container.selectbox('Atualize o Solicitante:', ('Filipe leite','Jameson Sales','Cesar Filho','Maurilio Sales','Bruno Kappaun','Adriely Lemos','Gilson Freitas','Willian Oliveira','Cesar Augusto'),index=None,placeholder='Atualize')
+                        RUsolicitante = container.selectbox('Atualize o Solicitante:', (solicitante_list),index=None,placeholder='Atualize!',help=help_solicitante)
                         
                     if not atd1:
-                        Rstatus = container.text_area('Atualize o tipo de Ocorrência:',value=None,placeholder='Insira sua ocôrrencia')
+                        Rstatus = container.text_area('Atualize o tipo de Ocorrência:',value=None,placeholder='Insira sua ocôrrencia!',help=help_ocorrência)
                     if atd1:
-                        RUstatus = container.text_area('Tipo de Ocorrência:',value=preenchimento[3],placeholder='Insira sua ocôrrencia')
+                        RUstatus = container.text_area('Tipo de Ocorrência:',value=preenchimento[3],placeholder='Insira sua ocôrrencia!',help=help_ocorrência)
                         
                     if not atd1:
-                        Rsetor = container.selectbox('Setor solicitante:', ('Tecnologia da Informação','Comercial','Administrativo','Expedição','Ferramentaria','Serralharia','Utilidades','Estampo,corte e furo','Extrusão','Geral'),index=None,placeholder='Selecione')
+                        Rsetor = container.selectbox('Setor solicitante:', (setor_list),index=None,placeholder='Selecione!',help=help_setor)
                         RUsetor = ''
                     if atd1:
-                        RUsetor = container.selectbox('Aualize o Setor:', ('Tecnologia da Informação','Comercial','Administrativo','Expedição','Ferramentaria','Serralharia','Utilidades','Estampo,corte e furo','Extrusão','Geral'),index=None,placeholder='Atualize')
+                        RUsetor = container.selectbox('Aualize o Setor:', (setor_list),index=None,placeholder='Atualize!',help=help_setor)
                         Rsetor = ''
                     
                     if not atd1:
-                        Rniveldaocorrencia = container.selectbox('Nivel da ocorrência:', ('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None,placeholder='Selecione')
+                        Rniveldaocorrencia = container.selectbox('Nivel da ocorrência:', (ocorrencia_list),index=None,placeholder='Selecione!',help=help_nivel_ocorrencia)
                     if atd1:
-                        RUniveldaocorrencia = container.selectbox('Atualize o Nivel da ocorrência:',('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None, placeholder='Atualize')
+                        RUniveldaocorrencia = container.selectbox('Atualize o Nivel da ocorrência:',(ocorrencia_list),index=None, placeholder='Atualize!',help=help_nivel_ocorrencia)
 
                     if not atd1:
-                        Racao = container.selectbox('Tipo da ação:', ('Corretiva','Preventiva','Preditiva','Confecção'),index=None,placeholder='Selecione')
+                        Racao = container.selectbox('Tipo da ação:', (acao_list),index=None,placeholder='Selecione!',help=helpe_acao)
                     if atd1:
-                        RUacao = container.selectbox('Atualize o Tipo da ação:', ('Corretiva','Preventiva','Preditiva','Confecção'),index=None,placeholder='Atualize')
+                        RUacao = container.selectbox('Atualize o Tipo da ação:', (acao_list),index=None,placeholder='Atualize!',help=helpe_acao)
 
                     if not atd1:
-                        parada = container.selectbox('Gerou parada de maquina?:', ('Sim','Não'),index=None,placeholder='Selecione')
+                        parada = container.selectbox('Gerou parada de maquina?:', ('Sim','Não'),index=None,placeholder='Selecione!',help=help_parada)
                     if atd1:
-                        parada = container.selectbox('Gerou parada de maquina?: ', ('Sim','Não'),index=None,placeholder='Selecione')
+                        parada = container.selectbox('Gerou parada de maquina?: ', ('Sim','Não'),index=None,placeholder='Selecione!',help=help_parada)
 
                     if not atd1: 
-                    
-                        especialidades = container.selectbox('Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Selecione')
-                        
+                        especialidades = container.selectbox('Especialidade:', (especialidade_list),index=None,placeholder='Selecione!',help=help_especialidade)
                     if atd1:
-                        especialidades = container.selectbox('Atualize á Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Atualize')
+                        especialidades = container.selectbox('Atualize á Especialidade:', (especialidade_list),index=None,placeholder='Atualize!',help=help_especialidade)
                     
                     if Rsetor == 'Extrusão' or RUsetor == 'Extrusão':
-                        Local = container.selectbox('Local:',('Prensa - P8','Puller - 01','Puller - 02','Quench','Esticadeira - HEAD','Esticadeira - TAIL','Forno de Tarugo','Serra Fria','Forno de Envelhecimento','T1 - Belts','T2 - Belts','T3 - Belts','T4 - Belts'),index=None,placeholder= 'Selecione')
+                        Local = container.selectbox('Local:',(extrusão_list),index=None,placeholder= 'Selecione!',help=help_local)
                         
                     if Rsetor == 'Estampo,corte e furo' or RUsetor == 'Estampo,corte e furo':
-                        Local = container.selectbox('Local:',('Prensa Excentrica - 01','Prensa Excentrica - 02','Serra Automatica','Serra Manual','Serra fita - FRANHO','Rosqueadeira - MACHO 01','Rosqueadeira - COSSINETE 01','Rosqueadeira - COSSINETE 02','Embaladora Automatica','Seladora manual - KT001','Seladora manual - KT002'),index=None,placeholder= 'Selecione')
+                        Local = container.selectbox('Local:',(estampo_etc_list),index=None,placeholder= 'Selecione!',help=help_local)
                         
                     if Rsetor == 'Utilidades' or RUsetor == 'Utilidades':
-                        Local = container.selectbox('Local:',('Elétrica Predial','Casa de Bombas','Caixa D.Agua','Subestação - 01','Subestação - 02','Portão de automoveis','Portão de pedestres','Interfone'),index=None,placeholder= 'Selecione')
+                        Local = container.selectbox('Local:',(utilidades_list),index=None,placeholder= 'Selecione!',help=help_local)
                             
                     if Rsetor != 'Extrusão' and Rsetor != 'Estampo,corte e furo' and Rsetor != 'Utilidades' and RUsetor != 'Extrusão' and RUsetor != 'Estampo,corte e furo' and RUsetor != 'Utilidades' and Rsetor != 'Serralharia' and RUsetor != 'Serralharia' and Rsetor != 'Ferramentaria' and RUsetor != 'Ferramentaria'  and Rsetor != 'Geral' and RUsetor != 'Geral':
-                        Local = container.selectbox('Local:',('Elétrica Predial','Artífice','Casa de Bombas','Caixa D.Agua','Subestação - 01','Subestação - 02','Portão de automoveis','Portão de pedestres','Interfone'),index=None,placeholder= 'Selecione')
+                        Local = container.selectbox('Local:',(all),index=None,placeholder= 'Selecione!',help=help_local)
                     elif Rsetor == 'Serralharia' or RUsetor == 'Serralharia':
-                        Local = container.selectbox('Local:',('Elétrica Predial','Artífice','Rosqueadeira - COSSINETE 01','Rosqueadeira - COSSINETE 02','Serra fita - FRANHO'),index=None,placeholder= 'Selecione')
+                        Local = container.selectbox('Local:',(serralharia_list),index=None,placeholder= 'Selecione!',help=help_local)
                     elif Rsetor == 'Ferramentaria' or RUsetor == 'Ferramentaria':
-                        Local = container.selectbox('Local:',('Elétrica Predial','Artífice','Maquina de jatear','Talha Elétrica','Recuperação de ferramentas'),index=None,placeholder= 'Selecione')
+                        Local = container.selectbox('Local:',(ferramentaria_list),index=None,placeholder= 'Selecione!',help=help_local)
                     elif Rsetor == 'Geral' or RUsetor == 'Geral':
-                        Local = container.selectbox('Local:',('Prensa - P8 - Puller - 01 - Puller - 02 - Esticadeira - HEAD - Esticadeira - TAIL - Forno de Tarugo - Serra Fria - Forno de Envelhecimento - Prensa Excentrica - 01 - Prensa Excentrica - 02 - Serra Automatica - Serra Manual - Serra fita - FRANHO - Rosqueadeira - MACHO 01 - Rosqueadeira - COSSINETE 01 - Rosqueadeira - COSSINETE 2 - Maquina de jatear - Talha Elétrica - Embaladora Automatica - Elétrica Predial - Artífice - Recuperação de ferramentas - Casa de Bombas - Caixa D.Agua - Subestação - 1 - Subestação - 2 -  Seladora manual - KT001 - Seladora manual - KT002 - Portão de automoveis - Portão de pedestres - Interfone',), placeholder='Selecione')
+                        Local = container.selectbox('Local:',(geral_list), placeholder='Selecione!',help=help_local)
 
                     if atd1:   
                         uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True)
@@ -1363,7 +1685,7 @@ if fLIDERES == 'Equipe de MECÂNICA':
                             st.checkbox("Estender", value=True, key="use_container_width")
                             df = load_dataa()
                             st.dataframe(df, use_container_width=st.session_state.use_container_width)
-                            numero_da_os = st.number_input("Selecione o numero da O.S que deseja DELETAR",min_value=1,max_value=int(preenchimento[0]),value=int(preenchimento[0]),placeholder="Selecione")
+                            numero_da_os = st.number_input("Selecione o numero da O.S que deseja DELETAR",min_value=1,max_value=int(preenchimento[0]),value=int(preenchimento[0]),placeholder="Selecione!")
                             dell = st.button('Excluir 🗑')
                             if dell:
                                 st.toast(f'Deletando O.S!')
@@ -1395,7 +1717,6 @@ if fLIDERES == 'Equipe de MECÂNICA':
 
                                 if bools[0] == True and bools[1] == True and bools[2] == True and bools[3] == True and bools[4] == True and bools[5] == True and bools[6] == True and bools[7] == True and bools[8] == True:
                                     insdds = st.button("Envia O.S 📤")
-
                                     if insdds:
                                         ids_shape_mecanica = ids_shape + 1
                                         st.balloons()                     
@@ -1405,7 +1726,7 @@ if fLIDERES == 'Equipe de MECÂNICA':
                                         cursor.execute('PRAGMA foreign_keys = ON;')
                                         cursor.execute("INSERT INTO ids (ID_UNIC,HORA,DATA) VALUES (?,?,?)", (ids_shape_mecanica,str(timenow),datenow))
                                         cursor.execute("INSERT INTO MECANICA (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF,ESPECIALIDADE,MÊS,Local,PARADA) VALUES (?,?,?,?, ?, ?, ?, ?, ?,?,?,?,?,?,?)", (ids_shape_mecanica, str(Rsolicitante), str(Rsetor), str(Rstatus),str(Rniveldaocorrencia),datenow,str(timenow),Racao,'Não',None,None,especialidades,monthnow,Local,parada))
-                                        cursor.execute("INSERT INTO imagens (id,imagem,mes) VALUES (?,?,?)", (ids_shape_mecanica,bytes_data,monthnow))
+                                        cursor.execute("INSERT INTO imagens (id,imagem_abertura,mes) VALUES (?,?,?)", (ids_shape_mecanica,bytes_data,monthnow))
                                         conn.commit()
 
             with tab7:
@@ -1413,10 +1734,14 @@ if fLIDERES == 'Equipe de MECÂNICA':
                 jefferson,lourdes=st.columns(2)
                 with jefferson:
                     containerx = st.container(border=True)
-                    setorescolhido = containerx.selectbox('Setor', ('PCM','Tecnologia da Informação','Comercial','Administrativo','Expedição','Produção','Ferramentaria','Serralharia','Mecânica'),index=None,placeholder='Selecione')
-                    fnlz2 = containerx.number_input("Selecione o numero da OS que deseja Finalizar",min_value=1,max_value=1000,value=1,placeholder="Selecione")
+                    setorescolhido = containerx.selectbox('Setor', ('PCM','Tecnologia da Informação','Comercial','Administrativo','Expedição','Produção','Ferramentaria','Serralharia','Mecânica'),index=None,placeholder='Selecione!',help=help_setor)
+                    fnlz2 = containerx.number_input("Selecione o numero da O.S que deseja Finalizar",min_value=1,max_value=1000,value=1,placeholder="Selecione!",help=help_numero_os)
                     fnlz3 = fnlz2-1
-                    finalizar = containerx.selectbox('O.S finalizada?', ('Sim','Não'),index=None,placeholder='Selecione')
+                    finalizar = containerx.selectbox('O.S finalizada?', ('Sim','Não'),index=None,placeholder='Selecione!',help=help_finalizar_os)
+                    uploaded_filess = containerx.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True,help=help_imagem_fnlzd)
+                    for uploaded_filee in uploaded_filess:
+                        bytess_data = uploaded_filee.read()
+
                     #datainput = containerx.date_input("Data", value=None)
                     #containerx.write(datainput)
                     #timeinput = containerx.time_input('HORA', value=None)
@@ -1435,7 +1760,6 @@ if fLIDERES == 'Equipe de MECÂNICA':
                                     cursor.execute("UPDATE Ferramentaria SET FINALIZADA = ?, DATAF = ?, HORAF = ? WHERE OS = ?",(finalizar,datenow,str(timenow),fnlz2))
                                     conn.commit()
 
-    
                             if setorescolhido == 'Produção':    
                                 fnl=st.button("Finalizar O.S ✔")
                                 if fnl:
@@ -1510,12 +1834,12 @@ if fLIDERES == 'Equipe de MECÂNICA':
                                     conn.commit()  
 
             with tab8:
+                st.header(abertas_list, divider='blue')
                 jam,jam1 = st.columns([0.2,1])
                 with jam:
-                    st.header('Manutenção', divider='rainbow')
                     with st.expander("Filtros"):
                         genre = st.radio(
-                          "Selecione",
+                          "Selecione!",
                         ["MECÂNICA","Por Data"],
                         index=0,
                         )
@@ -1531,7 +1855,7 @@ if fLIDERES == 'Equipe de MECÂNICA':
                         if whrlinhas91 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros2 = st.number_input("Selecione o numero da OS",min_value=1,max_value=whrlinhas91,value=whrlinhas91,placeholder="Selecione")
+                            numros2 = st.number_input("Selecione o numero da O.S",min_value=1,max_value=whrlinhas91,value=whrlinhas91,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value= MECANICAvalores)
                             numros3 = numros2-1
                             osespec = whrlinhas90.loc[numros3]
@@ -1546,7 +1870,7 @@ if fLIDERES == 'Equipe de MECÂNICA':
                         if MECANICAvalores == 0:
                            st.success('Não há pendências')
                         else:
-                            numros2 = st.number_input("Selecione o numero da OS",min_value=1,max_value=MECANICAvalores,value=MECANICAvalores,placeholder="Selecione")
+                            numros2 = st.number_input("Selecione o numero da O.S",min_value=1,max_value=MECANICAvalores,value=MECANICAvalores,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value= MECANICAvalores)
                             numros3 = numros2-1
                             osespec = MECANICAdados.loc[numros3]
@@ -1562,7 +1886,7 @@ if fLIDERES == 'Equipe de MECÂNICA':
                         if pcm_id2 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros4 = st.number_input("Selecione o numero da k OS",min_value=1,max_value=pcm_id2,value=pcm_id2,placeholder="Selecione")
+                            numros4 = st.number_input("Selecione o numero da k OS",min_value=1,max_value=pcm_id2,value=pcm_id2,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value=pcm_id2)
                             numros5 = numros4-1
                             osespec = pcm2.loc[numros5]
@@ -1579,7 +1903,7 @@ if fLIDERES == 'Equipe de MECÂNICA':
                         if rd30 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros4 = st.number_input("Selecione o numero da  OS ",min_value=1,max_value=rd30,value=rd30,placeholder="Selecione")
+                            numros4 = st.number_input("Selecione o numero da  OS ",min_value=1,max_value=rd30,value=rd30,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value=rd30)
                             numros5 = numros4-1
                             osespec = rd29.loc[numros5]
@@ -1595,7 +1919,7 @@ if fLIDERES == 'Equipe de MECÂNICA':
                             if rd36 == 0:
                                st.success('Não há pendências')
                             else:
-                                numros4 = st.number_input(" Selecione  o  numero  da   OS",min_value=1,max_value=rd36,value=rd36,placeholder="Selecione")
+                                numros4 = st.number_input(" Selecione  o  numero  da   OS",min_value=1,max_value=rd36,value=rd36,placeholder="Selecione!")
                                 st.metric(label="O.S Existentes", value=rd36)
                                 numros5 = numros4-1
                                 osespec = rd35.loc[numros5]
@@ -1611,7 +1935,7 @@ if fLIDERES == 'Equipe de MECÂNICA':
                             if rd44 == 0:
                                st.success('Não há pendências')
                             else:
-                                numros4 = st.number_input("Selecione  o numero  da    OS",min_value=1,max_value=rd44,value=rd44,placeholder="Selecione")
+                                numros4 = st.number_input("Selecione  o numero  da    OS",min_value=1,max_value=rd44,value=rd44,placeholder="Selecione!")
                                 st.metric(label="O.S Existentes", value=rd44)
                                 numros5 = numros4-1
                                 osespec = rd43.loc[numros5]
@@ -1626,7 +1950,7 @@ if fLIDERES == 'Equipe de MECÂNICA':
                             if rd52 == 0:
                                st.success('Não há pendências')
                             else:
-                                numros4 = st.number_input("Selecione  o  numero   da    OS",min_value=1,max_value=rd52,value=rd52,placeholder="Selecione")
+                                numros4 = st.number_input("Selecione  o  numero   da    OS",min_value=1,max_value=rd52,value=rd52,placeholder="Selecione!")
                                 st.metric(label="O.S Existentes", value=rd52)
                                 numros5 = numros4-1
                                 osespec = rd51.loc[numros5]
@@ -1642,7 +1966,7 @@ if fLIDERES == 'Equipe de MECÂNICA':
                         if rd60 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros4 = st.number_input("Selecione  o  numero   da     OS",min_value=1,max_value=rd60,value=rd60,placeholder="Selecione")
+                            numros4 = st.number_input("Selecione  o  numero   da     OS",min_value=1,max_value=rd60,value=rd60,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value=rd60)
                             numros5 = numros4-1
                             osespec = rd59.loc[numros5]
@@ -1658,7 +1982,7 @@ if fLIDERES == 'Equipe de MECÂNICA':
                         if rd68 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros4 = st.number_input("Selecione  o    numero   da    OS",min_value=1,max_value=rd68,value=rd68,placeholder="Selecione")
+                            numros4 = st.number_input("Selecione  o    numero   da    OS",min_value=1,max_value=rd68,value=rd68,placeholder="Selecione!")
                             oi = st.metric(label="O.S Existentes", value=rd68)
                             numros5 = numros4-1
                             osespec = rd67.loc[numros5]
@@ -1669,12 +1993,11 @@ if fLIDERES == 'Equipe de MECÂNICA':
                             st.dataframe(lddt, use_container_width=st.session_state.use_container_width13)
                 
             with tab9:
+                st.header(finalizadas_list, divider='blue')
                 jam,jam1 = st.columns([0.2,1])
                 with jam:
-                    st.header('Manutenção', divider='rainbow')
                     with st.expander("Filtros"):
                         genre = st.radio("Selecione ",["MECÂNICA","Por Data"],index=0)
-                    
                 with st.expander(f"Minhas OS ({MECANICAvalores1})"):
                     diferent1,diferent2 = st.columns([0.2,0.00000000000001])
                     if genre == 'Por Data':
@@ -1687,7 +2010,7 @@ if fLIDERES == 'Equipe de MECÂNICA':
                         if whrlinhas91 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros2 = st.number_input(" Selecione   o  numero da  OS ",min_value=1,max_value=whrlinhas91,value=whrlinhas91,placeholder="Selecione")
+                            numros2 = st.number_input(" Selecione   o  numero da  OS ",min_value=1,max_value=whrlinhas91,value=whrlinhas91,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value= whrlinhas91)
                             numros3 = numros2-1
                             osespec = whrlinhas90.loc[numros3]
@@ -1699,7 +2022,7 @@ if fLIDERES == 'Equipe de MECÂNICA':
                         with diferent2:
                             st.button('↻    ')
                     else:
-                        numros2 = st.number_input("Selecione   o   numero  da      OS      ",min_value=1,max_value=1000,value=1,placeholder="Selecione")
+                        numros2 = st.number_input("Selecione   o   numero  da      OS      ",min_value=1,max_value=1000,value=1,placeholder="Selecione!")
                         st.metric(label="O.S Existentes", value= MECANICAvalores1)
                         numros3 = numros2-1
                         if MECANICAvalores1 == 0:
@@ -1717,7 +2040,7 @@ if fLIDERES == 'Equipe de MECÂNICA':
                         if pcm_id3 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros4 = st.number_input("Selecione o numero da O.S    ",min_value=1,max_value=100,value=1,placeholder="Selecione")
+                            numros4 = st.number_input("Selecione o numero da O.S    ",min_value=1,max_value=100,value=1,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value=pcm_id3)
                             numros5 = numros4-1
                             osespec = pcm3.loc[numros5]
@@ -1734,7 +2057,7 @@ if fLIDERES == 'Equipe de MECÂNICA':
                         if rd30 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros4 = st.number_input(" Selecione  o  numero  da  OS ",min_value=1,max_value=rd30,value=rd30,placeholder="Selecione")
+                            numros4 = st.number_input(" Selecione  o  numero  da  OS ",min_value=1,max_value=rd30,value=rd30,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value=rd30)
                             numros5 = numros4-1
                             osespec = rd29.loc[numros5]
@@ -1749,7 +2072,7 @@ if fLIDERES == 'Equipe de MECÂNICA':
                         if rd40 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros4 = st.number_input("Selecione o numero da  OS   ",min_value=1,max_value=rd40,value=rd40,placeholder="Selecione")
+                            numros4 = st.number_input("Selecione o numero da  OS   ",min_value=1,max_value=rd40,value=rd40,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value=rd40)
                             numros5 = numros4-1
                             osespec = rd39.loc[numros5]
@@ -1764,7 +2087,7 @@ if fLIDERES == 'Equipe de MECÂNICA':
                         if rd48 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros4 = st.number_input("Selecione o numero da  OS     ",min_value=1,max_value=rd48,value=rd48,placeholder="Selecione")
+                            numros4 = st.number_input("Selecione o numero da  OS     ",min_value=1,max_value=rd48,value=rd48,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value=rd48)
                             numros5 = numros4-1
                             osespec = rd47.loc[numros5]
@@ -1779,7 +2102,7 @@ if fLIDERES == 'Equipe de MECÂNICA':
                         if rd56 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros4 = st.number_input("Selecione o numero da  OS       ",min_value=1,max_value=rd56,value=rd56,placeholder="Selecione")
+                            numros4 = st.number_input("Selecione o numero da  OS       ",min_value=1,max_value=rd56,value=rd56,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value=rd56)
                             numros5 = numros4-1
                             osespec = rd55.loc[numros5]
@@ -1794,7 +2117,7 @@ if fLIDERES == 'Equipe de MECÂNICA':
                         if rd64 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros4 = st.number_input("Selecione o numero da  OS        ",min_value=1,max_value=rd64,value=rd64,placeholder="Selecione")
+                            numros4 = st.number_input("Selecione o numero da  OS        ",min_value=1,max_value=rd64,value=rd64,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value=rd64)
                             numros5 = numros4-1
                             osespec = rd63.loc[numros5]
@@ -1809,7 +2132,7 @@ if fLIDERES == 'Equipe de MECÂNICA':
                         if rd72 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros4 = st.number_input("Selecione o numero da  OS          ",min_value=1,max_value=rd72,value=rd72,placeholder="Selecione")
+                            numros4 = st.number_input("Selecione o numero da  OS          ",min_value=1,max_value=rd72,value=rd72,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value=rd72)
                             numros5 = numros4-1
                             osespec = rd71.loc[numros5]
@@ -1824,7 +2147,7 @@ if fLIDERES == 'Equipe de MECÂNICA':
                         if rd77 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros4 = st.number_input("Selecione o numero da  OS           ",min_value=1,max_value=rd77,value=rd77,placeholder="Selecione")
+                            numros4 = st.number_input("Selecione o numero da  OS           ",min_value=1,max_value=rd77,value=rd77,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value=rd77)
                             numros5 = numros4-1
                             osespec = rd76.loc[numros5]
@@ -1835,22 +2158,269 @@ if fLIDERES == 'Equipe de MECÂNICA':
                             st.dataframe(lddt, use_container_width=st.session_state.use_container_width29)
 
             with tab10:
-                st.header('Manutenção', divider='rainbow')
-                statuses,sats,statuses1=st.columns([90,8,20])
-                with statuses:
-                    with st.expander("GERAL"):
-                        if allln1 == 0:
-                            st.success('Não há pendências')
-                        else:
-                            numros10 = st.number_input("Selecione o numero da     OS",min_value=1,max_value=allln1,value=allln1,placeholder="Selecione")
-                            st.metric(label="O.S Existentes", value= allln1)
-                            numros11 = numros10-1
-                            osespec = allinhas.loc[numros11]
-                            def load_data():
-                                return pd.DataFrame(osespec)
-                            st.checkbox("Estender", value=True, key="use_container_width30")
-                            df = load_data()
-                            st.dataframe(df, use_container_width=st.session_state.use_container_width30) 
+                st.header (aviso_list)
+                omaga = st.multiselect('Selecione:',acao_list,max_selections=1)
+                if not omaga == []:
+                    corretivas = pd.read_sql_query(f"SELECT * FROM MECANICA WHERE AÇÃO = '{omaga[0]}'", conn)
+                    corretivas_shape = corretivas.shape[0]
+                if omaga == []:
+                    st.success('Escolha um tipo de ação')
+                else:
+                    st.metric(label="O.S Existentes", value=corretivas_shape)
+                    numros2 = st.number_input("Selecione o numero da O.S",min_value=1,max_value=corretivas_shape,value=corretivas_shape,placeholder="Selecione!")
+                    numros3 = numros2-1
+                    serie_pdf = corretivas.loc[numros3]
+                    def load_data():
+                        return pd.DataFrame(serie_pdf)
+                    st.checkbox("Estender", value=True, key="use_container_width17")
+                    df = load_data()
+                    st.dataframe(df, use_container_width=st.session_state.use_container_width17)
+
+                    dt = corretivas.loc[numros3]
+                    dt = dt.tolist()
+    
+                    with open(f"./Data/geral_Elétrica.pdf", 'rb') as file:
+                        pdf_reader = PyPDF2.PdfReader(file)
+                        bttn = st.download_button(
+                        label="Exportar O.S 🖨",
+                        key= "download_button",
+                        data= file,
+                        file_name=f"O.S {dt[0]}.pdf",
+                        mime='application/octet-stream'
+                    )
+                
+                    usuario = 'Mecânica'
+
+                    cursor.execute(f'SELECT * FROM imagens WHERE id = {dt[0]}')
+                    if cursor.fetchall():
+                        cursor.execute(f'SELECT * FROM imagens WHERE id = {dt[0]}')
+                        imagens = cursor.fetchall()
+                        oe = imagens[0][1]
+                        imagem = Image.open(BytesIO(oe))
+
+                    localx = corretivas.loc[numros3]
+                    pmg = localx.tolist()
+
+                    def hello(c,pmg):
+                        o = 0
+                        b = []
+                        for s in str(pmg[1]):
+                            if s.isalpha():
+                                o += 1
+                                tmh = 4 * o + 58 
+                                b.append(tmh)
+
+                        ct = []
+                        for s in str(pmg[2]):
+                            if not pmg[2] =='Estampo,embalagem,corte e furo':
+                                if s.isalpha():
+                                    o += 1
+                                    tmh = 4 * o + 268
+                                    ct.append(tmh)
+                                else:
+                                    ''
+                        idx = 0             
+                        for james in dados:
+                            idx = idx + 1
+                            largura_da_linha = 0.1
+                            width, height = 580, 50
+                            raio = 10
+                            if idx == 1:
+                            #SOLICITANTE
+                                t1,t2 = 15,730
+                                t3,t4 = 58,730
+                                t5,t6 = 20,662
+                                t7,t8 = 380,662
+                                t9,t10 = 500,210
+                                t11,t12 = 90,642
+
+                                texto = f'{pmg[1]}'
+                                text = f'{pmg[5]}'
+                                textox = 'Grau de ocorrência :'
+                                textoxx = 'Especialidade :'
+                                textos = ''
+                                x1, y1 = b[9], 728
+                                x2, y2 = 58, 728
+                                widt, heigh = 200, 30
+                                r,r1 = 18,630
+                                r2,r3 = 380,630
+                                k1,k2,k3,k4 = 250,680,250,420
+                            if idx == 2:
+                             #DAT
+                                t1,t2 = 15,705
+                                t3,t4 = 38,705
+                                t5,t6 = 18,583
+                                t7,t8 = 380,583
+                                t9,t10 = 500,210
+                                t11,t12 = 90,563
+
+                                texto = f'{pmg[6]}'
+                                text = f'{pmg[8]}'
+                                textox = 'Ação :'
+                                textoxx = 'Data de finalização :'
+                                textos = ''
+                                x1, y1 = 75, 703
+                                x2, y2 = 37, 703
+                                r,r1 = 18,550
+                                r2,r3 = 380,550
+                                k1,k2,k3,k4 = 350,680,350,420
+                            if idx == 3:
+                                #HORA
+                                t1,t2 = 250,730
+                                t3,t4 = 283,730
+                                t5,t6 = 18,513
+                                t7,t8 = 380,513
+                                t9,t10 = 500,210
+                                t11,t12 = 90,493
+
+                                texto = f'{pmg[7]}'
+                                text = f'{pmg[9]}'
+                                textox = 'Finalizada? :'
+                                textoxx = 'Horario de finalização :'
+                                textos = ''
+
+                                x1, y1 = 283, 728
+                                x2, y2 = 310, 728
+                                r,r1 = 18,480
+                                r2,r3 = 380,480
+                                k1,k2,k3,k4 = 500,10,580,10
+                            if idx == 4:
+                            #SETOR
+                                t1,t2 = 250,705
+                                t3,t4 = 275,705
+                                t5,t6 = 18,422
+                                t9,t10 = 510,15
+                                t11,t12 = 430,642
+
+                                texto = f'{pmg[2]}'
+                                text = f'{pmg[12]}'
+                                textox = 'Ocorrência :'
+                                textos = 'Bruno Kappaun'
+    
+                                x1, y1 = 275, 703
+                                x2, y2 = ct[0], 703
+                                widt, heigh = 560, 60
+                                r,r1 = 18,360
+                            if idx == 5:
+                                 #OS
+                                t1,t2 = 430,730
+                                t3,t4 = 448,730
+                                t5,t6 = 25,345
+                                t11,t12 = 430,563
+
+                                texto = f'N° 00{pmg[0]}'
+                                text = f'{pmg[10]}'
+                                textox = 'Visualização do problema:'
+                                x1, y1 = 448, 728
+                                x2, y2 = 475, 728
+                            if idx == 6:
+                            #maquina
+                                t1,t2 = 430,705
+                                t3,t4 = 455,705
+                                t5,t6 = 30,170
+                                t11,t12 = 430,493
+                                texto =f'{pmg[13]}'
+                                textox = 'Visualização pós problema:'
+                                text = f'{pmg[11]}'
+                                x1, y1 = 455, 703
+                                x2, y2 = 510, 703
+                            if idx == 7:
+                                t11,t12 = 25,410
+                                text = f'{pmg[3]}'
+            
+                            pdfmetrics.registerFont(TTFont('font', './Fontes/ASENINE_.ttf'))
+                            cor_do_texto = (0,0,0)
+                            font_name = 'font' 
+
+                            pdfmetrics.registerFont(TTFont('ASS', './Fontes/ASSINATURA.ttf'))
+                            cor_do_texto = (0,0,0)
+                            font_namex = 'ASS' 
+        
+                            textobject = c.beginText(t1, t2)
+                            textobject.setFont(font_name , 13)
+                            textobject.setTextOrigin(t1, t2)
+                            textobject.textLine(f"{james}")
+                            c.setFillColor(cor_do_texto)
+                            c.drawText(textobject)
+                            c.setLineWidth(largura_da_linha)
+                            c.line(x1,y1,x2,y2)
+    
+                            cor_do_texto = (0,0,1)
+                            textobjectx = c.beginText(t3, t4)
+                            textobjectx.setFont(font_name, 10)
+                            textobjectx.setTextOrigin(t3, t4)
+                            textobjectx.textLine(f"{texto}")
+                            c.setFillColor(cor_do_texto)
+                            c.drawText(textobjectx)
+
+                            cor_do_texto = (0,0,0)
+                            textobjectx = c.beginText(t5, t6)
+                            textobjectx.setFont(font_name, 10)
+                            textobjectx.setTextOrigin(t5, t6)
+                            textobjectx.textLine(f"{textox}")
+                            c.setFillColor(cor_do_texto)
+                            c.drawText(textobjectx)
+
+                            cor_do_texto = (0,0,0)
+                            textobjectx = c.beginText(t7, t8)
+                            textobjectx.setFont(font_name, 10)
+                            textobjectx.setTextOrigin(t7, t8)
+                            textobjectx.textLine(f"{textoxx}")
+                            c.setFillColor(cor_do_texto)
+                            c.drawText(textobjectx)
+
+                            cor_do_texto = (0,0,0)
+                            textobjectx = c.beginText(t9, t10)
+                            textobjectx.setFont(font_namex, 10)
+                            textobjectx.setTextOrigin(t9, t10)
+                            textobjectx.textLine(f"{textos}")
+                            c.setFillColor(cor_do_texto)
+                            c.drawText(textobjectx)
+
+                            cor_do_texto = (0,0,1)
+                            textobjectx = c.beginText(t11, t12)
+                            textobjectx.setFont(font_name, 10)
+                            textobjectx.setTextOrigin(t11, t12)
+                            textobjectx.textLine(f"{text}")
+                            c.setFillColor(cor_do_texto)
+                            c.drawText(textobjectx)
+
+                            raio = 5
+                            c.roundRect(r, r1, widt, heigh, raio, stroke=1, fill=0)
+
+                            width, height = 200, 30
+                            raio = 5
+                            c.roundRect(r2, r3, width, height, raio, stroke=1, fill=0)
+                            c.line(k1,k2,k3,k4)
+                        width, height = 700, 50
+                        raio = 10
+                        r,r1 = 8,800
+                        c.roundRect(r, r1, width, height, raio, stroke=1, fill=0)
+
+                        width, height = 580, 680
+                        raio = 10
+                        r,r1 = 8,0
+                        c.roundRect(r, r1, width, height, raio, stroke=1, fill=0)
+  
+                        x, y = 0,750
+                        c.drawInlineImage(img, x,y, width=600,height=100)
+                        x, y = 10,180
+                        x1,y1 = 10, 20
+                        if not corretivas.empty:
+                            cursor.execute(f'SELECT * FROM imagens WHERE id = {dt[0]}')
+                            if cursor.fetchall():
+                                cursor.execute(f'SELECT * FROM imagens WHERE id = {dt[0]}')
+                                imagens = cursor.fetchall()
+                                oe = imagens[0][1]
+                                oie = imagens[0][2]
+                                imagem = Image.open(BytesIO(oe))
+                                imagem2 = Image.open(BytesIO(oie))
+                                c.drawInlineImage(imagem2, x1,y1, width=400,height=145)
+                                c.drawInlineImage(imagem, x,y, width=400,height=145)   
+                
+                    c = canvas.Canvas(f"./Data/geral_{usuario}.pdf")
+                    hh = hello(c,pmg)
+                    c.save()
 
 #Ferramentaria
 allln13 = pd.read_sql_query("SELECT * FROM Ferramentaria", conn)
@@ -1879,12 +2449,12 @@ if fLIDERES == 'Ivson Paulino':
                 #cursor.execute("DROP TABLE Ferramentaria")
                 #conn.commit()
             with ps6:
-                st.title('Status e informações de O.S')
+                st.title(title_list)
 
             st.markdown("---")
-            tab26,tab27,tab28,tab29= st.tabs(["| Cadastro |","| O.S Abertas |","| O.S Finalizadas |","| Geral |"])
+            tab26,tab27,tab28,tab29= st.tabs(tabs_list_sol)
             with tab26:
-                st.header('Cadastro de ocorrências', divider='rainbow')
+                st.header(header_list, divider='blue')
                 col9,col10= st.columns([5,5])  
                 with col9:                  
                     atd1 = st.toggle('Atualizar os dados')
@@ -1893,7 +2463,7 @@ if fLIDERES == 'Ivson Paulino':
                             numros = 0
                             numros1 = 0
                         else:
-                            numros = st.number_input("Navegue por suas O.S para atualizar-las",min_value=1,max_value=allln14,value=allln14,placeholder="Selecione")
+                            numros = st.number_input("Navegue por suas O.S para atualizar-las",min_value=1,max_value=allln14,value=allln14,placeholder="Selecione!",)
                             numros1 = numros-1
                             consulta1 = "SELECT * FROM Ferramentaria"
                         ros_oc = pd.read_sql_query(consulta1, conn)
@@ -1905,51 +2475,51 @@ if fLIDERES == 'Ivson Paulino':
                         
                     container = st.container(border=True)
                     if not atd1:
-                        Rsolicitante = container.selectbox('Solicitante:', ('Ivson Paulino',),index=0,placeholder='Selecione')
+                        Rsolicitante = container.selectbox('Solicitante:', ('Ivson Paulino',),index=0,placeholder='Selecione!',help=help_solicitante)
                     if atd1:
-                        RUsolicitante = container.selectbox('Atualize o Solicitante:', ('Ivson Paulino',),index=0,placeholder='Atualize')
+                        RUsolicitante = container.selectbox('Atualize o Solicitante:', ('Ivson Paulino',),index=0,placeholder='Atualize',help=help_solicitante)
                         
                     if not atd1:
-                        Rstatus = container.text_area('Atualize o tipo de Ocorrência:',value=None,placeholder='Insira sua ocôrrencia')
+                        Rstatus = container.text_area('Atualize o tipo de Ocorrência:',value=None,placeholder='Insira sua ocôrrencia',help=help_ocorrência)
                     if atd1:
-                        RUstatus = container.text_area('Tipo de Ocorrência:',value=preenchimento[3],placeholder='Insira sua ocôrrencia')
+                        RUstatus = container.text_area('Tipo de Ocorrência:',value=preenchimento[3],placeholder='Insira sua ocôrrencia',help=help_ocorrência)
                         
                     if not atd1:
-                        Rsetor = container.selectbox('Setor:', ('Ferramentaria',),index=0,placeholder='Selecione')
+                        Rsetor = container.selectbox('Setor:', ('Ferramentaria',),index=0,placeholder='Selecione!',help=help_setor)
                         RUsetor = ''
                     if atd1:
-                        RUsetor = container.selectbox('Aualize o Setor:', ('Ferramentaria',),index=0,placeholder='Atualize')
+                        RUsetor = container.selectbox('Aualize o Setor:', ('Ferramentaria',),index=0,placeholder='Atualize',help=help_setor)
                         Rsetor = ''
                     
                     if not atd1:
-                        Rniveldaocorrencia = container.selectbox('Nivel da ocorrência:', ('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None,placeholder='Selecione')
+                        Rniveldaocorrencia = container.selectbox('Nivel da ocorrência:', ('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None,placeholder='Selecione!',help=help_nivel_ocorrencia)
                     if atd1:
-                        RUniveldaocorrencia = container.selectbox('Atualize o Nivel da ocorrência:',('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None, placeholder='Atualize')
+                        RUniveldaocorrencia = container.selectbox('Atualize o Nivel da ocorrência:',('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None, placeholder='Atualize',help=help_nivel_ocorrencia)
 
                     if not atd1:
-                        Racao = container.selectbox('Tipo da ação:', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
+                        Racao = container.selectbox('Tipo da ação:', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione!',help=helpe_acao)
                     if atd1:
-                        RUacao = container.selectbox('Atualize o Tipo da ação:', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Atualize')
+                        RUacao = container.selectbox('Atualize o Tipo da ação:', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Atualize',help=helpe_acao)
 
                     if not atd1:
-                        especialidades = container.selectbox('Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Selecione')
+                        especialidades = container.selectbox('Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Selecione!',help=help_especialidade)
                     if atd1:
-                        especialidades = container.selectbox('Atualize á Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Atualize')
+                        especialidades = container.selectbox('Atualize á Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Atualize',help=help_especialidade)
                     
                     if not atd1:
-                        manutentor = container.selectbox('Tipo de manutenção:', ('Elétrica','Mecânica'),index=None,placeholder='Selecione')
+                        manutentor = container.selectbox('Tipo de manutenção:', ('Elétrica','Mecânica'),index=None,placeholder='Selecione!',help=help_manutentor)
                     if atd1:
-                        manutentor = container.selectbox('Tipo de manutenção:', ('Elétrica','Mecânica'),index=None,placeholder='Selecione')
+                        manutentor = container.selectbox('Tipo de manutenção:', ('Elétrica','Mecânica'),index=None,placeholder='Selecione!',help=help_manutentor)
                                                 
                     if Rsetor != 'Extrusão' and Rsetor != 'Estampo,corte e furo' and Rsetor != 'Utilidades' and RUsetor != 'Extrusão' and RUsetor != 'Estampo,corte e furo' and RUsetor != 'Utilidades':
-                        Local = container.selectbox('Local:',('Elétrica Predial','Artífice','Maquina de jatear','Talha Elétrica','Recuperação de ferramentas'),index=None,placeholder= 'Selecione')
+                        Local = container.selectbox('Local:',('Elétrica Predial','Artífice','Maquina de jatear','Talha Elétrica','Recuperação de ferramentas'),index=None,placeholder= 'Selecione!',help=help_local)
                     
                     if atd1:   
-                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True)
+                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True,help=help_imagem)
                         for uploaded_file in uploaded_files:
                             bytes_data = uploaded_file.read()
                     if not atd1:   
-                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True)
+                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True,help=help_imagem)
                         for uploaded_file in uploaded_files:
                             bytes_data = uploaded_file.read()
                 
@@ -1965,7 +2535,7 @@ if fLIDERES == 'Ivson Paulino':
                             st.checkbox("Estender", value=True, key="use_container_width")
                             df = load_dataa()
                             st.dataframe(df, use_container_width=st.session_state.use_container_width)
-                            numero_da_os = st.number_input("Selecione o numero da O.S que deseja DELETAR",min_value=1,max_value=1000,value=int(preenchimento[0]),placeholder="Selecione")
+                            numero_da_os = st.number_input("Selecione o numero da O.S que deseja DELETAR",min_value=1,max_value=1000,value=int(preenchimento[0]),placeholder="Selecione!")
                             dell = st.button('Excluir 🗑')
                             if dell:
                                 st.toast(f'Deletando O.S!')
@@ -2007,19 +2577,19 @@ if fLIDERES == 'Ivson Paulino':
                                         cursor.execute('PRAGMA foreign_keys = ON;')
                                         cursor.execute("INSERT INTO ids (ID_UNIC,HORA,DATA) VALUES (?,?,?)", (ids_shape_Ferramentaria,str(timenow),datenow))    
                                         cursor.execute("INSERT INTO Ferramentaria (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF,MANUTENTOR,ESPECIALIDADE,Local,MÊS,PARADA) VALUES (?,?,?,?,?,?, ?, ?, ?,?,?,?,?,?,?,?)", (ids_shape_Ferramentaria , str(Rsolicitante), str(Rsetor), str(Rstatus),str(Rniveldaocorrencia),datenow,str(timenow),Racao,'Não',None,None,manutentor,especialidades,Local,monthnow,'Sim'))
-                                        cursor.execute("INSERT INTO imagens (id,imagem,mes) VALUES (?,?,?)", (ids_shape_Ferramentaria,bytes_data,monthnow))
+                                        cursor.execute("INSERT INTO imagens (id,imagem_abertura,mes) VALUES (?,?,?)", (ids_shape_Ferramentaria,bytes_data,monthnow))
                                         conn.commit()
                                         
             with tab27:
                 statuses,sats,statuses1=st.columns([80,0.1,0.1])
                 with statuses:
-                    st.header('Ferramentaria', divider='rainbow')
+                    st.header(abertas_list, divider='blue')
                     st.button(' Atualize ↻')
                     with st.expander("Abertas"):
                         if whrlinhas13 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros22 = st.number_input("Selecione o numero da  OS",min_value=1,max_value=whrlinhas13,value=whrlinhas13,placeholder="Selecione")
+                            numros22 = st.number_input("Selecione o numero da  OS",min_value=1,max_value=whrlinhas13,value=whrlinhas13,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value= whrlinhas13)
                             numros23 = numros22-1
                             osespec5 = whrlinhas12.loc[numros23]
@@ -2030,13 +2600,13 @@ if fLIDERES == 'Ivson Paulino':
                             st.dataframe(df, use_container_width=st.session_state.use_container_width1)
 
             with tab28:
-                st.header('Ferramentaria', divider='rainbow')
+                st.header(finalizadas_list, divider='blue')
                 st.button(' Atualize ↻ ')
                 with st.expander("Finalizadas"):
                     if rd1 == 0:
                         st.success('Não há pendências')
                     else:
-                        numros16 = st.number_input("Selecione o numero da   O.S",min_value=1,max_value=rd1,value=rd1,placeholder="Selecione")
+                        numros16 = st.number_input("Selecione o numero da   O.S",min_value=1,max_value=rd1,value=rd1,placeholder="Selecione!")
                         st.metric(label="O.S Existentes", value= rd1)
                         numros17 = numros16-1
                         osespec6 = rd.loc[numros17]
@@ -2047,23 +2617,278 @@ if fLIDERES == 'Ivson Paulino':
                         st.dataframe(df, use_container_width=st.session_state.use_container_width2)
 
             with tab29:
-                st.header('Ferramentaria', divider='rainbow')
-                st.button(' Atualize ↻  ')
-                with st.expander("Geral"):
-                    if allln14 == 0:
-                        st.success('Não há pendências')
-                    else:
-                        numros20 = st.number_input("Selecione o numero da    O.S",min_value=1,max_value=allln14,value=allln14,placeholder="Selecione")
-                        st.metric(label="O.S Existentes", value= allln14)
-                        numros21 = numros20-1
-                        osespec7 = allln13.loc[numros21]
-                        def load_data():
-                            return pd.DataFrame(osespec7)
-                        st.checkbox("Estender", value=True, key= "use_container_width3")
-                        df = load_data()
-                        st.dataframe(df, use_container_width=st.session_state.use_container_width3)
-#PRODUCAO
-if fLIDERES == 'Maurilio Sales':
+                st.header (aviso_list,divider='blue')
+                omaga = st.multiselect('Selecione:',acao_list,max_selections=1)
+                if not omaga == []:
+                    corretivas = pd.read_sql_query(f"SELECT * FROM Ferramentaria WHERE AÇÃO = '{omaga[0]}'", conn)
+                    corretivas_shape = corretivas.shape[0]
+                if omaga == []:
+                    st.success('Escolha um tipo de ação')
+                else:
+                    st.metric(label="O.S Existentes", value=corretivas_shape)
+                    numros2 = st.number_input("Selecione o numero da O.S",min_value=1,max_value=corretivas_shape,value=corretivas_shape,placeholder="Selecione!")
+                    numros3 = numros2-1
+                    serie_pdf = corretivas.loc[numros3]
+                    def load_data():
+                        return pd.DataFrame(serie_pdf)
+                    st.checkbox("Estender", value=True, key="use_container_width17")
+                    df = load_data()
+                    st.dataframe(df, use_container_width=st.session_state.use_container_width17)
+                    dt = corretivas.loc[numros3]
+                    dt = dt.tolist()
+    
+                    with open(f"./Data/geral_Elétrica.pdf", 'rb') as file:
+                        pdf_reader = PyPDF2.PdfReader(file)
+                        bttn = st.download_button(
+                        label="Exportar O.S 🖨",
+                        key= "download_button",
+                        data= file,
+                        file_name=f"O.S {dt[0]}.pdf",
+                        mime='application/octet-stream'
+                    )
+                    usuario = 'Elétrica'
+                    cursor.execute(f'SELECT * FROM imagens WHERE id = {dt[0]}')
+                    if cursor.fetchall():
+                        cursor.execute(f'SELECT * FROM imagens WHERE id = {dt[0]}')
+                        imagens = cursor.fetchall()
+                        oe = imagens[0][1]
+                        imagem = Image.open(BytesIO(oe))
+
+                    localx = corretivas.loc[numros3]
+                    pmg = localx.tolist()
+
+                    Solicitante = 'Solicitante:'
+                    Data = 'Data:'
+                    Hora = 'Horario:'
+                    Setor = 'Setor:'
+                    Os = 'O.S:'
+                    maqx = 'Local:'
+                    dados = [Solicitante,Data,Hora,Setor,Os,maqx,'']
+                    img = Image.open('./Midia/ssmm.jpg')
+                    img1 = Image.open('./Midia/sales.jpeg')
+
+                    def hello(c,pmg):
+                        o = 0
+                        b = []
+                        for s in str(pmg[1]):
+                            if s.isalpha():
+                                o += 1
+                                tmh = 4 * o + 58 
+                                b.append(tmh)
+
+                        ct = []
+                        for s in str(pmg[2]):
+                            if not pmg[2] =='Estampo,embalagem,corte e furo':
+                                if s.isalpha():
+                                    o += 1
+                                    tmh = 4 * o + 268
+                                    ct.append(tmh)
+                                else:
+                                    ''
+                        idx = 0             
+                        for james in dados:
+                            idx = idx + 1
+                            largura_da_linha = 0.1
+                            width, height = 580, 50
+                            raio = 10
+                            if idx == 1:
+                            #SOLICITANTE
+                                t1,t2 = 15,730
+                                t3,t4 = 58,730
+                                t5,t6 = 20,662
+                                t7,t8 = 380,662
+                                t9,t10 = 500,210
+                                t11,t12 = 90,642
+
+                                texto = f'{pmg[1]}'
+                                text = f'{pmg[5]}'
+                                textox = 'Grau de ocorrência :'
+                                textoxx = 'Especialidade :'
+                                textos = ''
+                                x1, y1 = b[9], 728
+                                x2, y2 = 58, 728
+                                widt, heigh = 200, 30
+                                r,r1 = 18,630
+                                r2,r3 = 380,630
+                                k1,k2,k3,k4 = 250,680,250,420
+                            if idx == 2:
+                             #DAT
+                                t1,t2 = 15,705
+                                t3,t4 = 38,705
+                                t5,t6 = 18,583
+                                t7,t8 = 380,583
+                                t9,t10 = 500,210
+                                t11,t12 = 90,563
+
+                                texto = f'{pmg[6]}'
+                                text = f'{pmg[8]}'
+                                textox = 'Ação :'
+                                textoxx = 'Data de finalização :'
+                                textos = ''
+                                x1, y1 = 75, 703
+                                x2, y2 = 37, 703
+                                r,r1 = 18,550
+                                r2,r3 = 380,550
+                                k1,k2,k3,k4 = 350,680,350,420
+                            if idx == 3:
+                                #HORA
+                                t1,t2 = 250,730
+                                t3,t4 = 283,730
+                                t5,t6 = 18,513
+                                t7,t8 = 380,513
+                                t9,t10 = 500,210
+                                t11,t12 = 90,493
+
+                                texto = f'{pmg[7]}'
+                                text = f'{pmg[9]}'
+                                textox = 'Finalizada? :'
+                                textoxx = 'Horario de finalização :'
+                                textos = ''
+
+                                x1, y1 = 283, 728
+                                x2, y2 = 310, 728
+                                r,r1 = 18,480
+                                r2,r3 = 380,480
+                                k1,k2,k3,k4 = 500,10,580,10
+                            if idx == 4:
+                            #SETOR
+                                t1,t2 = 250,705
+                                t3,t4 = 275,705
+                                t5,t6 = 18,422
+                                t9,t10 = 510,15
+                                t11,t12 = 430,642
+
+                                texto = f'{pmg[2]}'
+                                text = f'{pmg[12]}'
+                                textox = 'Ocorrência :'
+                                textos = 'Bruno Kappaun'
+    
+                                x1, y1 = 275, 703
+                                x2, y2 = ct[0], 703
+                                widt, heigh = 560, 60
+                                r,r1 = 18,360
+                            if idx == 5:
+                                 #OS
+                                t1,t2 = 430,730
+                                t3,t4 = 448,730
+                                t5,t6 = 25,345
+                                t11,t12 = 430,563
+
+                                texto = f'N° 00{pmg[0]}'
+                                text = f'{pmg[10]}'
+                                textox = 'Visualização do problema:'
+                                x1, y1 = 448, 728
+                                x2, y2 = 475, 728
+                            if idx == 6:
+                            #maquina
+                                t1,t2 = 430,705
+                                t3,t4 = 455,705
+                                t5,t6 = 30,170
+                                t11,t12 = 430,493
+                                texto =f'{pmg[13]}'
+                                textox = 'Visualização pós problema:'
+                                text = f'{pmg[11]}'
+                                x1, y1 = 455, 703
+                                x2, y2 = 510, 703
+                            if idx == 7:
+                                t11,t12 = 25,410
+                                text = f'{pmg[3]}'
+            
+                            pdfmetrics.registerFont(TTFont('font', './Fontes/ASENINE_.ttf'))
+                            cor_do_texto = (0,0,0)
+                            font_name = 'font' 
+
+                            pdfmetrics.registerFont(TTFont('ASS', './Fontes/ASSINATURA.ttf'))
+                            cor_do_texto = (0,0,0)
+                            font_namex = 'ASS' 
+        
+                            textobject = c.beginText(t1, t2)
+                            textobject.setFont(font_name , 13)
+                            textobject.setTextOrigin(t1, t2)
+                            textobject.textLine(f"{james}")
+                            c.setFillColor(cor_do_texto)
+                            c.drawText(textobject)
+                            c.setLineWidth(largura_da_linha)
+                            c.line(x1,y1,x2,y2)
+    
+                            cor_do_texto = (0,0,1)
+                            textobjectx = c.beginText(t3, t4)
+                            textobjectx.setFont(font_name, 10)
+                            textobjectx.setTextOrigin(t3, t4)
+                            textobjectx.textLine(f"{texto}")
+                            c.setFillColor(cor_do_texto)
+                            c.drawText(textobjectx)
+
+                            cor_do_texto = (0,0,0)
+                            textobjectx = c.beginText(t5, t6)
+                            textobjectx.setFont(font_name, 10)
+                            textobjectx.setTextOrigin(t5, t6)
+                            textobjectx.textLine(f"{textox}")
+                            c.setFillColor(cor_do_texto)
+                            c.drawText(textobjectx)
+
+                            cor_do_texto = (0,0,0)
+                            textobjectx = c.beginText(t7, t8)
+                            textobjectx.setFont(font_name, 10)
+                            textobjectx.setTextOrigin(t7, t8)
+                            textobjectx.textLine(f"{textoxx}")
+                            c.setFillColor(cor_do_texto)
+                            c.drawText(textobjectx)
+
+                            cor_do_texto = (0,0,0)
+                            textobjectx = c.beginText(t9, t10)
+                            textobjectx.setFont(font_namex, 10)
+                            textobjectx.setTextOrigin(t9, t10)
+                            textobjectx.textLine(f"{textos}")
+                            c.setFillColor(cor_do_texto)
+                            c.drawText(textobjectx)
+
+                            cor_do_texto = (0,0,1)
+                            textobjectx = c.beginText(t11, t12)
+                            textobjectx.setFont(font_name, 10)
+                            textobjectx.setTextOrigin(t11, t12)
+                            textobjectx.textLine(f"{text}")
+                            c.setFillColor(cor_do_texto)
+                            c.drawText(textobjectx)
+
+                            raio = 5
+                            c.roundRect(r, r1, widt, heigh, raio, stroke=1, fill=0)
+
+                            width, height = 200, 30
+                            raio = 5
+                            c.roundRect(r2, r3, width, height, raio, stroke=1, fill=0)
+                            c.line(k1,k2,k3,k4)
+                        width, height = 700, 50
+                        raio = 10
+                        r,r1 = 8,800
+                        c.roundRect(r, r1, width, height, raio, stroke=1, fill=0)
+
+                        width, height = 580, 680
+                        raio = 10
+                        r,r1 = 8,0
+                        c.roundRect(r, r1, width, height, raio, stroke=1, fill=0)
+  
+                        x, y = 0,750
+                        c.drawInlineImage(img, x,y, width=600,height=100)
+                        x, y = 10,180
+                        x1,y1 = 10, 20
+                        if not corretivas.empty:
+                            cursor.execute(f'SELECT * FROM imagens WHERE id = {dt[0]}')
+                            if cursor.fetchall():
+                                cursor.execute(f'SELECT * FROM imagens WHERE id = {dt[0]}')
+                                imagens = cursor.fetchall()
+                                oe = imagens[0][1]
+                                oie = imagens[0][2]
+                                imagem = Image.open(BytesIO(oe))
+                                imagem2 = Image.open(BytesIO(oie))
+                                c.drawInlineImage(imagem2, x1,y1, width=400,height=145)
+                                c.drawInlineImage(imagem, x,y, width=400,height=145)   
+                
+                    c = canvas.Canvas(f"./Data/geral_{usuario}.pdf")
+                    hh = hello(c,pmg)
+                    c.save()
+
+if fLIDERES == 'Maurilio Sales/Alex Santos':
     if fSETOR == 'Produção':
         if senha == '1405':
             image = Image.open('./Midia/ssmm.jpg')
@@ -2073,12 +2898,11 @@ if fLIDERES == 'Maurilio Sales':
                 #cursor.execute("DROP TABLE PRODUCAO")
                 #conn.commit()
             with ps6:
-                st.title('Status e informações de O.S')
-
+                st.title(title_list)
             st.markdown("---")
-            tab30,tab31,tab32,tab33= st.tabs(["| Cadastro |","| O.S Abertas |","| O.S Finalizadas |","| Geral |"])
+            tab30,tab31,tab32,tab33= st.tabs(tabs_list_sol)
             with tab30:
-                st.header('Cadastro de ocorrências', divider='rainbow')
+                st.header(header_list, divider='blue')
                 col11,col12= st.columns([5,5])  
                 with col11:                  
                     atd1 = st.toggle('Atualizar os dados')
@@ -2087,7 +2911,7 @@ if fLIDERES == 'Maurilio Sales':
                            numros = 0
                            numros1 = 0
                         else:
-                            numros = st.number_input("Navegue por suas O.S para atualizar-las",min_value=1,max_value=rd7,value=rd7,placeholder="Selecione")
+                            numros = st.number_input("Navegue por suas O.S para atualizar-las",min_value=1,max_value=rd7,value=rd7,placeholder="Selecione!")
                             numros1 = numros-1
                             consulta1 = "SELECT * FROM PRODUCAO"
                         ros_oc = pd.read_sql_query(consulta1, conn)
@@ -2099,51 +2923,51 @@ if fLIDERES == 'Maurilio Sales':
                             
                     container = st.container(border=True)
                     if not atd1:
-                        Rsolicitante = container.selectbox('Solicitante:', ('Maurilio Sales',),index=0,placeholder='Selecione')
+                        Rsolicitante = container.selectbox('Solicitante:', ('Maurilio Sales','Alex Santos'),index=0,placeholder='Selecione!',help=help_solicitante)
                     if atd1:
-                        RUsolicitante = container.selectbox('Atualize o Solicitante:', ('Maurilio Sales',),index=0,placeholder='Atualize')
+                        RUsolicitante = container.selectbox('Atualize o Solicitante:', ('Maurilio Sales','Alex Santos'),index=0,placeholder='Atualize',help=help_solicitante)
                         
                     if not atd1:
-                        Rstatus = container.text_area('Atualize o tipo de Ocorrência:',value=None,placeholder='Insira sua ocôrrencia')
+                        Rstatus = container.text_area('Atualize o tipo de Ocorrência:',value=None,placeholder='Insira sua ocôrrencia',help=help_ocorrência)
                     if atd1:
-                        RUstatus = container.text_area('Tipo de Ocorrência:',value=preenchimento[3],placeholder='Insira sua ocôrrencia')
+                        RUstatus = container.text_area('Tipo de Ocorrência:',value=preenchimento[3],placeholder='Insira sua ocôrrencia',help=help_ocorrência)
                         
                     if not atd1:
-                        Rsetor = container.selectbox('Setor:', ('Produção',),index=0,placeholder='Selecione')
+                        Rsetor = container.selectbox('Setor:', ('Produção',),index=0,placeholder='Selecione!',help=help_setor)
                         RUsetor = ''
                     if atd1:
-                        RUsetor = container.selectbox('Aualize o Setor:', ('Produção',),index=0,placeholder='Atualize')
+                        RUsetor = container.selectbox('Aualize o Setor:', ('Produção',),index=0,placeholder='Atualize',help=help_setor)
                         Rsetor = ''
                     
                     if not atd1:
-                        Rniveldaocorrencia = container.selectbox('Nivel da ocorrência:', ('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None,placeholder='Selecione')
+                        Rniveldaocorrencia = container.selectbox('Nivel da ocorrência:', ('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None,placeholder='Selecione!',help=help_nivel_ocorrencia)
                     if atd1:
-                        RUniveldaocorrencia = container.selectbox('Atualize o Nivel da ocorrência:',('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None, placeholder='Atualize')
+                        RUniveldaocorrencia = container.selectbox('Atualize o Nivel da ocorrência:',('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None, placeholder='Atualize',help=help_nivel_ocorrencia)
 
                     if not atd1:
-                        Racao = container.selectbox('Tipo da ação:', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
+                        Racao = container.selectbox('Tipo da ação:', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione!',help=helpe_acao)
                     if atd1:
-                        RUacao = container.selectbox('Atualize o Tipo da ação:', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Atualize')
+                        RUacao = container.selectbox('Atualize o Tipo da ação:', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Atualize',help=helpe_acao)
 
                     if not atd1:
-                        especialidades = container.selectbox('Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Selecione')
+                        especialidades = container.selectbox('Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Selecione!',help=help_especialidade)
                     if atd1:
-                        especialidades = container.selectbox('Atualize á Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Atualize')
+                        especialidades = container.selectbox('Atualize á Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Atualize',help=help_especialidade)
                     
                     if not atd1:
-                        manutentor = container.selectbox('Tipo de manutenção:', ('Elétrica','Mecânica'),index=None,placeholder='Selecione')
+                        manutentor = container.selectbox('Tipo de manutenção:', ('Elétrica','Mecânica'),index=None,placeholder='Selecione!',help=help_manutentor)
                     if atd1:
-                        manutentor = container.selectbox('Tipo de manutenção:', ('Elétrica','Mecânica'),index=None,placeholder='Selecione')
+                        manutentor = container.selectbox('Tipo de manutenção:', ('Elétrica','Mecânica'),index=None,placeholder='Selecione!',help=help_manutentor)
                                                 
                     if Rsetor != 'Extrusão' and Rsetor != 'Estampo,corte e furo' and Rsetor != 'Utilidades' and RUsetor != 'Extrusão' and RUsetor != 'Estampo,corte e furo' and RUsetor != 'Utilidades':
-                        Local = container.selectbox('Local:',('Prensa - P8','Puller - 01','Puller - 02','Esticadeira - HEAD','Esticadeira - TAIL','Forno de Tarugo','Serra Fria','Forno de Envelhecimento','T1 - Belts','T2 - Belts','T3 - Belts','T4 - Belts','Prensa Excentrica - 01','Prensa Excentrica - 02','Serra Automatica','Serra Manual','Serra fita  - FRANHO','Rosqueadeira - MACHO 01','Rosqueadeira - COSSINETE 01','Rosqueadeira - COSSINETE 02','Maquina de jatear','Talha Elétrica','Embaladora Automatica','Elétrica Predial','Artífice','Recuperação de ferramentas','Casa de Bombas','Caixa D.Agua','Subestação - 01','Subestação - 02','Seladora manual - KT001','Seladora manual - KT002','Portão de automoveis','Portão de pedestres','Interfone'),index=None,placeholder= 'Selecione')
+                        Local = container.selectbox('Local:',('Prensa - P8','Puller - 01','Puller - 02','Esticadeira - HEAD','Esticadeira - TAIL','Forno de Tarugo','Serra Fria','Forno de Envelhecimento','T1 - Belts','T2 - Belts','T3 - Belts','T4 - Belts','Prensa Excentrica - 01','Prensa Excentrica - 02','Serra Automatica','Serra Manual','Serra fita  - FRANHO','Rosqueadeira - MACHO 01','Rosqueadeira - COSSINETE 01','Rosqueadeira - COSSINETE 02','Maquina de jatear','Talha Elétrica','Embaladora Automatica','Elétrica Predial','Artífice','Recuperação de ferramentas','Casa de Bombas','Caixa D.Agua','Subestação - 01','Subestação - 02','Seladora manual - KT001','Seladora manual - KT002','Portão de automoveis','Portão de pedestres','Interfone'),index=None,placeholder= 'Selecione!',help=help_local)
                     
                     if atd1:   
-                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True)
+                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True,help=help_imagem)
                         for uploaded_file in uploaded_files:
                             bytes_data = uploaded_file.read()
                     if not atd1:   
-                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True)
+                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True,help=help_imagem)
                         for uploaded_file in uploaded_files:
                             bytes_data = uploaded_file.read()
 
@@ -2159,7 +2983,7 @@ if fLIDERES == 'Maurilio Sales':
                             st.checkbox("Estender", value=True, key="use_container_width")
                             df = load_dataa()
                             st.dataframe(df, use_container_width=st.session_state.use_container_width)
-                            numero_da_os = st.number_input("Selecione o numero da O.S que deseja DELETAR",min_value=1,max_value=1000,value=int(preenchimento[0]),placeholder="Selecione")
+                            numero_da_os = st.number_input("Selecione o numero da O.S que deseja DELETAR",min_value=1,max_value=1000,value=int(preenchimento[0]),placeholder="Selecione!")
                             dell = st.button('Excluir 🗑')
                             if dell:
                                 st.toast(f'Deletando O.S!')
@@ -2171,7 +2995,7 @@ if fLIDERES == 'Maurilio Sales':
                 if 'OS' not in st.session_state:
                     st.session_state.OS = 0
                                     
-                if fLIDERES == 'Maurilio Sales':
+                if fLIDERES == 'Maurilio Sales/Alex Santos':
                     if fSETOR == 'Produção':
                         if senha == '1405':
                             if atd1:
@@ -2205,19 +3029,19 @@ if fLIDERES == 'Maurilio Sales':
                                         cursor.execute('PRAGMA foreign_keys = ON;')
                                         cursor.execute("INSERT INTO ids (ID_UNIC,HORA,DATA) VALUES (?,?,?)", (ids_shape_producao,str(timenow),datenow))                      
                                         cursor.execute("INSERT INTO PRODUCAO (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF,MANUTENTOR,ESPECIALIDADE,Local,MÊS,PARADA) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?)", (ids_shape_producao , str(Rsolicitante), str(Rsetor), str(Rstatus),str(Rniveldaocorrencia),datenow,str(timenow),Racao,'Não',None,None,manutentor,especialidades,Local,monthnow,'Sim'))
-                                        cursor.execute("INSERT INTO imagens (id,imagem,mes) VALUES (?,?,?)", (ids_shape_producao,bytes_data,monthnow))
+                                        cursor.execute("INSERT INTO imagens (id,imagem_abertura,mes) VALUES (?,?,?)", (ids_shape_producao,bytes_data,monthnow))
                                         conn.commit()
 
             with tab31:
                 statuses,sats,statuses1=st.columns([80,0.1,0.1])
                 with statuses:
-                    st.header('Produção', divider='rainbow')
+                    st.header(abertas_list, divider='blue')
                     st.button(' Atualize  ↻ ')
                     with st.expander("Abertas"):
                         if whrlinhas19 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros22 = st.number_input("Selecione o numero da  OS",min_value=1,max_value=whrlinhas19,value=whrlinhas19,placeholder="Selecione")
+                            numros22 = st.number_input("Selecione o numero da  OS",min_value=1,max_value=whrlinhas19,value=whrlinhas19,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value= whrlinhas19)
                             numros23 = numros22-1
                             osespec9 = whrlinhas18.loc[numros23]
@@ -2227,15 +3051,14 @@ if fLIDERES == 'Maurilio Sales':
                             df = load_data()
                             st.dataframe(df, use_container_width=st.session_state.use_container_width1)
 
-
             with tab32:
-                st.header('Produção', divider='rainbow')
+                st.header(finalizadas_list, divider='blue')
                 st.button(' Atualize   ↻ ')
                 with st.expander("Finalizadas"):
                     if rd5 == 0:
                         st.success('Não há pendências')
                     else:
-                        numros18 = st.number_input("Selecione o numero da   OS",min_value=1,max_value=rd5,value=rd5,placeholder="Selecione")
+                        numros18 = st.number_input("Selecione o numero da   OS",min_value=1,max_value=rd5,value=rd5,placeholder="Selecione!")
                         st.metric(label="O.S Existentes", value= rd5)
                         numros19 = numros18-1
                         osespec10 = rd4.loc[numros19]
@@ -2246,21 +3069,277 @@ if fLIDERES == 'Maurilio Sales':
                         st.dataframe(df, use_container_width=st.session_state.use_container_width2)
 
             with tab33:
-                st.header('Produção', divider='rainbow')
-                st.button('Atualize ↻    ')
-                with st.expander("Geral"):
-                    if allln16 == 0:
-                        st.success('Não há pendências')
-                    else:
-                        numros20 = st.number_input("Selecione o numero da    OS",min_value=1,max_value=allln16,value=allln16,placeholder="Selecione")
-                        st.metric(label="O.S Existentes", value= allln16)
-                        numros21 = numros20-1
-                        osespec11 = allln15.loc[numros21]
-                        def load_data():
-                            return pd.DataFrame(osespec11)
-                        st.checkbox("Estender", value=True, key= "use_container_width3")
-                        df = load_data()
-                        st.dataframe(df, use_container_width=st.session_state.use_container_width3)
+                st.header (aviso_list,divider='blue')
+                omaga = st.multiselect('Selecione:',acao_list,max_selections=1)
+                if not omaga == []:
+                    corretivas = pd.read_sql_query(f"SELECT * FROM PRODUCAO WHERE AÇÃO = '{omaga[0]}'", conn)
+                    corretivas_shape = corretivas.shape[0]
+                if omaga == []:
+                    st.success('Escolha um tipo de ação')
+                else:
+                    st.metric(label="O.S Existentes", value=corretivas_shape)
+                    numros2 = st.number_input("Selecione o numero da O.S",min_value=1,max_value=corretivas_shape,value=corretivas_shape,placeholder="Selecione!")
+                    numros3 = numros2-1
+                    serie_pdf = corretivas.loc[numros3]
+                    def load_data():
+                        return pd.DataFrame(serie_pdf)
+                    st.checkbox("Estender", value=True, key="use_container_width17")
+                    df = load_data()
+                    st.dataframe(df, use_container_width=st.session_state.use_container_width17)
+                    dt = corretivas.loc[numros3]
+                    dt = dt.tolist()
+    
+                    with open(f"./Data/geral_Elétrica.pdf", 'rb') as file:
+                        pdf_reader = PyPDF2.PdfReader(file)
+                        bttn = st.download_button(
+                        label="Exportar O.S 🖨",
+                        key= "download_button",
+                        data= file,
+                        file_name=f"O.S {dt[0]}.pdf",
+                        mime='application/octet-stream'
+                    )
+                    usuario = 'Elétrica'
+                    cursor.execute(f'SELECT * FROM imagens WHERE id = {dt[0]}')
+                    if cursor.fetchall():
+                        cursor.execute(f'SELECT * FROM imagens WHERE id = {dt[0]}')
+                        imagens = cursor.fetchall()
+                        oe = imagens[0][1]
+                        imagem = Image.open(BytesIO(oe))
+
+                    localx = corretivas.loc[numros3]
+                    pmg = localx.tolist()
+
+                    Solicitante = 'Solicitante:'
+                    Data = 'Data:'
+                    Hora = 'Horario:'
+                    Setor = 'Setor:'
+                    Os = 'O.S:'
+                    maqx = 'Local:'
+                    dados = [Solicitante,Data,Hora,Setor,Os,maqx,'']
+                    img = Image.open('./Midia/ssmm.jpg')
+                    img1 = Image.open('./Midia/sales.jpeg')
+
+                    def hello(c,pmg):
+                        o = 0
+                        b = []
+                        for s in str(pmg[1]):
+                            if s.isalpha():
+                                o += 1
+                                tmh = 4 * o + 58 
+                                b.append(tmh)
+
+                        ct = []
+                        for s in str(pmg[2]):
+                            if not pmg[2] =='Estampo,embalagem,corte e furo':
+                                if s.isalpha():
+                                    o += 1
+                                    tmh = 4 * o + 268
+                                    ct.append(tmh)
+                                else:
+                                    ''
+                        idx = 0             
+                        for james in dados:
+                            idx = idx + 1
+                            largura_da_linha = 0.1
+                            width, height = 580, 50
+                            raio = 10
+                            if idx == 1:
+                            #SOLICITANTE
+                                t1,t2 = 15,730
+                                t3,t4 = 58,730
+                                t5,t6 = 20,662
+                                t7,t8 = 380,662
+                                t9,t10 = 500,210
+                                t11,t12 = 90,642
+
+                                texto = f'{pmg[1]}'
+                                text = f'{pmg[5]}'
+                                textox = 'Grau de ocorrência :'
+                                textoxx = 'Especialidade :'
+                                textos = ''
+                                x1, y1 = b[9], 728
+                                x2, y2 = 58, 728
+                                widt, heigh = 200, 30
+                                r,r1 = 18,630
+                                r2,r3 = 380,630
+                                k1,k2,k3,k4 = 250,680,250,420
+                            if idx == 2:
+                             #DAT
+                                t1,t2 = 15,705
+                                t3,t4 = 38,705
+                                t5,t6 = 18,583
+                                t7,t8 = 380,583
+                                t9,t10 = 500,210
+                                t11,t12 = 90,563
+
+                                texto = f'{pmg[6]}'
+                                text = f'{pmg[8]}'
+                                textox = 'Ação :'
+                                textoxx = 'Data de finalização :'
+                                textos = ''
+                                x1, y1 = 75, 703
+                                x2, y2 = 37, 703
+                                r,r1 = 18,550
+                                r2,r3 = 380,550
+                                k1,k2,k3,k4 = 350,680,350,420
+                            if idx == 3:
+                                #HORA
+                                t1,t2 = 250,730
+                                t3,t4 = 283,730
+                                t5,t6 = 18,513
+                                t7,t8 = 380,513
+                                t9,t10 = 500,210
+                                t11,t12 = 90,493
+
+                                texto = f'{pmg[7]}'
+                                text = f'{pmg[9]}'
+                                textox = 'Finalizada? :'
+                                textoxx = 'Horario de finalização :'
+                                textos = ''
+
+                                x1, y1 = 283, 728
+                                x2, y2 = 310, 728
+                                r,r1 = 18,480
+                                r2,r3 = 380,480
+                                k1,k2,k3,k4 = 500,10,580,10
+                            if idx == 4:
+                            #SETOR
+                                t1,t2 = 250,705
+                                t3,t4 = 275,705
+                                t5,t6 = 18,422
+                                t9,t10 = 510,15
+                                t11,t12 = 430,642
+
+                                texto = f'{pmg[2]}'
+                                text = f'{pmg[12]}'
+                                textox = 'Ocorrência :'
+                                textos = 'Bruno Kappaun'
+    
+                                x1, y1 = 275, 703
+                                x2, y2 = ct[0], 703
+                                widt, heigh = 560, 60
+                                r,r1 = 18,360
+                            if idx == 5:
+                                 #OS
+                                t1,t2 = 430,730
+                                t3,t4 = 448,730
+                                t5,t6 = 25,345
+                                t11,t12 = 430,563
+
+                                texto = f'N° 00{pmg[0]}'
+                                text = f'{pmg[10]}'
+                                textox = 'Visualização do problema:'
+                                x1, y1 = 448, 728
+                                x2, y2 = 475, 728
+                            if idx == 6:
+                            #maquina
+                                t1,t2 = 430,705
+                                t3,t4 = 455,705
+                                t5,t6 = 30,170
+                                t11,t12 = 430,493
+                                texto =f'{pmg[13]}'
+                                textox = 'Visualização pós problema:'
+                                text = f'{pmg[11]}'
+                                x1, y1 = 455, 703
+                                x2, y2 = 510, 703
+                            if idx == 7:
+                                t11,t12 = 25,410
+                                text = f'{pmg[3]}'
+            
+                            pdfmetrics.registerFont(TTFont('font', './Fontes/ASENINE_.ttf'))
+                            cor_do_texto = (0,0,0)
+                            font_name = 'font' 
+
+                            pdfmetrics.registerFont(TTFont('ASS', './Fontes/ASSINATURA.ttf'))
+                            cor_do_texto = (0,0,0)
+                            font_namex = 'ASS' 
+        
+                            textobject = c.beginText(t1, t2)
+                            textobject.setFont(font_name , 13)
+                            textobject.setTextOrigin(t1, t2)
+                            textobject.textLine(f"{james}")
+                            c.setFillColor(cor_do_texto)
+                            c.drawText(textobject)
+                            c.setLineWidth(largura_da_linha)
+                            c.line(x1,y1,x2,y2)
+    
+                            cor_do_texto = (0,0,1)
+                            textobjectx = c.beginText(t3, t4)
+                            textobjectx.setFont(font_name, 10)
+                            textobjectx.setTextOrigin(t3, t4)
+                            textobjectx.textLine(f"{texto}")
+                            c.setFillColor(cor_do_texto)
+                            c.drawText(textobjectx)
+
+                            cor_do_texto = (0,0,0)
+                            textobjectx = c.beginText(t5, t6)
+                            textobjectx.setFont(font_name, 10)
+                            textobjectx.setTextOrigin(t5, t6)
+                            textobjectx.textLine(f"{textox}")
+                            c.setFillColor(cor_do_texto)
+                            c.drawText(textobjectx)
+
+                            cor_do_texto = (0,0,0)
+                            textobjectx = c.beginText(t7, t8)
+                            textobjectx.setFont(font_name, 10)
+                            textobjectx.setTextOrigin(t7, t8)
+                            textobjectx.textLine(f"{textoxx}")
+                            c.setFillColor(cor_do_texto)
+                            c.drawText(textobjectx)
+
+                            cor_do_texto = (0,0,0)
+                            textobjectx = c.beginText(t9, t10)
+                            textobjectx.setFont(font_namex, 10)
+                            textobjectx.setTextOrigin(t9, t10)
+                            textobjectx.textLine(f"{textos}")
+                            c.setFillColor(cor_do_texto)
+                            c.drawText(textobjectx)
+
+                            cor_do_texto = (0,0,1)
+                            textobjectx = c.beginText(t11, t12)
+                            textobjectx.setFont(font_name, 10)
+                            textobjectx.setTextOrigin(t11, t12)
+                            textobjectx.textLine(f"{text}")
+                            c.setFillColor(cor_do_texto)
+                            c.drawText(textobjectx)
+
+                            raio = 5
+                            c.roundRect(r, r1, widt, heigh, raio, stroke=1, fill=0)
+
+                            width, height = 200, 30
+                            raio = 5
+                            c.roundRect(r2, r3, width, height, raio, stroke=1, fill=0)
+                            c.line(k1,k2,k3,k4)
+                        width, height = 700, 50
+                        raio = 10
+                        r,r1 = 8,800
+                        c.roundRect(r, r1, width, height, raio, stroke=1, fill=0)
+
+                        width, height = 580, 680
+                        raio = 10
+                        r,r1 = 8,0
+                        c.roundRect(r, r1, width, height, raio, stroke=1, fill=0)
+  
+                        x, y = 0,750
+                        c.drawInlineImage(img, x,y, width=600,height=100)
+                        x, y = 10,180
+                        x1,y1 = 10, 20
+                        if not corretivas.empty:
+                            cursor.execute(f'SELECT * FROM imagens WHERE id = {dt[0]}')
+                            if cursor.fetchall():
+                                cursor.execute(f'SELECT * FROM imagens WHERE id = {dt[0]}')
+                                imagens = cursor.fetchall()
+                                oe = imagens[0][1]
+                                oie = imagens[0][2]
+                                imagem = Image.open(BytesIO(oe))
+                                imagem2 = Image.open(BytesIO(oie))
+                                c.drawInlineImage(imagem2, x1,y1, width=400,height=145)
+                                c.drawInlineImage(imagem, x,y, width=400,height=145)   
+                
+                    c = canvas.Canvas(f"./Data/geral_{usuario}.pdf")
+                    hh = hello(c,pmg)
+                    c.save()
+
 #Administrativo
 #GERAL Administrativo
 allln17 = pd.read_sql_query("SELECT * FROM Administrativo", conn)
@@ -2289,12 +3368,12 @@ if fLIDERES == 'Gilson Freitas':
                 #cursor.execute("DROP TABLE Administrativo")
                 #conn.commit()
             with ps6:
-                st.title('Status e informações de O.S')
+                st.title(title_list)
 
             st.markdown("---")
-            tab34,tab35,tab36,tab37= st.tabs(["| Cadastro |","| O.S Abertas |","| O.S Finalizadas |","| Geral |"])
+            tab34,tab35,tab36,tab37= st.tabs(tabs_list_sol)
             with tab34:
-                st.header('Cadastro de ocorrências', divider='rainbow')
+                st.header(header_list, divider='blue')
                 col13,col14= st.columns([5,5])  
                 with col13:                  
                     atd1 = st.toggle('Atualizar os dados')
@@ -2303,7 +3382,7 @@ if fLIDERES == 'Gilson Freitas':
                             numros = 0
                             numros1 = 0
                         else:
-                            numros = st.number_input("Navegue por suas O.S para atualizar-las",min_value=1,max_value=allln18 ,value=allln18 ,placeholder="Selecione")
+                            numros = st.number_input("Navegue por suas O.S para atualizar-las",min_value=1,max_value=allln18 ,value=allln18 ,placeholder="Selecione!")
                             numros1 = numros-1
                             consulta1 = "SELECT * FROM Administrativo"
                         ros_oc = pd.read_sql_query(consulta1, conn)
@@ -2315,52 +3394,52 @@ if fLIDERES == 'Gilson Freitas':
                         
                     container = st.container(border=True)
                     if not atd1:
-                        Rsolicitante = container.selectbox('Solicitante:', ('Gilson Freitas',),index=0,placeholder='Selecione')
+                        Rsolicitante = container.selectbox('Solicitante:', ('Gilson Freitas',),index=0,placeholder='Selecione!',help=help_solicitante)
                     if atd1:
-                        RUsolicitante = container.selectbox('Atualize o Solicitante', ('Gilson Freitas',),index=0,placeholder='Atualize')
+                        RUsolicitante = container.selectbox('Atualize o Solicitante', ('Gilson Freitas',),index=0,placeholder='Atualize',help=help_solicitante)
                     
                     if not atd1:
-                        Rstatus = container.text_area('Tipo de Ocorrência:',value=None,placeholder='Insira sua ocôrrencia')
+                        Rstatus = container.text_area('Tipo de Ocorrência:',value=None,placeholder='Insira sua ocôrrencia',help=help_ocorrência)
                     if atd1:
-                        RUstatus = container.text_area('Atualize o tipo de Ocorrência:',value=preenchimento[3],placeholder='Insira sua ocôrrencia')
+                        RUstatus = container.text_area('Atualize o tipo de Ocorrência:',value=preenchimento[3],placeholder='Insira sua ocôrrencia',help=help_ocorrência)
                     
                     if not atd1:
-                        Rsetor = container.selectbox('Setor:', ('Administrativo',),index=0,placeholder='Selecione')
+                        Rsetor = container.selectbox('Setor:', ('Administrativo',),index=0,placeholder='Selecione!',help=help_setor)
                         RUsetor = ''
                     if atd1:
-                        RUsetor = container.selectbox('Aualize o Setor:', ('Administrativo',),index=0,placeholder='Atualize')
+                        RUsetor = container.selectbox('Aualize o Setor:', ('Administrativo',),index=0,placeholder='Atualize',help=help_setor)
                         Rsetor = ''
                     
                     if not atd1:
-                        Rniveldaocorrencia = container.selectbox('Nivel da ocorrência:', ('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None,placeholder='Selecione')
+                        Rniveldaocorrencia = container.selectbox('Nivel da ocorrência:', ('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None,placeholder='Selecione!',help=help_nivel_ocorrencia)
                     if atd1:
-                        RUniveldaocorrencia = container.selectbox('Atualize o Nivel da ocorrência:',('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None, placeholder='Atualize')
+                        RUniveldaocorrencia = container.selectbox('Atualize o Nivel da ocorrência:',('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None, placeholder='Atualize',help=help_nivel_ocorrencia)
 
                     if not atd1:
-                        Racao = container.selectbox('Tipo da ação:', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
+                        Racao = container.selectbox('Tipo da ação:', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione!',help=helpe_acao)
                     if atd1:
-                        RUacao = container.selectbox('Atualize o Tipo da ação:', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Atualize')
+                        RUacao = container.selectbox('Atualize o Tipo da ação:', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Atualize',help=helpe_acao)
 
                     if not atd1:
-                        especialidades = container.selectbox('Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Selecione')
+                        especialidades = container.selectbox('Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Selecione!',help=help_especialidade)
                     if atd1:
-                        especialidades = container.selectbox('Atualize á Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Atualize')
+                        especialidades = container.selectbox('Atualize á Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Atualize',help=help_especialidade)
                     
                     if not atd1:
-                        manutentor = container.selectbox('Tipo de manutenção:', ('Elétrica','Mecânica'),index=None,placeholder='Selecione')
+                        manutentor = container.selectbox('Tipo de manutenção:', ('Elétrica','Mecânica'),index=None,placeholder='Selecione!',help=help_manutentor)
                     if atd1:
-                        manutentor = container.selectbox('Tipo de manutenção:', ('Elétrica','Mecânica'),index=None,placeholder='Selecione')
+                        manutentor = container.selectbox('Tipo de manutenção:', ('Elétrica','Mecânica'),index=None,placeholder='Selecione!',help=help_manutentor)
                                         
                     if Rsetor != 'Extrusão' and Rsetor != 'Estampo,corte e furo' and Rsetor != 'Utilidades' and RUsetor != 'Extrusão' and RUsetor != 'Estampo,corte e furo' and RUsetor != 'Utilidades':
-                        Local = container.selectbox('Local:',('Elétrica Predial','Artífice','Casa de Bombas','Caixa D.Agua','Subestação - 01','Subestação - 02','Portão de automoveis','Portão de pedestres','Interfone'),index=None,placeholder= 'Selecione')
+                        Local = container.selectbox('Local:',('Elétrica Predial','Artífice','Casa de Bombas','Caixa D.Agua','Subestação - 01','Subestação - 02','Portão de automoveis','Portão de pedestres','Interfone'),index=None,placeholder= 'Selecione!',help=help_local)
                     
     
                     if atd1:   
-                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True)
+                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True,help=help_imagem)
                         for uploaded_file in uploaded_files:
                             bytes_data = uploaded_file.read()
                     if not atd1:   
-                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True)
+                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True,help=help_imagem)
                         for uploaded_file in uploaded_files:
                             bytes_data = uploaded_file.read()
 
@@ -2376,7 +3455,7 @@ if fLIDERES == 'Gilson Freitas':
                             st.checkbox("Estender", value=True, key="use_container_width")
                             df = load_dataa()
                             st.dataframe(df, use_container_width=st.session_state.use_container_width)
-                            numero_da_os = st.number_input("Selecione o numero da O.S que deseja DELETAR",min_value=1,max_value=1000,value=int(preenchimento[0]),placeholder="Selecione")
+                            numero_da_os = st.number_input("Selecione o numero da O.S que deseja DELETAR",min_value=1,max_value=1000,value=int(preenchimento[0]),placeholder="Selecione!")
                             dell = st.button('Excluir 🗑')
                             if dell:
                                 st.toast(f'Deletando O.S!')
@@ -2419,19 +3498,19 @@ if fLIDERES == 'Gilson Freitas':
                                         cursor.execute('PRAGMA foreign_keys = ON;')
                                         cursor.execute("INSERT INTO ids (ID_UNIC,HORA,DATA) VALUES (?,?,?)", (ids_shape_Administrativo,str(timenow),datenow))
                                         cursor.execute("INSERT INTO Administrativo (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF,MANUTENTOR,ESPECIALIDADE,Local,MÊS,PARADA) VALUES (?,?,?,?,?, ?,  ?,?, ?, ?,?,?,?,?,?,?)", (ids_shape_Administrativo , str(Rsolicitante), str(Rsetor), str(Rstatus),str(Rniveldaocorrencia),datenow,str(timenow),Racao,'Não',None,None,manutentor,especialidades,Local,monthnow,'Sim'))
-                                        cursor.execute("INSERT INTO imagens (id,imagem,mes) VALUES (?,?,?)", (ids_shape_Administrativo,bytes_data,monthnow))
+                                        cursor.execute("INSERT INTO imagens (id,imagem_abertura,mes) VALUES (?,?,?)", (ids_shape_Administrativo,bytes_data,monthnow))
                                         conn.commit()
                                         
             with tab35:
                 statuses,sats,statuses1=st.columns([80,0.1,0.1])
                 with statuses:
-                    st.header('Administrativo', divider='rainbow')
+                    st.header(abertas_list, divider='blue')
                     st.button(' Atualize ↻  ')
                     with st.expander("Abertas"):
                         if whrlinhas24 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros22 = st.number_input("Selecione o numero da  O.S",min_value=1,max_value=whrlinhas24,value=whrlinhas24,placeholder="Selecione")
+                            numros22 = st.number_input("Selecione o numero da  O.S",min_value=1,max_value=whrlinhas24,value=whrlinhas24,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value= whrlinhas24)
                             numros23 = numros22-1
                             osespec13 = whrlinhas23.loc[numros23]
@@ -2442,14 +3521,14 @@ if fLIDERES == 'Gilson Freitas':
                             st.dataframe(df, use_container_width=st.session_state.use_container_width1)
 
             with tab36:
-                st.header('Administrativo', divider='rainbow')
+                st.header(finalizadas_list, divider='blue')
                 st.button('Atualize ↻        ')
                 with st.expander("Finalizadas"):
                     if rd9 == 0:
                         st.success('Não há pendências')
                         
                     else:
-                        numros20 = st.number_input("Selecione o numero da   O.S",min_value=1,max_value=rd9,value=rd9,placeholder="Selecione")
+                        numros20 = st.number_input("Selecione o numero da   O.S",min_value=1,max_value=rd9,value=rd9,placeholder="Selecione!")
                         st.metric(label="O.S Existentes", value= rd9)
                         numros21 = numros20-1
                         osespec14 = rd8.loc[numros21]
@@ -2460,13 +3539,13 @@ if fLIDERES == 'Gilson Freitas':
                         st.dataframe(df, use_container_width=st.session_state.use_container_width2)
 
             with tab37:
-                st.header('Administrativo', divider='rainbow')
+                st.header(aviso_list, divider='blue')
                 st.button('Atualize ↻   ')
                 with st.expander("Geral"):
                     if allln18 == 0:
                         st.success('Não há pendências')
                     else:
-                        numros20 = st.number_input("Selecione o numero da    O.S",min_value=1,max_value=allln18,value=allln18,placeholder="Selecione")
+                        numros20 = st.number_input("Selecione o numero da    O.S",min_value=1,max_value=allln18,value=allln18,placeholder="Selecione!")
                         st.metric(label="O.S Existentes", value= allln18)
                         numros21 = numros20-1
                         osespec15 = allln17.loc[numros21]
@@ -2476,7 +3555,6 @@ if fLIDERES == 'Gilson Freitas':
                         df = load_data()
                         st.dataframe(df, use_container_width=st.session_state.use_container_width3)
 
-#Comercial
 #GERAL Comercial
 allln19 = pd.read_sql_query("SELECT * FROM Comercial", conn)
 allln20 = allln19.shape[0]
@@ -2504,11 +3582,11 @@ if fLIDERES == 'Adriely Lemos':
                 #cursor.execute("DROP TABLE Comercial")
                 #conn.commit()
             with ps6:
-                st.title('Status e informações de O.S')
+                st.title(title_list)
             st.markdown("---")
-            tab38,tab39,tab40,tab41= st.tabs(["| Cadastro |","| O.S Abertas |","| O.S Finalizadas |","| Geral |"])
+            tab38,tab39,tab40,tab41= st.tabs(tabs_list_sol)
             with tab38:
-                st.header('Cadastro de ocorrências', divider='rainbow')
+                st.header(header_list, divider='blue')
                 col15,col16= st.columns([5,5])  
                 with col15:                  
                     atd1 = st.toggle('Atualizar os dados')
@@ -2517,7 +3595,7 @@ if fLIDERES == 'Adriely Lemos':
                             numros = 0
                             numros1 = 0
                         else:
-                            numros = st.number_input("Navegue por suas O.S para atualizar-las",min_value=1,max_value=whrlinhas29 ,value=whrlinhas29 ,placeholder="Selecione")
+                            numros = st.number_input("Navegue por suas O.S para atualizar-las",min_value=1,max_value=whrlinhas29 ,value=whrlinhas29 ,placeholder="Selecione!")
                             numros1 = numros-1
                             consulta1 = "SELECT * FROM Comercial"
                         ros_oc = pd.read_sql_query(consulta1, conn)
@@ -2529,52 +3607,52 @@ if fLIDERES == 'Adriely Lemos':
 
                     container = st.container(border=True)
                     if not atd1:
-                        Rsolicitante = container.selectbox('Solicitante:', ('Adriely Lemos',),index=0,placeholder='Selecione')
+                        Rsolicitante = container.selectbox('Solicitante:', ('Adriely Lemos',),index=0,placeholder='Selecione!',help=help_solicitante)
                     if atd1:
-                        RUsolicitante = container.selectbox('Atualize o Solicitante:', ('Adriely Lemos',),index=0,placeholder='Atualize')
+                        RUsolicitante = container.selectbox('Atualize o Solicitante:', ('Adriely Lemos',),index=0,placeholder='Atualize',help=help_solicitante)
                     
                     if not atd1:
-                        Rstatus = container.text_area('Tipo de Ocorrência:',value=None,placeholder='Insira sua ocôrrencia')
+                        Rstatus = container.text_area('Tipo de Ocorrência:',value=None,placeholder='Insira sua ocôrrencia',help=help_ocorrência)
                     if atd1:
-                        RUstatus = container.text_area('Atualize o tipo de Ocorrência:',value=preenchimento[3],placeholder='Insira sua ocôrrencia')
+                        RUstatus = container.text_area('Atualize o tipo de Ocorrência:',value=preenchimento[3],placeholder='Insira sua ocôrrencia',help=help_ocorrência)
                     
                     if not atd1:
-                        Rsetor = container.selectbox('Setor:', ('Comercial',),index=0,placeholder='Selecione')
+                        Rsetor = container.selectbox('Setor:', ('Comercial',),index=0,placeholder='Selecione!',help=help_setor)
                         RUsetor = ''
                     if atd1:
-                        RUsetor = container.selectbox('Aualize o Setor:', ('Comercial',),index=0,placeholder='Atualize')
+                        RUsetor = container.selectbox('Aualize o Setor:', ('Comercial',),index=0,placeholder='Atualize',help=help_setor)
                         Rsetor = ''
                     
                     if not atd1:
-                        Rniveldaocorrencia = container.selectbox('Nivel da ocorrência:', ('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None,placeholder='Selecione')
+                        Rniveldaocorrencia = container.selectbox('Nivel da ocorrência:', ('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None,placeholder='Selecione!',help=help_nivel_ocorrencia)
                     if atd1:
-                        RUniveldaocorrencia = container.selectbox('Atualize o Nivel da ocorrência:',('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None, placeholder='Atualize')
+                        RUniveldaocorrencia = container.selectbox('Atualize o Nivel da ocorrência:',('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None, placeholder='Atualize',help=help_nivel_ocorrencia)
 
                     if not atd1:
-                        Racao = container.selectbox('Tipo da ação:', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
+                        Racao = container.selectbox('Tipo da ação:', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione!',help=helpe_acao)
                     if atd1:
-                        RUacao = container.selectbox('Atualize o Tipo da ação:', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Atualize')
+                        RUacao = container.selectbox('Atualize o Tipo da ação:', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Atualize',help=helpe_acao)
 
                     if not atd1:
-                        especialidades = container.selectbox('Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Selecione')
+                        especialidades = container.selectbox('Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Selecione!',help=help_especialidade)
                     if atd1:
-                        especialidades = container.selectbox('Atualize á Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Atualize')
+                        especialidades = container.selectbox('Atualize á Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Atualize',help=help_especialidade)
                     
                     if not atd1:
-                        manutentor = container.selectbox('Tipo de manutenção:', ('Elétrica','Mecânica'),index=None,placeholder='Selecione')
+                        manutentor = container.selectbox('Tipo de manutenção:', ('Elétrica','Mecânica'),index=None,placeholder='Selecione!',help=help_manutentor)
                     if atd1:
-                        manutentor = container.selectbox('Tipo de manutenção:', ('Elétrica','Mecânica'),index=None,placeholder='Selecione')
+                        manutentor = container.selectbox('Tipo de manutenção:', ('Elétrica','Mecânica'),index=None,placeholder='Selecione!',help=help_manutentor)
                                         
                             
                     if Rsetor != 'Extrusão' and Rsetor != 'Estampo,corte e furo' and Rsetor != 'Utilidades' and RUsetor != 'Extrusão' and RUsetor != 'Estampo,corte e furo' and RUsetor != 'Utilidades':
-                        Local = container.selectbox('Local:',('Elétrica Predial','Artífice'),index=None,placeholder= 'Selecione')
+                        Local = container.selectbox('Local:',('Elétrica Predial','Artífice'),index=None,placeholder= 'Selecione!',help=help_local)
                     
                     if atd1:   
-                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True)
+                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True,help=help_imagem)
                         for uploaded_file in uploaded_files:
                             bytes_data = uploaded_file.read()
                     if not atd1:   
-                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True)
+                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True,help=help_imagem)
                         for uploaded_file in uploaded_files:
                             bytes_data = uploaded_file.read()
 
@@ -2590,7 +3668,7 @@ if fLIDERES == 'Adriely Lemos':
                             st.checkbox("Estender", value=True, key="use_container_width")
                             df = load_dataa()
                             st.dataframe(df, use_container_width=st.session_state.use_container_width)
-                            numero_da_os = st.number_input("Selecione o numero da O.S que deseja DELETAR",min_value=1,max_value=1000,value=int(preenchimento[0]),placeholder="Selecione")
+                            numero_da_os = st.number_input("Selecione o numero da O.S que deseja DELETAR",min_value=1,max_value=1000,value=int(preenchimento[0]),placeholder="Selecione!")
                             dell = st.button('Excluir 🗑')
                             if dell:
                                 st.toast(f'Deletando O.S!')
@@ -2634,19 +3712,19 @@ if fLIDERES == 'Adriely Lemos':
                                         cursor.execute('PRAGMA foreign_keys = ON;')
                                         cursor.execute("INSERT INTO ids (ID_UNIC,HORA,DATA) VALUES (?,?,?)", (ids_shape_Comercial,str(timenow),datenow))
                                         cursor.execute("INSERT INTO Comercial (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF,MANUTENTOR,ESPECIALIDADE,Local,MÊS,PARADA) VALUES (?, ?,?,?,? ,?, ?, ?, ?,?,?,?,?,?,?,?)", (ids_shape_Comercial , str(Rsolicitante), str(Rsetor), str(Rstatus),str(Rniveldaocorrencia),datenow,str(timenow),Racao,'Não',None,None,manutentor,especialidades,Local,monthnow,'Sim'))
-                                        cursor.execute("INSERT INTO imagens (id,imagem,mes) VALUES (?,?,?)", (ids_shape_Comercial,bytes_data,monthnow))
+                                        cursor.execute("INSERT INTO imagens (id,imagem_abertura,mes) VALUES (?,?,?)", (ids_shape_Comercial,bytes_data,monthnow))
                                         conn.commit()
                                              
             with tab39:
                 statuses,sats,statuses1=st.columns([80,0.1,0.1])
                 with statuses:
-                    st.header('Comercial', divider='rainbow')
+                    st.header(abertas_list, divider='blue')
                     st.button('  Atualize ↻ ')
                     with st.expander("Abertas"):
                         if whrlinhas29 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros22 = st.number_input("Selecione o numero da  OS",min_value=1,max_value=whrlinhas29,value=whrlinhas29,placeholder="Selecione")
+                            numros22 = st.number_input("Selecione o numero da  OS",min_value=1,max_value=whrlinhas29,value=whrlinhas29,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value= whrlinhas29)
                             numros23 = numros22-1
                             osespec17 = whrlinhas28.loc[numros23]
@@ -2657,14 +3735,14 @@ if fLIDERES == 'Adriely Lemos':
                             st.dataframe(df, use_container_width=st.session_state.use_container_width1)
 
             with tab40:
-                st.header('Comercial', divider='rainbow')
+                st.header(finalizadas_list, divider='blue')
                 st.button(' Atualize ↻  ' )
                 with st.expander("Finalizadas"):
                     if rd13 == 0:
                         st.success('Não há pendências')
                         
                     else:
-                        numros22 = st.number_input("Selecione o numero da   OS",min_value=1,max_value=rd13,value=rd13,placeholder="Selecione")
+                        numros22 = st.number_input("Selecione o numero da   OS",min_value=1,max_value=rd13,value=rd13,placeholder="Selecione!")
                         st.metric(label="O.S Existentes", value= rd13)
                         numros23 = numros22-1
                         osespec18 = rd12.loc[numros23]
@@ -2675,13 +3753,13 @@ if fLIDERES == 'Adriely Lemos':
                         st.dataframe(df, use_container_width=st.session_state.use_container_width2)
 
             with tab41:
-                st.header('Comercial', divider='rainbow')
+                st.header(aviso_list, divider='blue')
                 st.button(' Atualize ↻ ')
                 with st.expander("Geral"):
                     if allln20 == 0:
                         st.success('Não há pendências')
                     else:
-                        numros22 = st.number_input("Selecione o numero da    OS",min_value=1,max_value=allln20,value=allln20,placeholder="Selecione")
+                        numros22 = st.number_input("Selecione o numero da    OS",min_value=1,max_value=allln20,value=allln20,placeholder="Selecione!")
                         st.metric(label="O.S Existentes", value= allln20)
                         numros23 = numros22-1
                         osespec19 = allln19.loc[numros23]
@@ -2719,12 +3797,12 @@ if fLIDERES == 'Willian Oliveira':
                 #cursor.execute("DROP TABLE EXPEDICAO")
                 #conn.commit()
             with ps6:
-                st.title('Status e informações de O.S')
+                st.title(title_list)
 
             st.markdown("---")
-            tab42,tab43,tab44,tab45= st.tabs(["| Cadastro |","| O.S Abertas |","| O.S Finalizadas |","| Geral| "])
+            tab42,tab43,tab44,tab45= st.tabs(tabs_list_sol)
             with tab42:
-                st.header('Cadastro de ocorrências', divider='rainbow')
+                st.header(header_list, divider='blue')
                 col17,col18= st.columns([5,5])  
                 with col17:
                     atd1 = st.toggle('Atualizar os dados')
@@ -2733,7 +3811,7 @@ if fLIDERES == 'Willian Oliveira':
                             numros1 = 0
                             numros = 0
                         else:
-                            numros = st.number_input("Navegue por suas O.S para atualizar-las",min_value=1,max_value=allln22,value=allln22,placeholder="Selecione")
+                            numros = st.number_input("Navegue por suas O.S para atualizar-las",min_value=1,max_value=allln22,value=allln22,placeholder="Selecione!")
                             numros1 = numros-1
                             consulta1 = "SELECT * FROM EXPEDICAO"
                         ros_oc = pd.read_sql_query(consulta1, conn)
@@ -2745,51 +3823,51 @@ if fLIDERES == 'Willian Oliveira':
                         
                     container = st.container(border=True)
                     if not atd1:
-                        Rsolicitante = container.selectbox('Solicitante:', ('Willian Oliveira',),index=0,placeholder='Selecione')
+                        Rsolicitante = container.selectbox('Solicitante:', ('Willian Oliveira',),index=0,placeholder='Selecione!',help=help_solicitante)
                     if atd1:
-                        RUsolicitante = container.selectbox('Atualize o Solicitante:', ('Willian Oliveira',),index=0,placeholder='Atualize')
+                        RUsolicitante = container.selectbox('Atualize o Solicitante:', ('Willian Oliveira',),index=0,placeholder='Atualize',help=help_solicitante)
                     
                     if not atd1:
-                        Rstatus = container.text_area('Tipo de Ocorrência:',value=None,placeholder='Insira sua ocôrrencia')
+                        Rstatus = container.text_area('Tipo de Ocorrência:',value=None,placeholder='Insira sua ocôrrencia',help=help_ocorrência)
                     if atd1:
-                        RUstatus = container.text_area('Atualize o tipo de Ocorrência:',value=preenchimento[3],placeholder='Insira sua ocôrrencia')
+                        RUstatus = container.text_area('Atualize o tipo de Ocorrência:',value=preenchimento[3],placeholder='Insira sua ocôrrencia',help=help_ocorrência)
                     
                     if not atd1:
-                        Rsetor = container.selectbox('Setor:', ('Expedição',),index=0,placeholder='Selecione')
+                        Rsetor = container.selectbox('Setor:', ('Expedição',),index=0,placeholder='Selecione!',help=help_setor)
                         RUsetor = ''
                     if atd1:
-                        RUsetor = container.selectbox('Aualize o Setor:', ('Expedição',),index=0,placeholder='Atualize')
+                        RUsetor = container.selectbox('Aualize o Setor:', ('Expedição',),index=0,placeholder='Atualize',help=help_setor)
                         Rsetor = ''
                     
                     if not atd1:
-                        Rniveldaocorrencia = container.selectbox('Nivel da ocorrência:', ('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None,placeholder='Selecione')
+                        Rniveldaocorrencia = container.selectbox('Nivel da ocorrência:', ('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None,placeholder='Selecione!',help=help_nivel_ocorrencia)
                     if atd1:
-                        RUniveldaocorrencia = container.selectbox('Atualize o Nivel da ocorrência:',('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None, placeholder='Atualize')
+                        RUniveldaocorrencia = container.selectbox('Atualize o Nivel da ocorrência:',('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None, placeholder='Atualize',help=help_nivel_ocorrencia)
 
                     if not atd1:
-                        Racao = container.selectbox('Tipo da ação:', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
+                        Racao = container.selectbox('Tipo da ação:', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione!',help=helpe_acao)
                     if atd1:
-                        RUacao = container.selectbox('Atualize o Tipo da ação:', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Atualize')
+                        RUacao = container.selectbox('Atualize o Tipo da ação:', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Atualize',help=helpe_acao)
 
                     if not atd1:
-                        especialidades = container.selectbox('Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Selecione')
+                        especialidades = container.selectbox('Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Selecione!',help=help_especialidade)
                     if atd1:
-                        especialidades = container.selectbox('Atualize á Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Atualize')
+                        especialidades = container.selectbox('Atualize á Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Atualize',help=help_especialidade)
                     
                     if not atd1:
-                        manutentor = container.selectbox('Tipo de manutenção:', ('Elétrica','Mecânica'),index=None,placeholder='Selecione')
+                        manutentor = container.selectbox('Tipo de manutenção:', ('Elétrica','Mecânica'),index=None,placeholder='Selecione!',help=help_manutentor)
                     if atd1:
-                        manutentor = container.selectbox('Tipo de manutenção:', ('Elétrica','Mecânica'),index=None,placeholder='Selecione')
+                        manutentor = container.selectbox('Tipo de manutenção:', ('Elétrica','Mecânica'),index=None,placeholder='Selecione!',help=help_manutentor)
                    
                     if Rsetor != 'Extrusão' and Rsetor != 'Estampo,corte e furo' and Rsetor != 'Utilidades' and RUsetor != 'Extrusão' and RUsetor != 'Estampo,corte e furo' and RUsetor != 'Utilidades':
-                        Local = container.selectbox('Local:',('Elétrica Predial','Artífice'),index=None,placeholder= 'Selecione')
+                        Local = container.selectbox('Local:',('Elétrica Predial','Artífice'),index=None,placeholder= 'Selecione!',help=help_local)
                     
                     if atd1:   
-                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True)
+                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True,help=help_imagem)
                         for uploaded_file in uploaded_files:
                             bytes_data = uploaded_file.read()
                     if not atd1:   
-                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True)
+                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True,help=help_imagem)
                         for uploaded_file in uploaded_files:
                             bytes_data = uploaded_file.read()
 
@@ -2805,7 +3883,7 @@ if fLIDERES == 'Willian Oliveira':
                             st.checkbox("Estender", value=True, key="use_container_width")
                             df = load_dataa()
                             st.dataframe(df, use_container_width=st.session_state.use_container_width)
-                            numero_da_os = st.number_input("Selecione o numero da O.S que deseja DELETAR",min_value=1,max_value=1000,value=int(preenchimento[0]),placeholder="Selecione")
+                            numero_da_os = st.number_input("Selecione o numero da O.S que deseja DELETAR",min_value=1,max_value=1000,value=int(preenchimento[0]),placeholder="Selecione!")
                             dell = st.button('Excluir 🗑')
                             if dell:
                                 st.toast(f'Deletando O.S!')
@@ -2845,19 +3923,19 @@ if fLIDERES == 'Willian Oliveira':
                                         cursor.execute('PRAGMA foreign_keys = ON;')
                                         cursor.execute("INSERT INTO ids (ID_UNIC,HORA,DATA) VALUES (?,?,?)", (ids_shape_expedicao,str(timenow),datenow))
                                         cursor.execute("INSERT INTO EXPEDICAO (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF,MANUTENTOR,ESPECIALIDADE,Local,MÊS,PARADA) VALUES (?,?,?,?,?, ?,?, ?, ?, ?,?,?,?,?,?,?)", (ids_shape_expedicao, str(Rsolicitante), str(Rsetor), str(Rstatus),str(Rniveldaocorrencia),datenow,str(timenow),Racao,'Não',None,None,manutentor,especialidades,Local,monthnow,'Sim'))
-                                        cursor.execute("INSERT INTO imagens (id,imagem,mes) VALUES (?,?,?)", (ids_shape_expedicao,bytes_data,monthnow))
+                                        cursor.execute("INSERT INTO imagens (id,imagem_abertura,mes) VALUES (?,?,?)", (ids_shape_expedicao,bytes_data,monthnow))
                                         conn.commit()
                                     
             with tab43:
                 statuses,sats,statuses1=st.columns([80,0.1,0.1])
                 with statuses:
-                    st.header('Expedição', divider='rainbow')
+                    st.header(abertas_list, divider='blue')
                     st.button('Atualize ↻')
                     with st.expander("Abertas"):
                         if whrlinhas34 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros24 = st.number_input("Selecione o numero da  OS",min_value=1,max_value=whrlinhas34,value=whrlinhas34,placeholder="Selecione")
+                            numros24 = st.number_input("Selecione o numero da  OS",min_value=1,max_value=whrlinhas34,value=whrlinhas34,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value= whrlinhas34)
                             numros25 = numros24-1
                             osespec21 = whrlinhas33.loc[numros25]
@@ -2868,13 +3946,13 @@ if fLIDERES == 'Willian Oliveira':
                             st.dataframe(df, use_container_width=st.session_state.use_container_width1)
 
             with tab44:
-                st.header('Expedição', divider='rainbow')
+                st.header(finalizadas_list, divider='blue')
                 st.button('Atualize ↻ ')
                 with st.expander("Finalizadas"):
                     if rd17 == 0:
                         st.success('Não há pendências')
                     else:
-                        numros24 = st.number_input("Selecione o numero da   OS",min_value=1,max_value=rd17,value=rd17,placeholder="Selecione")
+                        numros24 = st.number_input("Selecione o numero da   OS",min_value=1,max_value=rd17,value=rd17,placeholder="Selecione!")
                         st.metric(label="O.S Existentes", value= rd17)
                         numros25 = numros24-1
                         osespec22 = rd16.loc[numros25]
@@ -2885,13 +3963,13 @@ if fLIDERES == 'Willian Oliveira':
                         st.dataframe(df, use_container_width=st.session_state.use_container_width2)
 
             with tab45:
-                st.header('Expedição', divider='rainbow')
+                st.header(aviso_list, divider='blue')
                 st.button('Atualize ↻  ')
                 with st.expander("Geral"):
                     if allln22 == 0:
                         st.success('Não há pendências')
                     else:
-                        numros24 = st.number_input("Selecione o numero da    OS",min_value=1,max_value=allln22,value=allln22,placeholder="Selecione")
+                        numros24 = st.number_input("Selecione o numero da    OS",min_value=1,max_value=allln22,value=allln22,placeholder="Selecione!")
                         st.metric(label="O.S Existentes", value= allln22)
                         numros25 = numros24-1
                         osespec23 = allln21.loc[numros25]
@@ -2929,12 +4007,12 @@ if fLIDERES == 'Cesar Augusto':
                 #cursor.execute("DROP TABLE Serralharia")
                 #conn.commit()
             with ps6:
-                st.title('Status e informações de O.S')
+                st.title(title_list)
 
             st.markdown("---")
-            tab46,tab47,tab48,tab49= st.tabs(["| Cadastro |","| O.S Abertas |","| O.S Finalizadas |","| Geral |"])
+            tab46,tab47,tab48,tab49= st.tabs(tabs_list_sol)
             with tab46:
-                st.header('Cadastro de ocorrências', divider='rainbow')
+                st.header(header_list, divider='blue')
                 col19,col20= st.columns([5,5])  
                 with col19:                  
                     atd1 = st.toggle('Atualizar os dados')
@@ -2943,7 +4021,7 @@ if fLIDERES == 'Cesar Augusto':
                             numros = 0
                             numros1 = 0
                         else:
-                            numros = st.number_input("Navegue por suas O.S para atualizar-las",min_value=1,max_value=allln24 ,value=allln24 ,placeholder="Selecione")
+                            numros = st.number_input("Navegue por suas O.S para atualizar-las",min_value=1,max_value=allln24 ,value=allln24 ,placeholder="Selecione!")
                             numros1 = numros-1
                             consulta1 = "SELECT * FROM Serralharia"
                         ros_oc = pd.read_sql_query(consulta1, conn)
@@ -2955,51 +4033,51 @@ if fLIDERES == 'Cesar Augusto':
 
                     container = st.container(border=True)
                     if not atd1:
-                        Rsolicitante = container.selectbox('Solicitante:', ('Cesar Augusto',),index=0,placeholder='Selecione')
+                        Rsolicitante = container.selectbox('Solicitante:', ('Cesar Augusto',),index=0,placeholder='Selecione!',help=help_solicitante)
                     if atd1:
-                        RUsolicitante = container.selectbox('Atualize o Solicitante:', ('Cesar Augusto',),index=0,placeholder='Atualize')
+                        RUsolicitante = container.selectbox('Atualize o Solicitante:', ('Cesar Augusto',),index=0,placeholder='Atualize',help=help_solicitante)
                     
                     if not atd1:
-                        Rstatus = container.text_area('Tipo de Ocorrência:',value=None,placeholder='Insira sua ocôrrencia')
+                        Rstatus = container.text_area('Tipo de Ocorrência:',value=None,placeholder='Insira sua ocôrrencia',help=help_ocorrência)
                     if atd1:
-                        RUstatus = container.text_area('Atualize o tipo de Ocorrência:',value=preenchimento[3],placeholder='Insira sua ocôrrencia')
+                        RUstatus = container.text_area('Atualize o tipo de Ocorrência:',value=preenchimento[3],placeholder='Insira sua ocôrrencia',help=help_ocorrência)
                     
                     if not atd1:
-                        Rsetor = container.selectbox('Setor:', ('Serralharia',),index=0,placeholder='Selecione')
+                        Rsetor = container.selectbox('Setor:', ('Serralharia',),index=0,placeholder='Selecione!',help=help_setor)
                         RUsetor = ''
                     if atd1:
-                        RUsetor = container.selectbox('Aualize o Setor:', ('Serralharia',),index=0,placeholder='Atualize')
+                        RUsetor = container.selectbox('Aualize o Setor:', ('Serralharia',),index=0,placeholder='Atualize',help=help_setor)
                         Rsetor = ''
                     
                     if not atd1:
-                        Rniveldaocorrencia = container.selectbox('Nivel da ocorrência:', ('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None,placeholder='Selecione')
+                        Rniveldaocorrencia = container.selectbox('Nivel da ocorrência:', ('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None,placeholder='Selecione!',help=help_nivel_ocorrencia)
                     if atd1:
-                        RUniveldaocorrencia = container.selectbox('Atualize o Nivel da ocorrência:',('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None, placeholder='Atualize')
+                        RUniveldaocorrencia = container.selectbox('Atualize o Nivel da ocorrência:',('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None, placeholder='Atualize',help=help_nivel_ocorrencia)
 
                     if not atd1:
-                        Racao = container.selectbox('Tipo da ação:', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
+                        Racao = container.selectbox('Tipo da ação:', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione!',help=helpe_acao)
                     if atd1:
-                        RUacao = container.selectbox('Atualize o Tipo da ação:', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Atualize')
+                        RUacao = container.selectbox('Atualize o Tipo da ação:', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Atualize',help=helpe_acao)
 
                     if not atd1:
-                        especialidades = container.selectbox('Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Selecione')
+                        especialidades = container.selectbox('Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Selecione!',help=help_especialidade)
                     if atd1:
-                        especialidades = container.selectbox('Atualize á Especialidade:',('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Atualize')
+                        especialidades = container.selectbox('Atualize á Especialidade:',('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Atualize',help=help_especialidade)
                     
                     if not atd1:
-                        manutentor = container.selectbox('Tipo de manutenção:', ('Elétrica','Mecânica'),index=None,placeholder='Selecione')
+                        manutentor = container.selectbox('Tipo de manutenção:', ('Elétrica','Mecânica'),index=None,placeholder='Selecione!',help=help_manutentor)
                     if atd1:
-                        manutentor = container.selectbox('Tipo de manutenção:', ('Elétrica','Mecânica'),index=None,placeholder='Selecione')
+                        manutentor = container.selectbox('Tipo de manutenção:', ('Elétrica','Mecânica'),index=None,placeholder='Selecione!',help=help_manutentor)
                                           
                     if Rsetor != 'Extrusão' and Rsetor != 'Estampo,corte e furo' and Rsetor != 'Utilidades' and RUsetor != 'Extrusão' and RUsetor != 'Estampo,corte e furo' and RUsetor != 'Utilidades':
-                        Local = container.selectbox('Local:',('Elétrica Predial','Artífice','Rosqueadeira - COSSINETE 01','Rosqueadeira - COSSINETE 02','Serra fita - FRANHO'),index=None,placeholder= 'Selecione')
+                        Local = container.selectbox('Local:',('Elétrica Predial','Artífice','Rosqueadeira - COSSINETE 01','Rosqueadeira - COSSINETE 02','Serra fita - FRANHO'),index=None,placeholder= 'Selecione!',help=help_local)
                     
                     if atd1:   
-                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True)
+                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True,help=help_imagem)
                         for uploaded_file in uploaded_files:
                             bytes_data = uploaded_file.read()
                     if not atd1:   
-                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True)
+                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True,help=help_imagem)
                         for uploaded_file in uploaded_files:
                             bytes_data = uploaded_file.read()
 
@@ -3015,7 +4093,7 @@ if fLIDERES == 'Cesar Augusto':
                             st.checkbox("Estender", value=True, key="use_container_width")
                             df = load_dataa()
                             st.dataframe(df, use_container_width=st.session_state.use_container_width)
-                            numero_da_os = st.number_input("Selecione o numero da O.S que deseja DELETAR",min_value=1,max_value=1000,value=preenchimento[0],placeholder="Selecione")
+                            numero_da_os = st.number_input("Selecione o numero da O.S que deseja DELETAR",min_value=1,max_value=1000,value=preenchimento[0],placeholder="Selecione!")
                             dell = st.button('Excluir 🗑')
                             if dell:
                                 st.toast(f'Deletando O.S!')
@@ -3056,19 +4134,19 @@ if fLIDERES == 'Cesar Augusto':
                                         cursor.execute('PRAGMA foreign_keys = ON;')
                                         cursor.execute("INSERT INTO ids (ID_UNIC,HORA,DATA) VALUES (?,?,?)", (ids_shape_Serralharia,str(timenow),datenow))
                                         cursor.execute("INSERT INTO Serralharia (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF,MANUTENTOR,ESPECIALIDADE,Local,MÊS,PARADA) VALUES (?,?,?,?,?, ?, ?, ?, ?,?,?,?,?,?,?,?)", (ids_shape_Serralharia, str(Rsolicitante), str(Rsetor), str(Rstatus),str(Rniveldaocorrencia),datenow,str(timenow),Racao,'Não',None,None,manutentor,especialidades,Local,monthnow,'Sim'))
-                                        cursor.execute("INSERT INTO imagens (id,imagem,mes) VALUES (?,?,?)", (ids_shape_Serralharia,bytes_data,monthnow))
+                                        cursor.execute("INSERT INTO imagens (id,imagem_abertura,mes) VALUES (?,?,?)", (ids_shape_Serralharia,bytes_data,monthnow))
                                         conn.commit()
                                                     
             with tab47:
                 statuses,sats,statuses1=st.columns([80,0.1,0.1])
                 with statuses:
-                    st.header('Serralharia', divider='rainbow')
+                    st.header(abertas_list, divider='blue')
                     st.button('Atualize ↻')
                     with st.expander("Abertas"):
                         if whrlinhas39 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros26 = st.number_input("Selecione o numero da  OS",min_value=1,max_value=whrlinhas39,value=whrlinhas39,placeholder="Selecione")
+                            numros26 = st.number_input("Selecione o numero da  OS",min_value=1,max_value=whrlinhas39,value=whrlinhas39,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value= whrlinhas39)
                             numros27 = numros26-1
                             osespec25 = whrlinhas38.loc[numros27]
@@ -3079,13 +4157,13 @@ if fLIDERES == 'Cesar Augusto':
                             st.dataframe(df, use_container_width=st.session_state.use_container_width1)
 
             with tab48:
-                st.header('Serralharia', divider='rainbow')
+                st.header(finalizadas_list, divider='blue')
                 st.button('Atualize ↻ ')
                 with st.expander("Finalizadas"):
                     if rd21 == 0:
                         st.success('Não há pendências')
                     else:
-                        numros26 = st.number_input("Selecione o numero da   OS",min_value=1,max_value=rd21,value=rd21,placeholder="Selecione")
+                        numros26 = st.number_input("Selecione o numero da   OS",min_value=1,max_value=rd21,value=rd21,placeholder="Selecione!")
                         st.metric(label="O.S Existentes", value= rd21)
                         numros27 = numros26-1
                         osespec26 = rd20.loc[numros27]
@@ -3096,13 +4174,13 @@ if fLIDERES == 'Cesar Augusto':
                         st.dataframe(df, use_container_width=st.session_state.use_container_width2)
 
             with tab49:
-                st.header('Serralharia', divider='rainbow')
+                st.header(aviso_list, divider='blue')
                 st.button('Atualize ↻  ')
                 with st.expander("Geral"):
                     if allln24 == 0:
                         st.success('Não há pendências')
                     else:
-                        numros26 = st.number_input("Selecione o numero da    OS",min_value=1,max_value=allln24,value=allln24,placeholder="Selecione")
+                        numros26 = st.number_input("Selecione o numero da    OS",min_value=1,max_value=allln24,value=allln24,placeholder="Selecione!")
                         st.metric(label="O.S Existentes", value= allln24)
                         numros27 = numros26-1
                         osespec27 = allln23.loc[numros27]
@@ -3144,12 +4222,12 @@ if fLIDERES == 'Filipe Leite':
                 #cursor.execute("DROP TABLE TI")
                 #conn.commit()
             with ps6:
-                st.title('Status e informações de O.S')
+                st.title(title_list)
 
             st.markdown("---")
-            tab50,tab51,tab52,tab53= st.tabs(["| Cadastro |","| O.S Abertas |","| O.S Finalizadas |","| Geral |"])
+            tab50,tab51,tab52,tab53= st.tabs(tabs_list_sol)
             with tab50:
-                st.header('Cadastro de ocorrências', divider='rainbow')
+                st.header(header_list, divider='blue')
                 col21,col22= st.columns([5,5])  
                 with col21:                  
                     atd1 = st.toggle('Atualizar os dados')
@@ -3158,7 +4236,7 @@ if fLIDERES == 'Filipe Leite':
                             numros = 0
                             numros1 = 0
                         else:
-                            numros = st.number_input("Navegue por suas O.S para atualizar-las",min_value=1,max_value=allln26 ,value=allln26 ,placeholder="Selecione")
+                            numros = st.number_input("Navegue por suas O.S para atualizar-las",min_value=1,max_value=allln26 ,value=allln26 ,placeholder="Selecione!")
                             numros1 = numros-1
                             consulta1 = "SELECT * FROM TI"
                         ros_oc = pd.read_sql_query(consulta1, conn)
@@ -3167,56 +4245,58 @@ if fLIDERES == 'Filipe Leite':
                             preenchimento = preenchimento.tolist()
                         else:
                             [None,None,None,None,None,None,None,None,None,None,None,None,None,None]
+
                     container = st.container(border=True)
                     if not atd1:
-                        Rsolicitante = container.selectbox('Solicitante:', ('Filipe Leite',),index=0,placeholder='Selecione')
+                        Rsolicitante = container.selectbox('Solicitante:', ('Filipe Leite',),index=0,placeholder='Selecione!',help=help_solicitante)
                     if atd1:
-                        RUsolicitante = container.selectbox('Atualize o Solicitante:', ('Filipe Leite',),index=0,placeholder='Atualize')
+                        RUsolicitante = container.selectbox('Atualize o Solicitante:', ('Filipe Leite',),index=0,placeholder='Atualize',help=help_solicitante)
                     
                     if not atd1:
-                        Rstatus = container.text_area('Tipo de Ocorrência:',value=None,placeholder='Insira sua ocôrrencia')
+                        Rstatus = container.text_area('Tipo de Ocorrência:',value=None,placeholder='Insira sua ocôrrencia',help=help_ocorrência)
                     if atd1:
-                        RUstatus = container.text_area('Atualize o tipo de Ocorrência:',value=preenchimento[3],placeholder='Insira sua ocôrrencia')
+                        RUstatus = container.text_area('Atualize o tipo de Ocorrência:',value=preenchimento[3],placeholder='Insira sua ocôrrencia',help=help_ocorrência)
                     
                     if not atd1:
-                        Rsetor = container.selectbox('Setor:', ('Tecnologia da Informação',),index=0,placeholder='Selecione')
+                        Rsetor = container.selectbox('Setor:', ('Tecnologia da Informação',),index=0,placeholder='Selecione!',help=help_setor)
                         RUsetor = ''
                     if atd1:
-                        RUsetor = container.selectbox('Aualize o Setor:', ('Tecnologia da Informação',),index=0,placeholder='Atualize')
+                        RUsetor = container.selectbox('Aualize o Setor:', ('Tecnologia da Informação',),index=0,placeholder='Atualize',help=help_setor)
                         Rsetor = ''
                     
                     if not atd1:
-                        Rniveldaocorrencia = container.selectbox('Nivel da ocorrência:', ('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None,placeholder='Selecione')
+                        Rniveldaocorrencia = container.selectbox('Nivel da ocorrência:', ('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None,placeholder='Selecione!',help=help_nivel_ocorrencia)
                     if atd1:
-                        RUniveldaocorrencia = container.selectbox('Atualize o Nivel da ocorrência:',('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None, placeholder='Atualize')
+                        RUniveldaocorrencia = container.selectbox('Atualize o Nivel da ocorrência:',('Emergência','Muito urgênte','Pouco urgênte','Urgênte'),index=None, placeholder='Atualize',help=help_nivel_ocorrencia)
 
                     if not atd1:
-                        Racao = container.selectbox('Tipo da ação:', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione')
+                        Racao = container.selectbox('Tipo da ação:', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Selecione!',help=helpe_acao)
                     if atd1:
-                        RUacao = container.selectbox('Atualize o Tipo da ação:', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Atualize')
+                        RUacao = container.selectbox('Atualize o Tipo da ação:', ('Corretiva','Preventiva','Preditiva'),index=None,placeholder='Atualize',help=helpe_acao)
 
                     if not atd1:
-                        especialidades = container.selectbox('Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Selecione')
+                        especialidades = container.selectbox('Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Selecione!',help=help_especialidade)
                     if atd1:
-                        especialidades = container.selectbox('Atualize á Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Atualize')
+                        especialidades = container.selectbox('Atualize á Especialidade:', ('Falhas Elétricas','Elétrônica','Rede Industrial','Desgaste Mecânico','Erro de Logica','Problemas Hidraulicos','Problemas Pneumaticas','Lubrificação','Problemas Térmicos','Falhas na Automação','Problemas de Software','Impactos externos','Aferição','Reinstalação','Instalação','Recuperação','Melhoria','Reabastecimento','Ajuste','Instalação e Ajuste','Reinstalação e Ajuste','Soldagem'),index=None,placeholder='Atualize',help=help_especialidade)
                     
                     if not atd1:
-                        manutentor = container.selectbox('Tipo de manutenção:', ('Elétrica','Mecânica'),index=None,placeholder='Selecione')
+                        manutentor = container.selectbox('Tipo de manutenção:', ('Elétrica','Mecânica'),index=None,placeholder='Selecione!',help=help_manutentor)
                     if atd1:
-                        manutentor = container.selectbox('Tipo de manutenção:', ('Elétrica','Mecânica'),index=None,placeholder='Selecione')
+                        manutentor = container.selectbox('Tipo de manutenção:', ('Elétrica','Mecânica'),index=None,placeholder='Selecione!',help=help_manutentor)
                                         
                     if Rsetor != 'Extrusão' and Rsetor != 'Estampo,corte e furo' and Rsetor != 'Utilidades' and RUsetor != 'Extrusão' and RUsetor != 'Estampo,corte e furo' and RUsetor != 'Utilidades':
-                        Local = container.selectbox('Local:',('Elétrica Predial','Artífice'),index=None,placeholder= 'Selecione')
+                        Local = container.selectbox('Local:',('Elétrica Predial','Artífice'),index=None,placeholder= 'Selecione!',help=help_local)
                     
                     if atd1:   
-                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True)
+                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True,help=help_imagem)
                         for uploaded_file in uploaded_files:
+
                             bytes_data = uploaded_file.read()
                     if not atd1:   
-                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True)
+                        uploaded_files = container.file_uploader("Envie uma imagem da ocorrência:", accept_multiple_files=True,help=help_imagem)
                         for uploaded_file in uploaded_files:
                             bytes_data = uploaded_file.read()
-
+                
                 with col22:
                     if atd1:
                         st.metric(label="O.S Existentes", value= allln26)
@@ -3229,7 +4309,7 @@ if fLIDERES == 'Filipe Leite':
                             st.checkbox("Estender", value=True, key="use_container_width")
                             df = load_dataa()
                             st.dataframe(df, use_container_width=st.session_state.use_container_width)
-                            numero_da_os = st.number_input("Selecione o numero da O.S que deseja DELETAR",min_value=1,max_value=1000,value=int(preenchimento[0]),placeholder="Selecione")
+                            numero_da_os = st.number_input("Selecione o numero da O.S que deseja DELETAR",min_value=1,max_value=1000,value=int(preenchimento[0]),placeholder="Selecione!")
                             dell = st.button('Excluir 🗑')
                             if dell:
                                 st.toast(f'Deletando O.S!')
@@ -3271,20 +4351,20 @@ if fLIDERES == 'Filipe Leite':
                                         cursor.execute('PRAGMA foreign_keys = ON;')
                                         cursor.execute("INSERT INTO ids (ID_UNIC,HORA,DATA) VALUES (?,?,?)", (ids_shape_ti,str(timenow),datenow))
                                         cursor.execute("INSERT INTO TI (OS,SOLICITANTE,SETOR,OCORRENCIA,GRAU,DATA,HORA,AÇÃO,FINALIZADA,DATAF,HORAF,MANUTENTOR,ESPECIALIDADE,Local,MÊS,PARADA) VALUES (?,?,?,?,?,?, ?, ?, ?, ?,?,?,?,?,?,?)", (ids_shape_ti, str(Rsolicitante), str(Rsetor), str(Rstatus),str(Rniveldaocorrencia),datenow,str(timenow),Racao,'Não',None,None,manutentor,especialidades,Local,monthnow,'Sim'))
-                                        cursor.execute("INSERT INTO imagens (id,imagem,mes) VALUES (?,?,?)", (ids_shape_ti,bytes_data,monthnow))
+                                        cursor.execute("INSERT INTO imagens (id,imagem_abertura,mes) VALUES (?,?,?)", (ids_shape_ti,bytes_data,monthnow))
                                         conn.commit()
                                         conn.close()
 
             with tab51:
                 statuses,sats,statuses1=st.columns([80,0.1,0.1])
                 with statuses:
-                    st.header('T.I', divider='rainbow')
+                    st.header(abertas_list, divider='blue')
                     st.button('Atualize ↻')
                     with st.expander("Abertas"):
                         if whrlinhas44 == 0:
                             st.success('Não há pendências')
                         else:
-                            numros28 = st.number_input("Selecione o numero da  OS",min_value=1,max_value=whrlinhas44,value=whrlinhas44,placeholder="Selecione")
+                            numros28 = st.number_input("Selecione o numero da  OS",min_value=1,max_value=whrlinhas44,value=whrlinhas44,placeholder="Selecione!")
                             st.metric(label="O.S Existentes", value= whrlinhas44)
                             numros29 = numros28-1
                             osespec29 = whrlinhas43.loc[numros29]
@@ -3295,13 +4375,13 @@ if fLIDERES == 'Filipe Leite':
                             st.dataframe(df, use_container_width=st.session_state.use_container_width1)
 
             with tab52:
-                st.header('T.I', divider='rainbow')
+                st.header(finalizadas_list, divider='blue')
                 st.button('Atualize ↻ ')
                 with st.expander("Finalizadas"):
                     if rd73 == 0:
                         st.success('Não há pendências')
                     else:
-                        numros28 = st.number_input("Selecione o numero da   OS",min_value=1,max_value=rd73,value=rd73,placeholder="Selecione")
+                        numros28 = st.number_input("Selecione o numero da   OS",min_value=1,max_value=rd73,value=rd73,placeholder="Selecione!")
                         st.metric(label="O.S Existentes", value= rd73)
                         numros29 = numros28-1
                         osespec30 = rd72.loc[numros29]
@@ -3312,13 +4392,13 @@ if fLIDERES == 'Filipe Leite':
                         st.dataframe(df, use_container_width=st.session_state.use_container_width2)
             
             with tab53:
-                st.header('T.I', divider='rainbow')
+                st.header(aviso_list, divider='blue')
                 st.button('Atualize ↻  ')
                 with st.expander("Geral"):  
                     if allln26 == 0:
                         st.success('Não há pendências')
                     else:
-                        numros28 = st.number_input("Selecione o numero da    OS",min_value=1,max_value=allln26,value=allln26,placeholder="Selecione")
+                        numros28 = st.number_input("Selecione o numero da    OS",min_value=1,max_value=allln26,value=allln26,placeholder="Selecione!")
                         st.metric(label="O.S Existentes", value= allln26)
                         numros29 = numros28-1
                         osespec31 = allln25.loc[numros29]
