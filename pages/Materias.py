@@ -90,21 +90,20 @@ if 'banco_de_dados' == 'banco_de_dados':
 
     conn = sqlite3.connect('./Data/Setores')
     cursor = conn.cursor()
-
-
-tab6, tab7= st.tabs(["| Cadastro de materiais |", "| Fornecedores |"])
+st.header('Materiais e fornecedores, de :blue[manutenção]')
+tab6, tab7,tab8= st.tabs(["📝 Cadastro de materiais", " 🚛 Fornecedores", "💰 Custos de manutenção"])
 with tab6:
     col1,col2,col3,col4 = st.columns([2,8,4,0.1])
     with col1:
         with st.expander('💡'):
             Setor = st.radio(
             "Selecione",
-            ['ALL','Elétrica',"MecÂnica","Serralharia"],
+            ['ALL','Elétrica',"Mecânica","Serralharia"],
             index=0,
             )
+
     with col3:
         busca = st.text_input('Buscar',placeholder='Faça uma busca 🔎')
-
     if not busca:
         if Setor == 'ALL':
             consulta3 = f"SELECT * FROM Materiais"
@@ -148,14 +147,13 @@ with tab6:
                 preenchimento = preenchimento.tolist()
             else:
                 preenchimento = [None,None,None,None,None,None,None,None,None,None,None,None,None,None]
-
         with col2:
 
             if  atd:
-                Quantidade_update = st.number_input("Quantidade",min_value=0,max_value=1000,placeholder="Atualize o valor")
+                Quantidade_update = st.number_input("Quantidade",min_value=0,max_value=5,value=preenchimento[1],placeholder="Atualize o valor")
 
             else:
-                Quantidade = st.number_input("Quantidade",min_value=0,max_value=1000,value=0,placeholder="Insira o valor")
+                Quantidade = st.number_input("Quantidade",min_value=0,max_value=5,value=0,placeholder="Insira o valor")
 
             if  atd:
                 Unidade_update = st.selectbox('Unidade',('UN','CM','MT','KG','G','L','M2','M3'),placeholder='Atualize a Unidade')
@@ -235,9 +233,7 @@ with tab6:
     else:
         btn = 0
         atl = 0
-
     base_de_dados = 'Materiais'
-
     if btn:
         st.toast('Inserindo Linha...')
         time.sleep(1)
@@ -428,10 +424,12 @@ if 1 == 0:
         conn12.close()
 
         source = pd.DataFrame({
-        'Setor:es': ['PRODUÇÃO','FERRAMENTARIA', 'ADMINISTRATIVO', 'COMERCIAL', 'Serralharia', 'Elétrica', 'MecÂnica','EXPEDIÇÃO','T.I'],
+        'Setor:es': ['PRODUÇÃO','FERRAMENTARIA', 'ADMINISTRATIVO', 'COMERCIAL', 'Serralharia', 'Elétrica', 'Mecânica','EXPEDIÇÃO','T.I'],
         'Valores': [read_0, read_1, read_2, read_3, read_4, read_5, read_6,read_7,read_8]
         })
 
         st.bar_chart(source,x='Setor:es',y='Valores',color= '#6346F5',width=190)
 
+with tab8:
+    st.header('🚧Em :blue[construção]🚧')
 
