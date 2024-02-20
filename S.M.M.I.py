@@ -106,6 +106,17 @@ if fLIDERES == 'Selecione' and fSETOR == 'Selecione' and senha == '47297913':
                 file_name="Materiais ",
                 mime='application/octet-stream '
                 )
+    
+    with open("./Data/imagens_a_f", 'rb') as file:
+        with col1:
+            st.write('Dados da tabela de imagens:')
+            st.download_button(
+                label="BAIXAR DADOS  ",
+                key= "download_button  ",
+                data= file,
+                file_name="imagens_a_f",
+                mime='application/octet-stream '
+                )
      
 if 'OS' not in st.session_state:
     st.session_state.OS = 0
