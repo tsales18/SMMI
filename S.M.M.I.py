@@ -119,6 +119,7 @@ if fLIDERES == 'Selecione' and fSETOR == 'Selecione' and senha == '47297913':
                 mime='application/octet-stream '
                 )
             
+        
 if 'OS' not in st.session_state:
     st.session_state.OS = 0
 if 'BANCOS' == 'BANCOS':
