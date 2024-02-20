@@ -103,9 +103,10 @@ if fLIDERES == 'Selecione' and fSETOR == 'Selecione' and senha == '47297913':
                 label="BAIXAR DADOS ",
                 key= "download_button ",
                 data= file,
-                file_name="Materiais ",
+                file_name="Materiais",
                 mime='application/octet-stream '
                 )
+     
     
     with open("./Data/imagens_a_f", 'rb') as file:
         with col1:
@@ -117,7 +118,7 @@ if fLIDERES == 'Selecione' and fSETOR == 'Selecione' and senha == '47297913':
                 file_name="imagens_a_f",
                 mime='application/octet-stream '
                 )
-     
+            
 if 'OS' not in st.session_state:
     st.session_state.OS = 0
 if 'BANCOS' == 'BANCOS':
@@ -1440,18 +1441,18 @@ if fLIDERES == 'Equipe de ELÉTRICA':
             with tab10:
                 col,col1,col2 = st.columns([0.5,1,0.5])
                 with col:
-                    with st.expander("",expanded=1):
+                    with st.expander(':blue[Localidade 🚩]',expanded=1):
                         st_ = st.container(border=True)
-                        st.header(':blue[Localidade 🚩] ',divider='blue')
+                        st.header(':blue[Localidade 🚩]',divider='blue')
                         quadro =st.radio(
                         "Selecione",
                         ['Quadro A01-A04 (PRENSA P8)','Quadro DA1-DA6 (PULLER E ESTICADEIRA)','Quadro AA1-AA3 (FORNO DE TARUGO)','Quadro EA1-EA4 (SERRA E INCESTADOR)','Quadro FA1-FA3 (FORNO DE ENVELHECIMENTO)'],
                         index=0,
                         ) 
                         
-                    with st.expander("",expanded=1):
+                    with st.expander(':blue[Situação 🔎]',expanded=1):
                         st_3 = st.container(border=True)
-                        st.header(':blue[Situação 🔎] ',divider='blue')
+                        st.header(':blue[Situação 🔎]',divider='blue')
                         estado =st.radio(
                         "Selecione",
                         ['Equipamento em bom estado e em funcionamento!','Substituição de componente necessaria!','Equipamento danificado mas em funcionamento!'],
@@ -1469,7 +1470,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                             example_one()               
                
                 with col2:
-                    with st.expander("",expanded=1):
+                    with st.expander(':blue[Equipamento ⚙]',expanded=1):
                         st_1 = st.container(border=True)
                         st.header(':blue[Equipamento ⚙]',divider='blue')
                         equipamento = st.radio(
@@ -1982,31 +1983,37 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                             errorfull_7 = '° Realizar um teste de vazamento no :blue[Valvulas pneumaticas] para garantir que não haja vazamentos após a manutenção.'
                             errorfull_8 = '° Verificar os anéis de vedação do :blue[Valvulas pneumaticas] quanto a sinais de desgaste ou danos. Substituir os anéis danificados conforme necessário.'
                             errorfull_9 = '° Verificar os amortecedores do :blue[Valvulas pneumaticas] quanto a sinais de desgaste ou danos. Substituir os amortecedores danificados conforme necessário.'
-                    
+      
                 with col1:
                     with st.expander("",expanded=1):
                         st.header(':blue[CheckList 📋]',divider='blue')
                         check_9 =st.text_input('T.A.G de referência do equipamento:')
                         componente = (f'{check_9} pertence a {equipamento}')
-                        check = st.checkbox(tltle)
+                        ttt = st.toggle("Reset as Seleções")
+                        if ttt:
+                            a = True
+                        else:
+                            a = False
+                        check = st.checkbox(tltle,disabled=a,value=a)
+                        
                         if check:
                             st.success(sucessfull)
                         else:
                             st.error(errorfull)
                     
-                        check_1 =st.checkbox(tltle_1)
+                        check_1 =st.checkbox(tltle_1,disabled=a,value=a)
                         if check_1:
                             st.success(sucessfull_1)
                         else:
                             st.error(errorfull_1)
                         
-                        check_1_2 =st.checkbox(tltle_2)
+                        check_1_2 =st.checkbox(tltle_2,disabled=a,value=a)
                         if check_1_2:
                             st.success(sucessfull_2)
                         else:
                             st.error(errorfull_2)
                         
-                        check_2 =st.checkbox(tltle_3)
+                        check_2 =st.checkbox(tltle_3,disabled=a,value=a)
                         if check_2:
                             st.success(sucessfull_3)
                             if equipamento == 'Disjuntores' or equipamento == 'Fontes' or equipamento == 'Transformadores':
@@ -2025,7 +2032,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                                     st.number_input('Especifique a pressão (BAR/PSI):',value=0.0,step=0.1)
                         else:
                             st.error(errorfull_3)
-                        check_3 =st.checkbox(tltle_4)
+                        check_3 =st.checkbox(tltle_4,disabled=a,value=a)
                         if check_3:
                             st.success(sucessfull_4)
                             if equipamento == 'Controladores' or equipamento == 'Transformadores':
@@ -2034,7 +2041,7 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                                     st.number_input('Especifique a tensão (V):',value=0.0,step=0.1)
                         else:
                             st.error(errorfull_4)
-                        check_4 =st.checkbox(tltle_5)
+                        check_4 =st.checkbox(tltle_5,disabled=a,value=a)
                         if check_4:
                             st.success(sucessfull_5)
                             if equipamento == 'Contatores' or equipamento == 'Relerés':
@@ -2047,13 +2054,13 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                             st.error(errorfull_5)
                             
                         if not equipamento == 'Contatores' and not equipamento == 'Relerés'and not equipamento == 'Inversores de frequência' and not equipamento == 'Porta fusiveis' and not equipamento == 'Sensores':
-                            check_5 =st.checkbox(tltle_6)
+                            check_5 =st.checkbox(tltle_6,disabled=a,value=a)
                             if check_5:
                                 st.success(sucessfull_6)
                             else:
                                 st.error(errorfull_6 )
                         
-                        check_6 =st.checkbox(tltle_7)
+                        check_6 =st.checkbox(tltle_7,disabled=a,value=a)
                         if check_6:
                             st.success(sucessfull_7)
                             if equipamento == 'Motores' or equipamento == 'Sensores':
@@ -2065,18 +2072,21 @@ if fLIDERES == 'Equipe de ELÉTRICA':
                         else:
                             st.error(errorfull_7)
                         
-                        check_7 =st.checkbox(tltle_8)
+                        check_7 =st.checkbox(tltle_8,disabled=a,value=a)
                         if check_7:
                             st.success(sucessfull_8)
                         else:
                             st.error(errorfull_8)
 
-                        check_8 =st.checkbox('Calibração (se aplicável):')
+                        check_8 =st.checkbox(tltle_9,disabled=a,value=a)
                         if check_8:
                             st.success(sucessfull_9)
                         else:
                             st.error(errorfull_9)
-                        check_10 =st.text_area('Registro de Manutenção:')
+                        if not ttt:
+                            check_10 = st.text_area('Registro de Manutenção:')
+                        else:
+                            check_10 = ''
                         
                         if not equipamento == 'Contatores' and not equipamento == 'Relerés'and not equipamento == 'Inversores de frequência' and not equipamento == 'Porta fusiveis' and not equipamento == 'Sensores':
                             checkslists = [check_1,check_1_2,check_2,check_3,check_4,check_5,check_6,check_7,check_8,check_9,check_10]
