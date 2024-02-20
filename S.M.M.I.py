@@ -390,8 +390,8 @@ if 'BANCOS' == 'BANCOS':
     conn14 = sqlite3.connect('./Data/Meses')
     cursor14 = conn14.cursor()
 
-cl = st.button("DELETAR TABELAS")
-if cl:
+#cl = st.button("DELETAR TABELAS")
+#if cl:
    #cursor.execute("DROP TABLE ELETRICA")
    #cursor.execute("DROP TABLE MECANICA")
    #cursor1.execute("DROP TABLE imagens")
@@ -403,8 +403,8 @@ if cl:
    #cursor.execute("DROP TABLE TI")
    #cursor.execute("DROP TABLE Serralharia")
    #cursor.execute("DROP TABLE ids")
-   cursor.execute("DROP TABLE checklist")
-   conn.commit()
+   #cursor.execute("DROP TABLE checklist")
+   #conn.commit()
 
 #leitura do banco ELETRICA
 allln = pd.read_sql_query("SELECT * FROM ELETRICA", conn)
