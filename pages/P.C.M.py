@@ -16,7 +16,6 @@ import PyPDF2
 from io import BytesIO
 import plotly.graph_objects as go
 from datetime import datetime, timedelta
-from colorama import Fore
 from streamlit_extras.metric_cards import style_metric_cards
 import json
 import os
