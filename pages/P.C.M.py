@@ -424,7 +424,7 @@ with tab1:
                         textos = 'Bruno Kappaun'
 
                         x1, y1 = 275, 703
-                        x2, y2 = ct[0], 703
+                        x2, y2 = 275, 703
                         widt, heigh = 560, 60
                         r,r1 = 18,360
                     if idx == 5:
