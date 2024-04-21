@@ -541,8 +541,14 @@ with tab1:
                         oie = imagens[0][2]
                         imagem = Image.open(BytesIO(oe))
                         imagem2 = Image.open(BytesIO(oie))
-                        c.drawInlineImage(imagem2, x1,y1, width=400,height=145)
-                        c.drawInlineImage(imagem, x,y, width=400,height=145)   
+                        if not pmes_leve.empty:
+                            if not oe == None:
+                                imagem = Image.open(BytesIO(oe))
+                                c.drawInlineImage(imagem, x,y, width=400,height=145)
+
+                            if not oie == None:
+                                imagem2 = Image.open(BytesIO(oie))
+                                c.drawInlineImage(imagem2, x1,y1, width=400,height=145))   
                     
             c = canvas.Canvas(f"./Data/geral_{usuario}.pdf")
             hh = hello(c,pmg)
