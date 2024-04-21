@@ -546,7 +546,7 @@ with tab1:
 
                             if not oie == None:
                                 imagem2 = Image.open(BytesIO(oie))
-                                c.drawInlineImage(imagem2, x1,y1, width=400,height=145))   
+                                c.drawInlineImage(imagem2, x1,y1, width=400,height=145)
                     
             c = canvas.Canvas(f"./Data/geral_{usuario}.pdf")
             hh = hello(c,pmg)
