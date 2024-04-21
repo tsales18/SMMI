@@ -539,8 +539,6 @@ with tab1:
                         imagens = cursor1.fetchall()
                         oe = imagens[0][1]
                         oie = imagens[0][2]
-                        imagem = Image.open(BytesIO(oe))
-                        imagem2 = Image.open(BytesIO(oie))
                         if not pmes_leve.empty:
                             if not oe == None:
                                 imagem = Image.open(BytesIO(oe))
